@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import { useToast } from "@/hooks/use-toast";
 
 const API_URL = "http://localhost:5000/api";
 
@@ -15,7 +14,7 @@ interface AuthContextType {
   isLoading: boolean;
   signUp: (email: string, password: string, fullName: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
-  signInWithGoogle: () => Promise<{ error: any }>;
+  signInWithGoogle: (tokenId: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
 }
 
@@ -30,7 +29,6 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const { toast } = useToast();
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -86,13 +84,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const signInWithGoogle = async () => {
-    // Stub for Google Sign In
-    toast({
-      title: "Coming Soon",
-      description: "Google Sign-In integration is currently under development.",
-    });
-    return { error: "Not implemented" };
+  const signInWithGoogle = async (tokenId: string) => {
+    try {
+      const response = await fetch(`${API_URL}/auth/google`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tokenId }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Google login failed");
+      }
+
+      setUser(data);
+      localStorage.setItem("saffron_user", JSON.stringify(data));
+      return { error: null };
+    } catch (error) {
+      return { error };
+    }
   };
 
   const signOut = async () => {

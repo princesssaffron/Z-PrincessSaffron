@@ -241,18 +241,18 @@ const Header = () => {
 
         {/* Mobile Menu Overlay */}
         <div
-          className={`lg:hidden fixed inset-x-0 top-[72px] bottom-0 bg-ivory/98 backdrop-blur-xl transition-all duration-500 z-40 ${isMobileMenuOpen
+          className={`lg:hidden fixed inset-x-0 top-0 bottom-0 bg-ivory/98 backdrop-blur-xl transition-all duration-500 z-40 ${isMobileMenuOpen
             ? "opacity-100 translate-y-0 pointer-events-auto"
-            : "opacity-0 -translate-y-4 pointer-events-none"
+            : "opacity-0 -translate-y-full pointer-events-none"
             }`}
         >
-          <nav className="flex flex-col items-center justify-center h-full space-y-8 pb-20">
+          <nav className="flex flex-col items-center justify-center min-h-screen py-24 space-y-6 overflow-y-auto">
             {navLinks.map((link, index) => (
               <Link
                 key={link.path}
                 to={link.path}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className={`font-serif text-2xl tracking-widest uppercase transition-all duration-500 ${location.pathname === link.path
+                className={`font-serif text-3xl tracking-widest uppercase transition-all duration-500 ${location.pathname === link.path
                   ? "text-gold scale-110"
                   : "text-royal-purple hover:text-gold hover:scale-105"
                   }`}
@@ -273,17 +273,36 @@ const Header = () => {
                 to="/profile"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="font-sans text-sm tracking-[0.2em] uppercase text-royal-purple/70 hover:text-gold transition-colors"
+                style={{
+                  transitionDelay: `${navLinks.length * 50}ms`,
+                  opacity: isMobileMenuOpen ? 1 : 0
+                }}
               >
                 My Account
               </Link>
             ) : (
-              <Link
-                to="/auth"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="px-8 py-3 bg-royal-purple text-ivory text-xs font-bold uppercase tracking-widest rounded-full"
+              <div
+                className="flex flex-col items-center gap-4 w-full px-10"
+                style={{
+                  transitionDelay: `${navLinks.length * 50}ms`,
+                  opacity: isMobileMenuOpen ? 1 : 0
+                }}
               >
-                Login / Register
-              </Link>
+                <Link
+                  to="/auth"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="w-full text-center py-4 bg-royal-purple text-ivory text-sm font-bold uppercase tracking-widest rounded-full shadow-royal"
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/auth?tab=signup"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="w-full text-center py-4 border-2 border-royal-purple text-royal-purple text-sm font-bold uppercase tracking-widest rounded-full"
+                >
+                  Register
+                </Link>
+              </div>
             )}
           </nav>
         </div>

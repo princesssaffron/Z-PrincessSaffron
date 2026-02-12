@@ -57,15 +57,15 @@ const WhyChooseUs = () => {
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.9, ease: [0.23, 1, 0.32, 1] }}
-          className="text-center max-w-3xl mx-auto mb-20"
+          className="text-center max-w-3xl mx-auto mb-16 md:mb-20"
         >
-          <span className="font-sans text-sm uppercase tracking-[0.35em] text-gold/70">
+          <span className="font-sans text-xs sm:text-sm uppercase tracking-[0.35em] text-gold/70">
             The Z Princess Difference
           </span>
-          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-royal-purple mt-4 mb-6">
+          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-royal-purple mt-4 mb-6 px-4">
             Why Choose Our Saffron
           </h2>
-          <div className="w-28 h-px bg-gradient-to-r from-transparent via-gold to-transparent mx-auto" />
+          <div className="w-20 inline-block h-px bg-gradient-to-r from-transparent via-gold to-transparent mx-auto" />
         </motion.div>
 
         {/* Certification Badges */}
@@ -73,7 +73,7 @@ const WhyChooseUs = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="flex flex-wrap justify-center gap-8 md:gap-14 mb-24"
+          className="grid grid-cols-2 md:flex md:flex-wrap justify-center gap-6 sm:gap-10 md:gap-14 mb-16 md:mb-24 px-4"
         >
           {badges.map((badge, index) => (
             <motion.div
@@ -87,13 +87,13 @@ const WhyChooseUs = () => {
               }}
               className="flex flex-col items-center"
             >
-              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-royal-purple-dark via-royal-purple to-royal-purple-dark flex items-center justify-center shadow-royal">
-                <badge.icon className="w-10 h-10 text-gold" />
+              <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-br from-royal-purple-dark via-royal-purple to-royal-purple-dark flex items-center justify-center shadow-royal transform transition-transform hover:scale-110">
+                <badge.icon className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 text-gold" />
               </div>
-              <span className="mt-4 font-serif text-sm text-royal-purple font-semibold tracking-wide">
+              <span className="mt-4 font-serif text-xs sm:text-sm text-royal-purple font-semibold tracking-wide">
                 {badge.label}
               </span>
-              <span className="font-sans text-xs text-muted-foreground">
+              <span className="font-sans text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider">
                 {badge.desc}
               </span>
             </motion.div>
@@ -101,7 +101,7 @@ const WhyChooseUs = () => {
         </motion.div>
 
         {/* Features Grid */}
-        <div className="grid gap-10 md:grid-cols-2">
+        <div className="grid gap-6 sm:gap-8 md:gap-10 md:grid-cols-2 px-4">
           {features.map((feature, index) => (
             <motion.div
               key={feature.title}
@@ -112,15 +112,15 @@ const WhyChooseUs = () => {
                 delay: 0.4 + index * 0.18,
                 ease: [0.23, 1, 0.32, 1],
               }}
-              className="relative bg-card p-10 md:p-12 rounded-sm shadow-card hover:shadow-elegant transition-shadow duration-500"
+              className="relative bg-card p-8 sm:p-10 md:p-12 rounded-2xl shadow-card hover:shadow-elegant transition-all duration-500 hover:-translate-y-1"
             >
               {/* Gold Accent Line */}
-              <div className="absolute top-0 left-0 h-full w-1 bg-gradient-to-b from-gold to-gold/40 rounded-l-sm" />
+              <div className="absolute top-0 left-0 h-full w-1 bg-gradient-to-b from-gold to-gold/40 rounded-l-2xl" />
 
-              <h3 className="font-serif text-2xl text-royal-purple mb-4">
+              <h3 className="font-serif text-xl sm:text-2xl text-royal-purple mb-3 sm:mb-4">
                 {feature.title}
               </h3>
-              <p className="font-sans text-base text-muted-foreground leading-relaxed">
+              <p className="font-sans text-sm sm:text-base text-muted-foreground leading-relaxed">
                 {feature.description}
               </p>
             </motion.div>

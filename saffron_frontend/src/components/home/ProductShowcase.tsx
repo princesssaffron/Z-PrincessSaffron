@@ -29,21 +29,21 @@ const ProductShowcase = () => {
     <section className="py-24 bg-ivory">
       <div className="container mx-auto px-6">
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <p className="font-sans text-gold text-sm tracking-[0.3em] uppercase mb-4">
+        <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16 px-4">
+          <p className="font-sans text-gold text-xs sm:text-sm tracking-[0.3em] uppercase mb-4">
             Curated Excellence
           </p>
-          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-royal-purple mb-6">
+          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-royal-purple mb-6 leading-tight">
             Discover Our Products
           </h2>
-          <div className="w-24 h-px bg-gradient-to-r from-transparent via-gold to-transparent mx-auto mb-6" />
-          <p className="text-muted-foreground leading-relaxed">
+          <div className="w-20 inline-block h-px bg-gradient-to-r from-transparent via-gold to-transparent mx-auto mb-6" />
+          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed px-2">
             Each strand of saffron is a symbol of luxury, purity, and authenticity—sourced directly from the highlands of Kashmir.
           </p>
         </div>
 
         {/* Product Cards */}
-        <div className="grid md:grid-cols-2 gap-12 max-w-9xl mx-auto mb-20">
+        <div className="grid md:grid-cols-2 gap-8 sm:gap-12 max-w-7xl mx-auto mb-16 sm:mb-20 px-4">
           {products.map((product, index) => (
             <div
               key={product.id}
@@ -52,32 +52,32 @@ const ProductShowcase = () => {
             >
               {/* Tag */}
               <div className="absolute top-4 left-4 z-10">
-                <span className="px-4 py-1.5 bg-gold text-royal-purple-dark text-xs font-semibold tracking-wider uppercase rounded-full">
+                <span className="px-3 py-1.5 sm:px-4 sm:py-2 bg-gold text-royal-purple-dark text-[10px] sm:text-xs font-semibold tracking-wider uppercase rounded-full">
                   {product.tag}
                 </span>
               </div>
 
               {/* Image */}
-              <div className="relative h-[420px] md:h-[800px] overflow-hidden">
+              <div className="relative h-[320px] sm:h-[450px] md:h-[600px] lg:h-[700px] overflow-hidden">
                 <img
                   src={product.image}
                   alt={product.name}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-royal-purple-dark/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-royal-purple-dark/60 via-transparent to-transparent opacity-40 sm:opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
 
               {/* Content */}
-              <div className="p-8 md:p-10">
-                <h3 className="font-serif text-2xl md:text-3xl text-royal-purple mb-2 group-hover:text-gold transition-colors">
+              <div className="p-6 sm:p-8 md:p-10">
+                <h3 className="font-serif text-xl sm:text-2xl md:text-3xl text-royal-purple mb-2 group-hover:text-gold transition-colors">
                   {product.name}
                 </h3>
 
-                <p className="font-sans text-xl md:text-2xl font-semibold text-gold mb-4">
+                <p className="font-sans text-lg sm:text-xl md:text-2xl font-semibold text-gold mb-3 sm:mb-4">
                   {product.price}
                 </p>
 
-                <p className="font-sans text-sm md:text-base text-muted-foreground leading-relaxed max-w-md">
+                <p className="font-sans text-xs sm:text-sm md:text-base text-muted-foreground leading-relaxed max-w-md">
                   {product.description}
                 </p>
               </div>
@@ -89,13 +89,13 @@ const ProductShowcase = () => {
         </div>
 
         {/* View All Button */}
-        <div className="text-center">
+        <div className="text-center px-6">
           <Link
             to="/products"
-            className="inline-flex items-center gap-3 px-8 py-4 bg-royal-purple text-ivory font-sans font-medium text-sm tracking-widest uppercase transition-all duration-300 hover:bg-royal-purple-light hover:shadow-elegant group rounded-full"
+            className="inline-flex items-center justify-center w-full sm:w-auto gap-3 px-10 py-4 bg-royal-purple text-ivory font-sans font-medium text-sm tracking-widest uppercase transition-all duration-300 hover:bg-royal-purple-light hover:shadow-elegant group rounded-full"
           >
-            View All Products
-            <ArrowRight className="w-4 h-4 transition-transform group-hover:-translate-y-1" />
+            <span className="translate-y-[1px]">View All Products</span>
+            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>
       </div>

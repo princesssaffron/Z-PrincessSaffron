@@ -52,67 +52,50 @@ const HeroSection = () => {
           </p>
 
           {/* Main Heading */}
-          <h1
-            className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-ivory leading-tight mb-6 animate-fade-in"
+          <div
+            className="mb-8 animate-fade-in"
             style={{ animationDelay: "0.4s" }}
           >
-            <motion.h1
-              initial={{ opacity: 0, y: 50 }}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.4, delay: 0.5, ease: [0.23, 1, 0.32, 1] }}
+              transition={{ duration: 1, delay: 0.5, ease: [0.23, 1, 0.32, 1] }}
             >
-              {/* Main Heading */}
               <h1
-                className="font-cinzel text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-light text-white mb-4 sm:mb-6 animate-fade-in px-2"
-                style={{ letterSpacing: "0.15em" }}
+                className="font-cinzel text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light text-white mb-4 sm:mb-6 px-2 tracking-[0.1em] sm:tracking-[0.15em] leading-tight"
               >
                 Z PRINCESS SAFFRON
               </h1>
-            </motion.h1>
+            </motion.div>
 
-            <span className="block text-2xl sm:text-3xl md:text-4xl text-gold-gradient mt-2 font-light tracking-wide">Now Yours</span>
-          </h1>
+            <span className="block text-xl sm:text-2xl md:text-4xl text-gold-gradient mt-2 font-light tracking-wide italic">Now Yours</span>
+          </div>
 
           {/* Description */}
           <p
-  className="font-cursiveLuxury text-ivory/90 text-2xl md:text-3xl max-w-2xl mx-auto mb-10 leading-relaxed tracking-wide animate-fade-in"
-  style={{ animationDelay: "0.6s" }}
->
-  World's Finest Saffron
-</p>
-
-
+            className="font-cursiveLuxury text-ivory/90 text-xl sm:text-2xl md:text-3xl max-w-2xl mx-auto mb-10 leading-relaxed tracking-wide animate-fade-in px-4"
+            style={{ animationDelay: "0.6s" }}
+          >
+            World's Finest Saffron
+          </p>
 
           {/* CTA Buttons */}
           <div
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in"
+            className="flex flex-col sm:flex-row items-center justify-center gap-5 sm:gap-6 animate-fade-in px-6"
             style={{ animationDelay: "0.8s" }}
           >
             <Link
               to="/products"
-              className="group relative overflow-hidden px-10 py-4 bg-[#E6C76A] text-royal-purple-dark font-sans font-semibold text-sm tracking-widest uppercase transition-all duration-500 hover:shadow-gold-glow flex items-center gap-3 rounded-full"
+              className="group relative overflow-hidden w-full sm:w-auto px-10 py-4 bg-[#E6C76A] text-royal-purple-dark font-sans font-semibold text-sm tracking-widest uppercase transition-all duration-500 hover:shadow-gold-glow flex items-center justify-center gap-3 rounded-full"
             >
               <span className="relative z-10">Discover Collection</span>
               <ArrowRight className="relative z-10 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-
-              <div className="
-  absolute inset-0
-  bg-gradient-to-r 
-  from-[#F1DE9A] 
-  via-[#E6C76A] 
-  to-[#F1DE9A]
-  bg-[length:200%_100%]
-  animate-shimmer
-  opacity-0 
-  group-hover:opacity-100 
-  transition-opacity 
-  duration-500
-" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#F1DE9A] via-[#E6C76A] to-[#F1DE9A] bg-[length:200%_100%] animate-shimmer opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             </Link>
 
             <Link
               to="/about"
-              className="px-8 py-4 border-2 border-ivory/30 text-ivory font-sans font-medium text-sm tracking-widest uppercase transition-all duration-300 hover:border-gold hover:text-gold hover:bg-gold/5 rounded-full"
+              className="px-10 py-4 border-2 border-ivory/30 text-ivory font-sans font-medium text-sm tracking-widest uppercase transition-all duration-300 hover:border-gold hover:text-gold hover:bg-gold/5 rounded-full w-full sm:w-auto text-center"
             >
               Our Heritage
             </Link>

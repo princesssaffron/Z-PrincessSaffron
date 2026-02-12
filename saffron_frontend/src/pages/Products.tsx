@@ -232,30 +232,45 @@ const Products = () => {
           </div>
 
           {/* Filters Bar */}
-          <div className="flex flex-wrap items-center justify-between gap-4 mb-10">
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-8 sm:mb-10 px-4">
             {/* Mobile Filter Toggle */}
-            <button
-              onClick={() => setShowFilters(!showFilters)}
-              className="md:hidden flex items-center gap-2 px-4 py-2.5 bg-royal-purple text-ivory text-sm font-medium rounded-full"
-            >
-              <SlidersHorizontal className="w-4 h-4" />
-              Filters
-              {activeFiltersCount > 0 && (
-                <span className="ml-1 w-5 h-5 bg-gold text-royal-purple-dark rounded-full text-xs flex items-center justify-center">
-                  {activeFiltersCount}
-                </span>
-              )}
-            </button>
+            <div className="flex items-center gap-2 w-full sm:w-auto overflow-x-auto pb-2 sm:pb-0 scrollbar-hide">
+              <button
+                onClick={() => setShowFilters(!showFilters)}
+                className="flex flex-shrink-0 items-center gap-2 px-5 py-3 bg-royal-purple text-ivory text-xs font-bold uppercase tracking-widest rounded-full shadow-royal"
+              >
+                <SlidersHorizontal className="w-4 h-4" />
+                Filters
+                {activeFiltersCount > 0 && (
+                  <span className="ml-1 w-5 h-5 bg-gold text-royal-purple-dark rounded-full text-[10px] flex items-center justify-center">
+                    {activeFiltersCount}
+                  </span>
+                )}
+              </button>
+
+              {/* Quick Sort (Mobile Only) */}
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="md:hidden px-4 py-3 bg-ivory-dark border border-gold/20 text-xs font-bold uppercase tracking-widest text-royal-purple focus:outline-none focus:border-gold rounded-full appearance-none pr-8 relative"
+                style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%235C0011\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'%3E%3C/path%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.75rem center', backgroundSize: '1rem' }}
+              >
+                <option value="featured">Featured</option>
+                <option value="price-low">Price ↑</option>
+                <option value="price-high">Price ↓</option>
+                <option value="rating">Top Rated</option>
+              </select>
+            </div>
 
             {/* Desktop Filters */}
-            <div className={`${showFilters ? "flex" : "hidden"} md:flex flex-wrap items-center gap-4 w-full md:w-auto`}>
+            <div className={`${showFilters ? "flex" : "hidden md:flex"} flex-wrap items-center gap-4 w-full md:w-auto p-6 md:p-0 bg-white md:bg-transparent rounded-2xl md:rounded-none shadow-elegant md:shadow-none border border-gold/10 md:border-none`}>
               {/* Price Range */}
-              <div className="flex flex-col gap-1">
-                <label className="text-xs text-muted-foreground font-medium">Price Range</label>
+              <div className="flex flex-col gap-1 w-full md:w-auto">
+                <label className="text-[10px] text-gold font-bold uppercase tracking-widest mb-1">Price Range</label>
                 <select
                   value={priceFilter}
                   onChange={(e) => setPriceFilter(e.target.value)}
-                  className="px-4 py-2 bg-ivory-dark border border-border text-sm focus:outline-none focus:border-gold min-w-[150px] rounded-full"
+                  className="px-5 py-3 bg-ivory-dark border border-gray-100 text-sm focus:outline-none focus:border-gold md:min-w-[150px] rounded-full text-royal-purple font-medium"
                 >
                   {priceRanges.map((range) => (
                     <option key={range.key} value={range.key}>
@@ -266,12 +281,12 @@ const Products = () => {
               </div>
 
               {/* Rating */}
-              <div className="flex flex-col gap-1">
-                <label className="text-xs text-muted-foreground font-medium">Rating</label>
+              <div className="flex flex-col gap-1 w-full md:w-auto">
+                <label className="text-[10px] text-gold font-bold uppercase tracking-widest mb-1">Rating</label>
                 <select
                   value={ratingFilter}
                   onChange={(e) => setRatingFilter(e.target.value)}
-                  className="px-4 py-2 bg-ivory-dark border border-border text-sm focus:outline-none focus:border-gold min-w-[130px] rounded-full"
+                  className="px-5 py-3 bg-ivory-dark border border-gray-100 text-sm focus:outline-none focus:border-gold md:min-w-[130px] rounded-full text-royal-purple font-medium"
                 >
                   {ratingOptions.map((option) => (
                     <option key={option.key} value={option.key}>
@@ -282,12 +297,12 @@ const Products = () => {
               </div>
 
               {/* Saffron Type */}
-              <div className="flex flex-col gap-1">
-                <label className="text-xs text-muted-foreground font-medium">Type</label>
+              <div className="flex flex-col gap-1 w-full md:w-auto">
+                <label className="text-[10px] text-gold font-bold uppercase tracking-widest mb-1">Type</label>
                 <select
                   value={typeFilter}
                   onChange={(e) => setTypeFilter(e.target.value)}
-                  className="px-4 py-2 bg-ivory-dark border border-border text-sm focus:outline-none focus:border-gold min-w-[120px] rounded-full"
+                  className="px-5 py-3 bg-ivory-dark border border-gray-100 text-sm focus:outline-none focus:border-gold md:min-w-[120px] rounded-full text-royal-purple font-medium"
                 >
                   {saffronTypes.map((type) => (
                     <option key={type.key} value={type.key}>
@@ -297,25 +312,35 @@ const Products = () => {
                 </select>
               </div>
 
-              {/* Clear Filters */}
+              {/* Clear Filters (Desktop) */}
               {activeFiltersCount > 0 && (
                 <button
                   onClick={clearFilters}
-                  className="flex items-center gap-1 px-3 py-2 text-sm text-royal-purple hover:text-gold transition-colors mt-5"
+                  className="hidden md:flex items-center gap-1 px-3 py-2 text-sm text-royal-purple hover:text-gold transition-colors mt-5 bg-gold/10 rounded-full"
                 >
                   <X className="w-4 h-4" />
                   Clear
                 </button>
               )}
+
+              {/* Mobile View Results Button */}
+              {showFilters && (
+                <button
+                  onClick={() => setShowFilters(false)}
+                  className="md:hidden w-full py-4 bg-royal-purple text-ivory text-sm font-bold uppercase tracking-widest rounded-full mt-4 shadow-royal"
+                >
+                  View {filteredProducts.length} Results
+                </button>
+              )}
             </div>
 
-            {/* Sort By */}
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-muted-foreground">Sort by:</span>
+            {/* Desktop Sort By */}
+            <div className="hidden md:flex items-center gap-3">
+              <span className="text-xs font-bold uppercase tracking-widest text-gold/70">Sort by:</span>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="px-4 py-2 bg-ivory-dark border border-border text-sm focus:outline-none focus:border-gold rounded-full"
+                className="px-5 py-3 bg-ivory-dark border border-gray-100 text-sm font-medium focus:outline-none focus:border-gold rounded-full text-royal-purple"
               >
                 <option value="featured">Featured</option>
                 <option value="price-low">Price: Low to High</option>

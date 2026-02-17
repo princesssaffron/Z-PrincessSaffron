@@ -1,0 +1,468 @@
+import { useState, useMemo, useEffect } from "react";
+import { Heart, ShoppingCart, Share2, Star, SlidersHorizontal, X, ChevronDown } from "lucide-react";
+import { motion } from "framer-motion";
+import Layout from "@/components/layout/Layout";
+import { products } from "@/data/products";
+import { useCart } from "@/hooks/useCart";
+import { useLikedProducts } from "@/hooks/useLikedProducts";
+import heroVideo from "@/assets/products-hero-video.mp4";
+
+const offers = [
+  "🎁 Use code ROYAL25 for 25% off on all gift boxes!",
+  "✨ Free shipping on orders above ₹2000",
+  "💫 Buy 2 Get 1 Free on all 1g packs",
+];
+
+const priceRanges = [
+  { key: "all", label: "All Prices", min: 0, max: Infinity },
+  { key: "under-2000", label: "Under ₹2,000", min: 0, max: 2000 },
+  { key: "2000-5000", label: "₹2,000 - ₹5,000", min: 2000, max: 5000 },
+  { key: "5000-10000", label: "₹5,000 - ₹10,000", min: 5000, max: 10000 },
+  { key: "above-10000", label: "Above ₹10,000", min: 10000, max: Infinity },
+];
+
+const ratingOptions = [
+  { key: "all", label: "All Ratings", min: 0 },
+  { key: "4.5+", label: "4.5★ & above", min: 4.5 },
+  { key: "4+", label: "4★ & above", min: 4 },
+];
+
+const saffronTypes = [
+  { key: "all", label: "All Types" },
+  { key: "threads", label: "Strands" },
+  { key: "powder", label: "Powder" },
+];
+
+const Products = () => {
+  const [priceFilter, setPriceFilter] = useState("all");
+  const [ratingFilter, setRatingFilter] = useState("all");
+  const [typeFilter, setTypeFilter] = useState("all");
+  const [sortBy, setSortBy] = useState("featured");
+  const [showFilters, setShowFilters] = useState(false);
+  const [showHeroText, setShowHeroText] = useState(false);
+  const { addToCart } = useCart();
+  const { toggleLike, isProductLiked } = useLikedProducts();
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowHeroText(true), 600);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const scrollToProducts = () => {
+    document.getElementById("products-section")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const filteredProducts = useMemo(() => {
+    let result = [...products];
+
+    // Filter by price range
+    const priceRange = priceRanges.find((p) => p.key === priceFilter);
+    if (priceRange && priceFilter !== "all") {
+      result = result.filter(
+        (p) => p.price >= priceRange.min && p.price < priceRange.max
+      );
+    }
+
+    // Filter by rating
+    const ratingOption = ratingOptions.find((r) => r.key === ratingFilter);
+    if (ratingOption && ratingFilter !== "all") {
+      result = result.filter((p) => p.rating >= ratingOption.min);
+    }
+
+    // Filter by type (strands/powder only, exclude gift)
+    if (typeFilter !== "all") {
+      result = result.filter((p) => p.category === typeFilter);
+    } else {
+      // Show only strands and powder by default (exclude gift boxes from main filters)
+      result = result.filter((p) => p.category === "threads" || p.category === "powder");
+    }
+
+    // Sort
+    switch (sortBy) {
+      case "price-low":
+        result.sort((a, b) => a.price - b.price);
+        break;
+      case "price-high":
+        result.sort((a, b) => b.price - a.price);
+        break;
+      case "rating":
+        result.sort((a, b) => b.rating - a.rating);
+        break;
+      default:
+        break;
+    }
+
+    return result;
+  }, [priceFilter, ratingFilter, typeFilter, sortBy]);
+
+  const activeFiltersCount = [priceFilter, ratingFilter, typeFilter].filter(
+    (f) => f !== "all"
+  ).length;
+
+  const clearFilters = () => {
+    setPriceFilter("all");
+    setRatingFilter("all");
+    setTypeFilter("all");
+  };
+
+  return (
+    <Layout>
+      {/* Cinematic Hero Section */}
+      <section className="relative h-screen w-full overflow-hidden">
+        {/* Background Video */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source src={heroVideo} type="video/mp4" />
+        </video>
+
+        {/* Dark Overlay with Gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-royal-purple-dark/60 via-royal-purple-dark/40 to-royal-purple-dark/80" />
+
+        {/* Gold Shimmer Effect */}
+        <div className="absolute inset-0 bg-gradient-to-tr from-gold/5 via-transparent to-gold/10 opacity-60" />
+
+        {/* Content */}
+        <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: showHeroText ? 1 : 0 }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+            className="max-w-3xl"
+          >
+            {/* Decorative Line */}
+            <motion.div
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: showHeroText ? 1 : 0 }}
+              transition={{ duration: 1, delay: 0.3 }}
+              className="w-16 h-px bg-gold mx-auto mb-8"
+            />
+
+            {/* Subtitle */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: showHeroText ? 1 : 0, y: showHeroText ? 0 : 20 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="font-sans text-gold/90 text-sm tracking-[0.4em] uppercase mb-6"
+            >
+              The Royal Collection
+            </motion.p>
+
+            {/* Main Title */}
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: showHeroText ? 1 : 0, y: showHeroText ? 0 : 30 }}
+              transition={{ duration: 1, delay: 0.7 }}
+              className="font-serif text-4xl md:text-6xl lg:text-7xl text-ivory mb-8 leading-tight"
+            >
+              Each product begins
+              <br />
+              <span className="text-gold">as a flower.</span>
+            </motion.h1>
+
+            {/* Secondary Text */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: showHeroText ? 1 : 0, y: showHeroText ? 0 : 20 }}
+              transition={{ duration: 0.8, delay: 1 }}
+              className="font-sans text-ivory/70 text-lg md:text-xl tracking-wide mb-12"
+            >
+              Choose your chapter of luxury.
+            </motion.p>
+
+            {/* Decorative Line */}
+            <motion.div
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: showHeroText ? 1 : 0 }}
+              transition={{ duration: 1, delay: 1.2 }}
+              className="w-24 h-px bg-gradient-to-r from-transparent via-gold to-transparent mx-auto"
+            />
+          </motion.div>
+
+          {/* Scroll Indicator */}
+          <motion.button
+            onClick={scrollToProducts}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: showHeroText ? 1 : 0 }}
+            transition={{ duration: 0.8, delay: 1.5 }}
+            className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-ivory/60 hover:text-gold transition-colors cursor-pointer group"
+          >
+            <span className="text-xs tracking-[0.3em] uppercase">Explore</span>
+            <motion.div
+              animate={{ y: [0, 8, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <ChevronDown className="w-6 h-6 group-hover:text-gold transition-colors" />
+            </motion.div>
+          </motion.button>
+        </div>
+
+        {/* Bottom Gradient Fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-ivory to-transparent" />
+      </section>
+
+      {/* Animated Offers Banner */}
+      <div id="products-section" className="bg-royal-purple-dark scroll-mt-0">
+        <div className="overflow-hidden py-3 bg-gradient-to-r from-gold/20 via-gold/10 to-gold/20">
+          <div className="animate-marquee whitespace-nowrap flex gap-16">
+            {[...offers, ...offers].map((offer, index) => (
+              <span key={index} className="text-ivory font-sans text-sm tracking-wide">
+                {offer}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Page Header */}
+      <section className="py-16 bg-ivory">
+        <div className="container mx-auto px-6">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <p className="font-sans text-gold text-sm tracking-[0.3em] uppercase mb-4">
+              Our Collection
+            </p>
+            <h2 className="font-serif text-4xl md:text-5xl text-royal-purple mb-6">
+              Premium Saffron Products
+            </h2>
+            <div className="w-24 h-px bg-gradient-to-r from-transparent via-gold to-transparent mx-auto" />
+          </div>
+
+          {/* Filters Bar */}
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-8 sm:mb-10 px-4">
+            {/* Mobile Filter Toggle */}
+            <div className="flex items-center gap-2 w-full sm:w-auto overflow-x-auto pb-2 sm:pb-0 scrollbar-hide">
+              <button
+                onClick={() => setShowFilters(!showFilters)}
+                className="flex flex-shrink-0 items-center gap-2 px-5 py-3 bg-royal-purple text-ivory text-xs font-bold uppercase tracking-widest rounded-full shadow-royal"
+              >
+                <SlidersHorizontal className="w-4 h-4" />
+                Filters
+                {activeFiltersCount > 0 && (
+                  <span className="ml-1 w-5 h-5 bg-gold text-royal-purple-dark rounded-full text-[10px] flex items-center justify-center">
+                    {activeFiltersCount}
+                  </span>
+                )}
+              </button>
+
+              {/* Quick Sort (Mobile Only) */}
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="md:hidden px-4 py-3 bg-ivory-dark border border-gold/20 text-xs font-bold uppercase tracking-widest text-royal-purple focus:outline-none focus:border-gold rounded-full appearance-none pr-8 relative"
+                style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%235C0011\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'%3E%3C/path%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.75rem center', backgroundSize: '1rem' }}
+              >
+                <option value="featured">Featured</option>
+                <option value="price-low">Price ↑</option>
+                <option value="price-high">Price ↓</option>
+                <option value="rating">Top Rated</option>
+              </select>
+            </div>
+
+            {/* Desktop Filters */}
+            <div className={`${showFilters ? "flex" : "hidden md:flex"} flex-wrap items-center gap-4 w-full md:w-auto p-6 md:p-0 bg-white md:bg-transparent rounded-2xl md:rounded-none shadow-elegant md:shadow-none border border-gold/10 md:border-none`}>
+              {/* Price Range */}
+              <div className="flex flex-col gap-1 w-full md:w-auto">
+                <label className="text-[10px] text-gold font-bold uppercase tracking-widest mb-1">Price Range</label>
+                <select
+                  value={priceFilter}
+                  onChange={(e) => setPriceFilter(e.target.value)}
+                  className="px-5 py-3 bg-ivory-dark border border-gray-100 text-sm focus:outline-none focus:border-gold md:min-w-[150px] rounded-full text-royal-purple font-medium"
+                >
+                  {priceRanges.map((range) => (
+                    <option key={range.key} value={range.key}>
+                      {range.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Rating */}
+              <div className="flex flex-col gap-1 w-full md:w-auto">
+                <label className="text-[10px] text-gold font-bold uppercase tracking-widest mb-1">Rating</label>
+                <select
+                  value={ratingFilter}
+                  onChange={(e) => setRatingFilter(e.target.value)}
+                  className="px-5 py-3 bg-ivory-dark border border-gray-100 text-sm focus:outline-none focus:border-gold md:min-w-[130px] rounded-full text-royal-purple font-medium"
+                >
+                  {ratingOptions.map((option) => (
+                    <option key={option.key} value={option.key}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Saffron Type */}
+              <div className="flex flex-col gap-1 w-full md:w-auto">
+                <label className="text-[10px] text-gold font-bold uppercase tracking-widest mb-1">Type</label>
+                <select
+                  value={typeFilter}
+                  onChange={(e) => setTypeFilter(e.target.value)}
+                  className="px-5 py-3 bg-ivory-dark border border-gray-100 text-sm focus:outline-none focus:border-gold md:min-w-[120px] rounded-full text-royal-purple font-medium"
+                >
+                  {saffronTypes.map((type) => (
+                    <option key={type.key} value={type.key}>
+                      {type.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Clear Filters (Desktop) */}
+              {activeFiltersCount > 0 && (
+                <button
+                  onClick={clearFilters}
+                  className="hidden md:flex items-center gap-1 px-3 py-2 text-sm text-royal-purple hover:text-gold transition-colors mt-5 bg-gold/10 rounded-full"
+                >
+                  <X className="w-4 h-4" />
+                  Clear
+                </button>
+              )}
+
+              {/* Mobile View Results Button */}
+              {showFilters && (
+                <button
+                  onClick={() => setShowFilters(false)}
+                  className="md:hidden w-full py-4 bg-royal-purple text-ivory text-sm font-bold uppercase tracking-widest rounded-full mt-4 shadow-royal"
+                >
+                  View {filteredProducts.length} Results
+                </button>
+              )}
+            </div>
+
+            {/* Desktop Sort By */}
+            <div className="hidden md:flex items-center gap-3">
+              <span className="text-xs font-bold uppercase tracking-widest text-gold/70">Sort by:</span>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="px-5 py-3 bg-ivory-dark border border-gray-100 text-sm font-medium focus:outline-none focus:border-gold rounded-full text-royal-purple"
+              >
+                <option value="featured">Featured</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="rating">Highest Rated</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Results Count */}
+          <p className="text-sm text-muted-foreground mb-6">
+            Showing {filteredProducts.length} product{filteredProducts.length !== 1 ? "s" : ""}
+          </p>
+
+          {/* Products Grid */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredProducts.map((product, index) => (
+              <div
+                key={product.id}
+                className="group relative bg-card rounded-2xl shadow-card overflow-hidden transition-all duration-700 hover:shadow-elegant hover:-translate-y-2"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                {/* Tag */}
+                {product.tag && (
+                  <div className="absolute top-4 left-4 z-10">
+                    <span className="px-3 py-1.5 bg-gold text-royal-purple-dark text-xs font-semibold tracking-wider uppercase rounded-full">
+                      {product.tag}
+                    </span>
+                  </div>
+                )}
+
+                {/* Action Buttons */}
+                <div className="absolute top-4 right-4 z-10 flex flex-col gap-2 opacity-0 translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+                  <button
+                    onClick={() => toggleLike(product.id)}
+                    className={`w-10 h-10 backdrop-blur-sm rounded-full flex items-center justify-center transition-colors ${isProductLiked(product.id)
+                      ? "bg-red-500 text-white"
+                      : "bg-ivory/90 text-royal-purple hover:bg-gold hover:text-royal-purple-dark"
+                      }`}
+                    aria-label="Add to wishlist"
+                  >
+                    <Heart className={`w-4 h-4 ${isProductLiked(product.id) ? "fill-current" : ""}`} />
+                  </button>
+                  <button
+                    className="w-10 h-10 bg-ivory/90 backdrop-blur-sm rounded-full flex items-center justify-center text-royal-purple hover:bg-gold hover:text-royal-purple-dark transition-colors"
+                    aria-label="Share product"
+                  >
+                    <Share2 className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* Image */}
+                <div className="relative aspect-square overflow-hidden">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-royal-purple-dark/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                  {/* Quick Add Button */}
+                  <button
+                    onClick={() => addToCart(product.id)}
+                    className="absolute bottom-4 left-1/2 -translate-x-1/2 px-6 py-3 bg-ivory text-royal-purple font-medium text-sm uppercase tracking-wider opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 hover:bg-gold hover:text-royal-purple-dark flex items-center gap-2 rounded-full"
+                  >
+                    <ShoppingCart className="w-4 h-4" />
+                    Add to Cart
+                  </button>
+                </div>
+
+                {/* Content */}
+                <div className="p-6">
+                  {/* Rating */}
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="flex items-center gap-1">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`w-3.5 h-3.5 ${i < Math.floor(product.rating)
+                            ? "fill-gold text-gold"
+                            : "fill-muted text-muted"
+                            }`}
+                        />
+                      ))}
+                    </div>
+                    <span className="text-xs text-muted-foreground">
+                      ({product.reviews})
+                    </span>
+                  </div>
+
+                  {/* Name */}
+                  <h3 className="font-serif text-lg text-royal-purple mb-1 group-hover:text-gold transition-colors">
+                    {product.name}
+                  </h3>
+
+                  {/* Description on Hover */}
+                  <p className="text-sm text-muted-foreground line-clamp-2 mb-3 opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-20 transition-all duration-500">
+                    {product.description}
+                  </p>
+
+                  {/* Price */}
+                  <div className="flex items-center gap-2">
+                    <span className="font-sans text-xl font-bold text-gold">
+                      ₹{product.price.toLocaleString()}
+                    </span>
+                    {product.originalPrice && (
+                      <span className="text-sm text-muted-foreground line-through">
+                        ₹{product.originalPrice.toLocaleString()}
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Bottom Accent Line */}
+                <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-gold via-gold-light to-gold scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </Layout>
+  );
+};
+
+export default Products;

@@ -8,14 +8,17 @@ import {
   Menu,
   X,
   LogOut,
-  MapPin,
   Package,
-  Edit
+  MapPin,
+  Pencil
 } from "lucide-react";
+
 import logo from "@/assets/logo.png";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCart } from "@/hooks/useCart";
 import { useLikedProducts } from "@/hooks/useLikedProducts";
+
+const BRAND_GOLD = "#C6A85A";
 
 const navLinks = [
   { name: "Home", path: "/" },
@@ -27,30 +30,37 @@ const navLinks = [
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   const profileRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
   const { user, signOut } = useAuth();
   const { cartCount } = useCart();
   const { likedCount } = useLikedProducts();
 
-  // Check if we render the transparent header (only on home page when not scrolled)
-  const isHome = location.pathname === "/";
-  const showSolidHeader = isScrolled || !isHome;
-
+  /* ===== FORCE HEADER ON CERTAIN PAGES ===== */
   useEffect(() => {
+    const forceSolidPages = ["/cart", "/wishlist"];
+
+    if (forceSolidPages.includes(location.pathname)) {
+      setIsScrolled(true);
+      return;
+    }
+
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
+
+    handleScroll();
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [location.pathname]);
 
-  // Close dropdown when clicking outside
+  /* ===== CLOSE PROFILE IF CLICKED OUTSIDE ===== */
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (profileRef.current && !profileRef.current.contains(e.target as Node)) {
         setIsProfileOpen(false);
       }
     };
@@ -60,253 +70,247 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${showSolidHeader
-        ? "bg-ivory/95 backdrop-blur-md shadow-elegant py-3"
-        : "bg-transparent py-5"
-        }`}
+      className={`
+        fixed top-0 left-0 right-0 z-50
+        transition-all duration-500 ease-[cubic-bezier(.22,1,.36,1)]
+        ${
+          isScrolled
+            ? `
+              backdrop-blur-2xl
+              bg-[rgba(40,18,60,0.72)]
+              shadow-[0_15px_50px_-15px_rgba(0,0,0,0.6)]
+              py-3
+            `
+            : `
+              bg-transparent
+              py-5
+            `
+        }
+      `}
     >
       <div className="container mx-auto px-6">
         <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <img
+
+          {/* LOGO */}
+          <Link to="/">
+            <motion.img
+              whileHover={{ scale: 1.05, y: -1 }}
               src={logo}
               alt="Z Princess Saffron"
-              className="h-12 w-auto transition-transform duration-300 group-hover:scale-105"
+              className="h-12 w-auto"
             />
           </Link>
 
-          {/* Desktop Navigation - Center */}
-          <nav className="hidden lg:flex items-center gap-10">
-            {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`relative font-sans text-sm tracking-widest uppercase transition-colors duration-300
-                  ${location.pathname === link.path
-                    ? "text-gold"
-                    : showSolidHeader ? "text-royal-purple hover:text-gold" : "text-ivory hover:text-gold"
-                  }
-                  after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-0.5 
-                  after:bg-gold after:origin-right after:scale-x-0 after:transition-transform 
-                  after:duration-300 hover:after:origin-left hover:after:scale-x-100
-                  ${location.pathname === link.path ? "after:scale-x-100 after:origin-left" : ""}
-                `}
-              >
-                {link.name}
-              </Link>
-            ))}
+          {/* NAV */}
+          <nav className="hidden lg:flex items-center gap-12">
+            {navLinks.map((link) => {
+              const isActive = location.pathname === link.path;
+
+              return (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  className={`
+                    relative font-sans text-sm tracking-[0.25em] uppercase
+                    text-white transition-all duration-300 group
+                    ${isActive ? "text-[#C6A85A]" : ""}
+                  `}
+                >
+                  {link.name}
+
+                  {/* GLASS HOVER */}
+                  <span className="
+                      absolute inset-0 rounded-md opacity-0
+                      group-hover:opacity-100 transition duration-500
+                      bg-gradient-to-b from-white/10 to-transparent blur-[2px]
+                  "/>
+
+                  {/* GOLD LINE */}
+                  <span className={`
+                      absolute left-0 -bottom-1 h-[1px] bg-[#C6A85A]
+                      transition-all duration-500
+                      ${isActive ? "w-full" : "w-0 group-hover:w-full"}
+                  `}/>
+                </Link>
+              );
+            })}
           </nav>
 
-          {/* Right Side Icons */}
-          <div className="flex items-center gap-4">
-            {/* Wishlist */}
+          {/* RIGHT SIDE */}
+          <div className="flex items-center gap-5">
+
+            {/* WISHLIST */}
             <Link
-              to="/wishlist"
-              className={`p-2 rounded-full transition-all duration-300 relative ${showSolidHeader
-                ? "text-royal-purple hover:text-gold hover:bg-gold/10"
-                : "text-ivory hover:text-gold hover:bg-ivory/10"
-                }`}
-              aria-label="Wishlist"
+              to={user ? "/wishlist" : "/auth"}
+              className="text-white hover:text-[#C6A85A] transition relative"
             >
               <Heart className="w-5 h-5" />
-              {likedCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+              {user && likedCount > 0 && (
+                <span
+                  className="absolute -top-1 -right-1 w-4 h-4 text-[10px] font-bold rounded-full flex items-center justify-center"
+                  style={{ backgroundColor: BRAND_GOLD, color: "#2E0F3A" }}
+                >
                   {likedCount}
                 </span>
               )}
             </Link>
 
-            {/* Cart */}
+            {/* CART */}
             <Link
-              to="/cart"
-              className={`p-2 rounded-full transition-all duration-300 relative ${showSolidHeader
-                ? "text-royal-purple hover:text-gold hover:bg-gold/10"
-                : "text-ivory hover:text-gold hover:bg-ivory/10"
-                }`}
-              aria-label="Shopping Cart"
+              to={user ? "/cart" : "/auth"}
+              className="text-white hover:text-[#C6A85A] transition relative"
             >
               <ShoppingCart className="w-5 h-5" />
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-gold text-royal-purple-dark text-[10px] font-bold rounded-full flex items-center justify-center">
-                {cartCount}
-              </span>
+              {user && cartCount > 0 && (
+                <span
+                  className="absolute -top-1 -right-1 w-4 h-4 text-[10px] font-bold rounded-full flex items-center justify-center"
+                  style={{ backgroundColor: BRAND_GOLD, color: "#2E0F3A" }}
+                >
+                  {cartCount}
+                </span>
+              )}
             </Link>
 
-            {/* User Account / Profile Dropdown */}
+            {/* PROFILE */}
             <div
-              className="relative relative-group h-full flex items-center"
+              ref={profileRef}
               onMouseEnter={() => setIsProfileOpen(true)}
               onMouseLeave={() => setIsProfileOpen(false)}
+              className="relative"
             >
-              <button
-                className={`p-2 rounded-full transition-all duration-300 ${showSolidHeader
-                  ? "text-royal-purple hover:text-gold hover:bg-gold/10"
-                  : "text-ivory hover:text-gold hover:bg-ivory/10"
-                  }`}
-                aria-label={user ? "My Profile" : "Login or Sign Up"}
-              >
+              <button className="text-white hover:text-[#C6A85A] transition">
                 <User className="w-5 h-5" />
               </button>
 
-              {/* Dropdown Menu */}
               <AnimatePresence>
                 {isProfileOpen && (
                   <motion.div
-                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute right-0 top-full mt-2 w-56 bg-white/90 backdrop-blur-xl border border-white/20 rounded-xl shadow-2xl overflow-hidden py-2 z-50 origin-top-right"
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 12 }}
+                    transition={{ duration: 0.25 }}
+                    className="
+                      absolute right-0 mt-5 w-64
+                      bg-white/95 backdrop-blur-xl
+                      rounded-2xl shadow-2xl
+                      border border-white/40
+                      overflow-hidden
+                    "
                   >
-                    <div className="px-4 py-3 border-b border-gray-100 mb-1">
-                      <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">
-                        {user ? "My Account" : "Access Account"}
-                      </p>
-                    </div>
 
+                    {/* ===== USER MENU ===== */}
                     {user ? (
                       <>
-                        <Link
-                          to="/profile/edit"
-                          className="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gold/10 hover:text-gold transition-colors text-sm font-medium"
-                          onClick={() => setIsProfileOpen(false)}
-                        >
-                          <Edit className="w-4 h-4" />
-                          Edit Profile
-                        </Link>
-                        <Link
-                          to="/profile/address"
-                          className="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gold/10 hover:text-gold transition-colors text-sm font-medium"
-                          onClick={() => setIsProfileOpen(false)}
-                        >
-                          <MapPin className="w-4 h-4" />
-                          Address Book
-                        </Link>
-                        <Link
-                          to="/profile/orders"
-                          className="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gold/10 hover:text-gold transition-colors text-sm font-medium"
-                          onClick={() => setIsProfileOpen(false)}
-                        >
-                          <Package className="w-4 h-4" />
-                          My Orders
-                        </Link>
-                        <div className="border-t border-gray-100 my-1 mt-2"></div>
-                        <button
-                          onClick={() => {
-                            signOut();
-                            setIsProfileOpen(false);
-                          }}
-                          className="w-full flex items-center gap-3 px-4 py-2.5 text-red-600 hover:bg-red-50 transition-colors text-sm text-left font-medium"
-                        >
-                          <LogOut className="w-4 h-4" />
-                          Sign Out
-                        </button>
+                        <div className="px-6 py-4 border-b border-gray-100">
+                          <p className="text-xs tracking-widest text-gray-400">
+                            MY ACCOUNT
+                          </p>
+                        </div>
+
+                        <div className="py-2">
+                          <Link className="menu-item" to="/profile/edit">
+                            <Pencil className="icon" /> Edit Profile
+                          </Link>
+
+                          <Link className="menu-item" to="/profile/address">
+                            <MapPin className="icon" /> Address Book
+                          </Link>
+
+                          <Link className="menu-item" to="/profile/orders">
+                            <Package className="icon" /> My Orders
+                          </Link>
+                        </div>
+
+                        <div className="border-t border-gray-100 py-2">
+                          <button onClick={signOut} className="menu-item text-red-600">
+                            <LogOut className="icon" /> Sign Out
+                          </button>
+                        </div>
                       </>
                     ) : (
-                      <div className="p-2 space-y-2">
-                        <Link
-                          to="/auth"
-                          className="flex items-center justify-center w-full py-2.5 bg-royal-purple text-white text-sm font-bold uppercase tracking-wide rounded-full hover:bg-royal-purple/90 transition-colors shadow-md"
-                          onClick={() => setIsProfileOpen(false)}
-                        >
-                          Login
-                        </Link>
-                        <Link
-                          to="/auth?tab=signup"
-                          className="flex items-center justify-center w-full py-2.5 border border-royal-purple text-royal-purple text-sm font-bold uppercase tracking-wide rounded-full hover:bg-royal-purple hover:text-white transition-all duration-300"
-                          onClick={() => setIsProfileOpen(false)}
-                        >
-                          Register
-                        </Link>
-                      </div>
+                      <>
+                        {/* ===== GUEST MENU ===== */}
+                        <div className="px-1 py-2 border-b border-gray-100">
+                          <p className="text-l tracking-widest text-gray-400 px-2">
+                            WELCOME
+                          </p>
+                        </div>
+
+                        <div className="p-3 flex flex-col gap-2">
+
+                          <Link
+                            to="/auth"
+                            className="
+                              flex items-center justify-center gap-2
+                               py-2 rounded-xl px-4
+                              bg-[#2E0F3A] text-white text-sm font-semibold
+                              hover:bg-[#3A164B] transition
+                            "
+                          >
+                            <User className="w-4 h-4" />
+                            Login
+                          </Link>
+
+                          <div className="flex items-center gap-3">
+                            <div className="flex-1 h-px bg-gray-200"/>
+                            <span className="text-xs text-gray-400">OR</span>
+                            <div className="flex-1 h-px bg-gray-200"/>
+                          </div>
+
+                          <Link
+                            to="/auth?tab=signup"
+                            className="
+                              flex items-center justify-center gap-2
+                              w-full py-2 rounded-xl px-4
+                              border border-[#C6A85A]/40
+                              text-[#2E0F3A] text-sm font-semibold
+                              hover:bg-[#C6A85A]/10 transition
+                            "
+                          >
+                            <User className="w-4 h-4" />
+                            Register
+                          </Link>
+
+                        </div>
+                      </>
                     )}
                   </motion.div>
                 )}
               </AnimatePresence>
             </div>
 
-            {/* Mobile Menu Toggle */}
+            {/* MOBILE BUTTON */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className={`lg:hidden p-2 rounded-full transition-all duration-300 ${isScrolled
-                ? "text-royal-purple hover:text-gold"
-                : "text-ivory hover:text-gold"
-                }`}
-              aria-label="Toggle Menu"
+              className="lg:hidden text-white"
             >
-              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {isMobileMenuOpen ? <X /> : <Menu />}
             </button>
+
           </div>
         </div>
-
-        {/* Mobile Menu Overlay */}
-        <div
-          className={`lg:hidden fixed inset-x-0 top-0 bottom-0 bg-ivory/98 backdrop-blur-xl transition-all duration-500 z-40 ${isMobileMenuOpen
-            ? "opacity-100 translate-y-0 pointer-events-auto"
-            : "opacity-0 -translate-y-full pointer-events-none"
-            }`}
-        >
-          <nav className="flex flex-col items-center justify-center min-h-screen py-24 space-y-6 overflow-y-auto">
-            {navLinks.map((link, index) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={`font-serif text-3xl tracking-widest uppercase transition-all duration-500 ${location.pathname === link.path
-                  ? "text-gold scale-110"
-                  : "text-royal-purple hover:text-gold hover:scale-105"
-                  }`}
-                style={{
-                  transitionDelay: `${index * 50}ms`,
-                  opacity: isMobileMenuOpen ? 1 : 0,
-                  transform: isMobileMenuOpen ? 'translateY(0)' : 'translateY(10px)'
-                }}
-              >
-                {link.name}
-              </Link>
-            ))}
-
-            <div className="w-12 h-px bg-royal-purple/10 my-4" />
-
-            {user ? (
-              <Link
-                to="/profile"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="font-sans text-sm tracking-[0.2em] uppercase text-royal-purple/70 hover:text-gold transition-colors"
-                style={{
-                  transitionDelay: `${navLinks.length * 50}ms`,
-                  opacity: isMobileMenuOpen ? 1 : 0
-                }}
-              >
-                My Account
-              </Link>
-            ) : (
-              <div
-                className="flex flex-col items-center gap-4 w-full px-10"
-                style={{
-                  transitionDelay: `${navLinks.length * 50}ms`,
-                  opacity: isMobileMenuOpen ? 1 : 0
-                }}
-              >
-                <Link
-                  to="/auth"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full text-center py-4 bg-royal-purple text-ivory text-sm font-bold uppercase tracking-widest rounded-full shadow-royal"
-                >
-                  Login
-                </Link>
-                <Link
-                  to="/auth?tab=signup"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full text-center py-4 border-2 border-royal-purple text-royal-purple text-sm font-bold uppercase tracking-widest rounded-full"
-                >
-                  Register
-                </Link>
-              </div>
-            )}
-          </nav>
-        </div>
       </div>
+
+      {/* MENU ITEM STYLE */}
+      <style>{`
+        .menu-item{
+          display:flex;
+          align-items:center;
+          gap:10px;
+          padding:12px 24px;
+          font-size:14px;
+          color:#374151;
+          transition:0.25s;
+        }
+        .menu-item:hover{
+          background:#f8f6fb;
+          color:#2E0F3A;
+        }
+        .icon{
+          width:16px;
+          height:16px;
+        }
+      `}</style>
     </header>
   );
 };

@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Mail, Phone, MapPin, Clock, Send, MessageCircle } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
+
 
 const contactInfo = [
   {
@@ -87,10 +89,10 @@ const Contact = () => {
       {/* Hero Section */}
       <section className="pt-32 pb-16 bg-gradient-to-b from-royal-purple-dark to-royal-purple">
         <div className="container mx-auto px-6 text-center">
-          <p className="font-sans text-gold text-sm tracking-[0.3em] uppercase mb-4 animate-fade-in">
+          <p className="font-sans text-gold text-sm tracking-[0.3em] uppercase mb-4 animate-fade-in font-medium" style={{ animationDelay: "0.1s" }}>
             Get In Touch
           </p>
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-ivory mb-6 animate-fade-in" style={{ animationDelay: "0.2s" }}>
+          <h1 className="font-serif text-4xl md:text-4xl lg:text-6xl text-ivory mb-6 animate-fade-in font-medium" style={{ animationDelay: "0.2s" }}>
             Contact Us
           </h1>
           <div className="w-24 h-px bg-gradient-to-r from-transparent via-gold to-transparent mx-auto mb-6" />
@@ -222,17 +224,19 @@ const Contact = () => {
                 </label>
                 <div className="flex flex-wrap gap-3">
                   {contactMethods.map((method) => (
-                    <button
-                      key={method}
-                      type="button"
-                      onClick={() => setFormData({ ...formData, contactMethod: method })}
-                      className={`px-5 py-2.5 text-sm font-medium transition-all duration-300 ${formData.contactMethod === method
-                        ? "bg-royal-purple text-ivory rounded-full"
-                        : "bg-ivory border border-border text-foreground hover:border-gold rounded-full"
-                        }`}
-                    >
-                      {method}
-                    </button>
+                    <Button variant="royal"
+  key={method}
+  type="button"
+  onClick={() => setFormData({ ...formData, contactMethod: method })}
+  className={`min-w-[10] h-10 ${
+    formData.contactMethod === method
+      ? "bg-royal-purple text-ivory"
+      : ""
+  }`}
+>
+  {method}
+</Button>
+
                   ))}
                 </div>
               </div>
@@ -254,14 +258,17 @@ const Contact = () => {
 
               {/* Submit Button */}
               <div className="flex justify-center mt-6">
-  <button
-    type="submit"
-    disabled={isSubmitting}
-    className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#E6C76A] text-royal-purple-dark font-medium text-sm tracking-wide rounded-full transition-all duration-300 hover:shadow-gold-glow hover:scale-105 disabled:opacity-60"
-  >
+ {/* Submit Button */}
+<div className="flex justify-center mt-6">
+  <Button variant="royal"
+  type="submit"
+  disabled={isSubmitting}
+  className="min-w-[220px]"
+>
+  <span className="flex items-center gap-3">
     {isSubmitting ? (
       <>
-        <div className="w-4 h-4 border-2 border-royal-purple-dark/30 border-t-royal-purple-dark rounded-full animate-spin" />
+        <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
         Sending...
       </>
     ) : (
@@ -270,27 +277,36 @@ const Contact = () => {
         Send Message
       </>
     )}
-  </button>
+  </span>
+</Button>
+
+</div>
+
 </div>
 
             </form>
 
             {/* WhatsApp CTA */}
-            <div className="mt-8 flex flex-col items-center text-center">
+<div className="mt-8 flex flex-col items-center text-center">
   <p className="text-muted-foreground mb-4">
     Prefer instant messaging?
   </p>
 
   <a
-    href="https://wa.me/917200150588"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#E6C76A] text-royal-purple-dark font-medium text-sm tracking-wide rounded-full transition-all duration-300 hover:shadow-gold-glow hover:scale-105"
-  >
-    <MessageCircle className="w-4 h-4" />
-    Chat on WhatsApp
-  </a>
+  href="https://wa.me/917200150588"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  <Button variant="white" className="min-w-[220px]">
+    <span className="flex items-center gap-3">
+      <MessageCircle className="w-4 h-4" />
+      Chat on WhatsApp
+    </span>
+  </Button>
+</a>
+
 </div>
+
           </div>
         </div>
       </section>

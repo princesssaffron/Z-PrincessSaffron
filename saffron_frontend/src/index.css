@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Lato:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -103,29 +103,79 @@
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
-
-  html {
-    scroll-behavior: smooth;
-  }
+  
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
-    font-family: 'Lato', sans-serif;
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 300;
+    letter-spacing: 0.04em;   /* subtle RR spacing */
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-family: 'Playfair Display', serif;
-    @apply tracking-tight;
-  }
+ /* Rolls-Royce Heading Style */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 300;
+  letter-spacing: 0.2em;   /* wide RR spacing */
+  text-transform: uppercase;
+  line-height: 1.4;
 }
+
+  /* Paragraphs */
+  p {
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    line-height: 1.8;
+  }
+
+  /* Forms */
+  input,
+  textarea,
+  select,
+  label {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    text-transform: none;
+  }
+
+  /* Footer text */
+  footer,
+  footer p,
+  footer a,
+  footer span {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    text-transform: none;
+  }
+
+  /* Cards */
+  .card-luxury h1,
+.card-luxury h2,
+.card-luxury h3,
+footer h1,
+footer h2,
+footer h3 {
+  letter-spacing: 0.2em;
+  font-weight: 300;
+  text-transform: uppercase;
+}
+  /* Large section headings */
+section h1,
+section h2 {
+  letter-spacing: 0.22em;
+  font-weight: 300;
+}
+
+}
+
+
 
 @layer components {
 
@@ -272,6 +322,55 @@
   }
 }
 
+
+
+.dropdown-item {
+  @apply flex items-center gap-3 px-5 py-2.5 font-sans text-sm text-royal-purple hover:bg-gold/10 hover:text-gold transition-all duration-300;
+}
+
+.cta-gold-button {
+  @apply px-5 py-2.5 rounded-full bg-[#E6C76A] text-royal-purple-dark font-sans text-sm uppercase tracking-[0.14em] transition-all duration-300 hover:shadow-gold-glow;
+}
+
+.cta-outline-button {
+  @apply px-5 py-2.5 rounded-full border border-gold text-royal-purple font-sans text-sm uppercase tracking-[0.14em] transition-all duration-300 hover:bg-gold hover:text-royal-purple-dark;
+}
+
+
+/* animated outline */
+.rr-outline-anim {
+  stroke: #C6A85A;
+  stroke-dasharray: 160 440;
+  stroke-dashoffset: 0;
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+
+/* start animation on hover */
+.group:hover .rr-outline-anim {
+  opacity: 1;
+  animation: rr-rotate-outline 2s linear infinite;
+}
+
+/* IMPORTANT — reset when hover ends */
+.group:not(:hover) .rr-outline-anim {
+  animation: none;
+  stroke-dashoffset: 0;
+  opacity: 0;
+}
+
+/* looping motion */
+@keyframes rr-rotate-outline {
+  from {
+    stroke-dashoffset: 0;
+  }
+
+  to {
+    stroke-dashoffset: -600;
+  }
+}
+
+
 /* Keyframe Animations */
 @keyframes float {
 
@@ -385,4 +484,13 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--royal-purple-light));
+}
+ 
+@layer base {
+  body {
+    @apply font-sans font-medium;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 }

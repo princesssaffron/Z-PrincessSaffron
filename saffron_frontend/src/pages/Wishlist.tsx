@@ -5,6 +5,7 @@ import { useLikedProducts } from "@/hooks/useLikedProducts";
 import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/contexts/AuthContext";
 import { getProductById } from "@/data/products";
+import { Button } from "@/components/ui/button";
 
 const Wishlist = () => {
   const { user } = useAuth();
@@ -111,13 +112,13 @@ const Wishlist = () => {
                   </div>
 
                   <div className="flex gap-2">
-                    <button
+                    <Button variant="royal"
                       onClick={() => addToCart(product_id)}
                       className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-royal-purple text-ivory text-sm font-medium uppercase tracking-wide hover:bg-royal-purple-light transition-colors rounded-full"
                     >
                       <ShoppingCart className="w-4 h-4" />
                       Add to Cart
-                    </button>
+                    </Button>
                     <button
                       onClick={() => toggleLike(product_id)}
                       className="w-12 flex items-center justify-center border border-border hover:border-red-500 hover:bg-red-50 transition-colors rounded-full"

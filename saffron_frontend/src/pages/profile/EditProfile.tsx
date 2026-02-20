@@ -23,7 +23,8 @@ const EditProfile = () => {
             title="Edit Profile"
             description="Update your personal information and contact details."
         >
-            <div className="max-w-xl">
+            <div className="max-w-4xl mx-auto w-full">
+
                 <ProfileOverview
                     profile={profile}
                     userEmail={user?.email}

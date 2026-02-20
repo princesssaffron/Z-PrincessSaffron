@@ -80,10 +80,16 @@ export default {
                 "gold-glow": "0 0 20px hsla(43, 76%, 55%, 0.5)",
             },
             fontFamily: {
-                cinzel: ["Cinzel", "serif"],
-                serif: ["Playfair Display", "serif"],
-                sans: ["Lato", "sans-serif"],
-                cursiveLuxury: ['"Great Vibes"', 'cursive'],
+                cinzel: ["Cinzel", "serif"],         
+                serif: ["Playfair Display" , "serif"],
+                
+                
+                sans: ['Manrope', 'sans-serif'],
+                
+                rr: ['Manrope', 'sans-serif'],
+            },
+            letterSpacing: {
+                'widest-rr': '0.2em',
             },
             keyframes: {
                 "accordion-down": {

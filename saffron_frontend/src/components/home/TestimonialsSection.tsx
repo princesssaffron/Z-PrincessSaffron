@@ -1,8 +1,8 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { Star, Quote, PenLine } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Star, Quote } from "lucide-react";
 import WriteReviewModal from "./WriteReviewModal";
+import { Button } from "@/components/ui/button"; // ✅ Global Button
 
 const testimonials = [
   {
@@ -58,21 +58,20 @@ const testimonials = [
 const TestimonialsSection = () => {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-
   const [openReviewModal, setOpenReviewModal] = useState(false);
+
+  const loopTestimonials = [...testimonials, ...testimonials];
 
   return (
     <>
-      <section
-        ref={ref}
-        className="relative pt-24 pb-36 bg-ivory overflow-hidden"
-      >
+      <section ref={ref} className="relative pt-24 pb-36 bg-ivory overflow-hidden">
         <div className="relative mx-auto max-w-7xl px-6">
-          {/* Section Header */}
+
+          {/* HEADER */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.9, ease: [0.22,1,0.36,1] }}
             className="text-center mb-20"
           >
             <p className="font-sans text-gold text-sm tracking-[0.35em] uppercase mb-4">
@@ -85,75 +84,75 @@ const TestimonialsSection = () => {
 
             <div className="w-24 h-px bg-gradient-to-r from-transparent via-gold to-transparent mx-auto mt-6" />
           </motion.div>
+        </div>
 
-          {/* Testimonials Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {testimonials.map((testimonial, index) => (
-              <motion.div
-                key={testimonial.name}
-                initial={{ opacity: 0, y: 40 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="card-luxury p-6 md:p-8"
+        {/* ⭐ AUTO SCROLL TRACK */}
+        <div className="overflow-hidden">
+          <motion.div
+            className="flex gap-6 w-max px-6"
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{
+              duration: 40,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+          >
+            {loopTestimonials.map((testimonial, index) => (
+              <div
+                key={index}
+                className="
+                  min-w-[320px] md:min-w-[360px] lg:min-w-[420px]
+                  bg-card p-6 md:p-8 rounded-xl
+                  shadow-card transition-all duration-500
+                  hover:shadow-elegant hover:-translate-y-1
+                "
               >
-                {/* Quote */}
                 <Quote className="w-10 h-10 text-gold/30 mb-4" />
 
-                {/* Stars */}
                 <div className="flex gap-1 mb-4">
                   {Array.from({ length: testimonial.rating }).map((_, i) => (
-                    <Star
-                      key={i}
-                      className="w-4 h-4 fill-gold text-gold"
-                    />
+                    <Star key={i} className="w-4 h-4 fill-gold text-gold" />
                   ))}
                 </div>
 
-                {/* Review */}
                 <p className="font-serif text-base md:text-lg text-foreground/80 leading-relaxed mb-6">
                   “{testimonial.comment}”
                 </p>
 
-                {/* Author */}
                 <div className="flex items-center gap-3">
                   <div className="w-11 h-11 rounded-full bg-gradient-royal flex items-center justify-center">
                     <span className="font-serif text-sm text-ivory">
                       {testimonial.avatar}
                     </span>
                   </div>
+
                   <div>
                     <p className="font-serif text-sm md:text-base text-royal-purple">
                       {testimonial.name}
                     </p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="font-sans text-xs text-muted-foreground">
                       {testimonial.location}
                     </p>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
-          </div>
-
-          {/* Write Review Button */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="text-center mt-24"
-          >
-            <Button
-  onClick={() => setOpenReviewModal(true)}
-  className="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-[#E6C76A] text-royal-purple-dark font-medium text-sm tracking-wide rounded-full transition-all duration-300 hover:shadow-gold-glow hover:scale-105"
->
-  <PenLine className="w-4 h-4" />
-  Write a Review
-</Button>
-
           </motion.div>
         </div>
+
+        {/* ✅ GLOBAL BUTTON CTA */}
+<div className="text-center mt-24">
+  <Button
+    variant="section"   
+    onClick={() => setOpenReviewModal(true)}
+    className="min-w-[220px]"
+  >
+    Add a Review
+  </Button>
+</div>
+
       </section>
 
-      {/* Review Modal */}
       <WriteReviewModal
         open={openReviewModal}
         onOpenChange={setOpenReviewModal}

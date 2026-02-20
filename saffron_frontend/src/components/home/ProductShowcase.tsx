@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import productJar from "@/assets/product-saffron-jar.jpg";
 import giftBox from "@/assets/product-gift-box.jpg";
+import { useEffect, useState } from "react";
 
 const products = [
   {
@@ -25,39 +26,62 @@ const products = [
 ];
 
 const ProductShowcase = () => {
+
+  /* SIMPLE SCROLL FLOAT (always works) */
+  const [offset, setOffset] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      setOffset(scrollY * 0.12);   // adjust float strength here
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <section className="py-24 bg-ivory">
       <div className="container mx-auto px-6">
-        {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
+
+        {/* ⭐ FLOATING HEADER */}
+        <div
+          style={{
+            transform: `translateY(${-offset}px)`,
+            transition: "transform 0.1s linear"
+          }}
+          className="text-center max-w-2xl mx-auto mb-16"
+        ><br/>
+        <br/>
           <p className="font-sans text-gold text-sm tracking-[0.3em] uppercase mb-4">
             Curated Excellence
           </p>
-          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-royal-purple mb-6">
-            Discover Our Products
+
+          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-royal-purple mb-6 font-medium">
+            Experience Luxury
           </h2>
+
           <div className="w-24 h-px bg-gradient-to-r from-transparent via-gold to-transparent mx-auto mb-6" />
+
           <p className="text-muted-foreground leading-relaxed">
             Each strand of saffron is a symbol of luxury, purity, and authenticity—sourced directly from the highlands of Kashmir.
           </p>
         </div>
 
-        {/* Product Cards */}
+        {/* PRODUCTS (UNCHANGED) */}
         <div className="grid md:grid-cols-2 gap-12 max-w-9xl mx-auto mb-20">
           {products.map((product, index) => (
             <div
               key={product.id}
-              className="group relative overflow-hidden bg-card rounded-2xl shadow-card transition-all duration-700 hover:shadow-elegant hover:-translate-y-2"
+              className="group relative overflow-hidden bg-card shadow-card transition-all duration-700 hover:shadow-elegant hover:-translate-y-2"
               style={{ animationDelay: `${index * 200}ms` }}
             >
-              {/* Tag */}
               <div className="absolute top-4 left-4 z-10">
                 <span className="px-4 py-1.5 bg-gold text-royal-purple-dark text-xs font-semibold tracking-wider uppercase rounded-full">
                   {product.tag}
                 </span>
               </div>
 
-              {/* Image */}
               <div className="relative h-[420px] md:h-[800px] overflow-hidden">
                 <img
                   src={product.image}
@@ -67,9 +91,8 @@ const ProductShowcase = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-royal-purple-dark/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
 
-              {/* Content */}
               <div className="p-8 md:p-10">
-                <h3 className="font-serif text-2xl md:text-3xl text-royal-purple mb-2 group-hover:text-gold transition-colors">
+                <h3 className="font-serif text-[18px] capittalize text-royal-purple mb-1 tracking-[0.02em] leading-snug group-hover:text-gold transition-colors">
                   {product.name}
                 </h3>
 
@@ -77,33 +100,24 @@ const ProductShowcase = () => {
                   {product.price}
                 </p>
 
-                <p className="font-sans text-sm md:text-base text-muted-foreground leading-relaxed max-w-md">
+                <p className="font-serif text-[14px] leading-relaxed text-royal-purple/70 tracking-[0.02em] line-clamp-2 mb-3 opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-20 transition-all duration-500">
                   {product.description}
                 </p>
               </div>
 
-              {/* Hover Effect Line */}
               <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-gold via-gold-light to-gold scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
             </div>
           ))}
         </div>
 
-       {/* View All Button */}
-<div className="text-center">
-  <Link
-    to="/products"
-    className="group relative inline-flex items-center gap-2 px-6 py-2.5 border border-royal-purple/40 bg-transparent text-royal-purple font-sans text-sm tracking-[0.18em] uppercase overflow-hidden transition-all duration-500 rounded-full hover:shadow-gold-glow"
-  >
-    <span className="relative z-10 transition-colors duration-500 group-hover:text-royal-purple-dark">
-      View All Products
-    </span>
-
-    <ArrowRight className="relative z-10 w-4 h-4 transition-all duration-500 group-hover:translate-x-1 group-hover:text-royal-purple-dark" />
-
-    {/* Gold Fill Animation */}
-    <div className="absolute inset-0 bg-[#E6C76A] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
-  </Link>
-</div>
+        {/* BUTTON */}
+        <div className="text-center">
+          <Link to="/products">
+            <Button variant="section" className="min-w-[240px]">
+              View All Products
+            </Button>
+          </Link>
+        </div>
 
       </div>
     </section>

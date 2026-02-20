@@ -3,27 +3,33 @@ import { useOrders } from "@/hooks/useOrders";
 import ProfileOrders from "@/components/profile/ProfileOrders";
 import { Loader2 } from "lucide-react";
 
-/* 
-  Note: This file is located at src/pages/profile/Orders.tsx
-  It replaces the purpose of the old src/pages/Orders.tsx
-*/
-
 const Orders = () => {
-    const { orders, isLoading } = useOrders();
+  const { orders, isLoading } = useOrders();
 
-    return (
-        <ProfileLayout
-            title="My Orders"
-            description="View and track your order history."
-        >
-            {/* We can reuse the ProfileOrders component, but it might need adjustment if it was designed for a small widget. 
-            However, looking at the previous Profile.tsx, it seemed to be a list. 
-            Let's stick with specific usage or enhance it.
-            For now, we use the existing component.
-        */}
-            <ProfileOrders orders={orders} isLoading={isLoading} />
-        </ProfileLayout>
-    );
+  return (
+    <ProfileLayout
+      title="My Orders"
+      description="View and track your order history."
+    >
+      {/* CENTER ALIGN WRAPPER */}
+      <div className="w-full flex justify-center">
+        <div className="w-full max-w-5xl">
+
+          {isLoading ? (
+            <div className="flex justify-center py-16">
+              <Loader2 className="h-8 w-8 animate-spin text-royal-purple" />
+            </div>
+          ) : (
+            <ProfileOrders
+              orders={orders}
+              isLoading={isLoading}
+            />
+          )}
+
+        </div>
+      </div>
+    </ProfileLayout>
+  );
 };
 
 export default Orders;

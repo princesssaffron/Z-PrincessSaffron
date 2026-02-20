@@ -107,7 +107,7 @@ const Cart = () => {
             <p className="text-muted-foreground mb-8">Add some products to get started</p>
             <Link
               to="/products"
-              className="inline-block px-8 py-4 bg-royal-purple text-ivory font-semibold text-sm uppercase tracking-widest hover:bg-royal-purple-light transition-colors"
+              className="inline-block px-8 py-4 bg-royal-purple text-ivory font-semibold text-sm uppercase tracking-widest hover:bg-royal-purple-light transition-colors rounded-full"
             >
               Shop Now
             </Link>

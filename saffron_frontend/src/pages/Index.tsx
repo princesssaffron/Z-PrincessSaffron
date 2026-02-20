@@ -4,7 +4,6 @@ import ProductShowcase from "@/components/home/ProductShowcase";
 import WhyChooseUs from "@/components/home/WhyChooseUs";
 import SaffronMomentsSection from "@/components/home/SaffronMomentsSection";
 import JourneySection from "@/components/home/JourneySection";
-import GiftingSection from "@/components/home/GiftingSection";
 import TestimonialsSection from "@/components/home/TestimonialsSection";
 
 const Index = () => {
@@ -17,7 +16,7 @@ const Index = () => {
       <JourneySection />
       <section className="h-32 lg:h-40" />
 
-      <GiftingSection />
+      
       <TestimonialsSection />
     </Layout>
   );

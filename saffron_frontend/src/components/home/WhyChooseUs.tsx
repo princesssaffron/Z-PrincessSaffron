@@ -40,92 +40,134 @@ const WhyChooseUs = () => {
     <section
       ref={ref}
       className="relative py-24 md:py-32 bg-ivory overflow-hidden"
+      style={{ perspective: "1400px" }}
     >
-      {/* Subtle Luxury Texture */}
+      {/* Subtle texture */}
       <div className="absolute inset-0 opacity-[0.04] pointer-events-none">
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%235C0011' fill-opacity='1'%3E%3Ccircle cx='40' cy='40' r='1'/%3E%3C/g%3E%3C/svg%3E")`,
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%235C0011'%3E%3Ccircle cx='40' cy='40' r='1'/%3E%3C/g%3E%3C/svg%3E")`,
           }}
         />
       </div>
 
       <div className="relative container mx-auto px-6 max-w-7xl">
-        {/* Header */}
+
+        {/* ⭐ HEADER */}
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 60 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.9, ease: [0.23, 1, 0.32, 1] }}
-          className="text-center max-w-3xl mx-auto mb-16 md:mb-20"
+          transition={{ duration: 1.1, ease: [0.22,1,0.36,1] }}
+          className="text-center max-w-3xl mx-auto mb-20"
         >
-          <span className="font-sans text-xs sm:text-sm uppercase tracking-[0.35em] text-gold/70">
+          <span className="font-sans text-sm uppercase tracking-[0.35em] text-gold/70">
             The Z Princess Difference
           </span>
-          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-royal-purple mt-4 mb-6 px-4">
+
+          <h2 className="font-serif text-4xl md:text-5xl lg:text-5xl text-royal-purple mt-4 mb-6">
             Why Choose Our Saffron
           </h2>
-          <div className="w-20 inline-block h-px bg-gradient-to-r from-transparent via-gold to-transparent mx-auto" />
+
+          <div className="w-28 h-px bg-gradient-to-r from-transparent via-gold to-transparent mx-auto" />
         </motion.div>
 
-        {/* Certification Badges */}
+        {/* ⭐ BADGES */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="grid grid-cols-2 md:flex md:flex-wrap justify-center gap-6 sm:gap-10 md:gap-14 mb-16 md:mb-24 px-4"
+          transition={{ duration: 0.9, delay: 0.2 }}
+          className="flex flex-wrap justify-center gap-8 md:gap-14 mb-24"
         >
           {badges.map((badge, index) => (
-            <motion.div
-              key={badge.label}
-              initial={{ opacity: 0, scale: 0.85 }}
-              animate={isInView ? { opacity: 1, scale: 1 } : {}}
-              transition={{
-                duration: 0.5,
-                delay: 0.3 + index * 0.12,
-                ease: "easeOut",
-              }}
-              className="flex flex-col items-center"
-            >
-              <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-br from-royal-purple-dark via-royal-purple to-royal-purple-dark flex items-center justify-center shadow-royal transform transition-transform hover:scale-110">
-                <badge.icon className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 text-gold" />
-              </div>
-              <span className="mt-4 font-serif text-xs sm:text-sm text-royal-purple font-semibold tracking-wide">
-                {badge.label}
-              </span>
-              <span className="font-sans text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider">
-                {badge.desc}
-              </span>
-            </motion.div>
-          ))}
+  <motion.div
+    key={badge.label}
+
+    /* entrance */
+    initial={{ opacity: 0, scale: 0.85 }}
+    animate={isInView ? { opacity: 1, scale: 1 } : {}}
+    
+    /* ⭐ floating loop */
+    whileInView={{
+      y: [0, -10, 0],
+      rotate: [0, 0.8, 0, -0.8, 0],
+    }}
+    viewport={{ once: false }}
+
+    transition={{
+      default: {
+        duration: 0.6,
+        delay: 0.35 + index * 0.15,
+        ease: [0.22,1,0.36,1],
+      },
+      y: {
+        duration: 4 + index,
+        repeat: Infinity,
+        ease: "easeInOut",
+      },
+      rotate: {
+        duration: 6 + index,
+        repeat: Infinity,
+        ease: "easeInOut",
+      },
+    }}
+
+    /* pause on hover (luxury detail) */
+    whileHover={{ y: 0, rotate: 0 }}
+
+    className="group flex flex-col items-center"
+  >
+    {/* Luxury seal */}
+    <div className="w-24 h-24 rounded-full bg-royal-purple-dark border border-gold/40 flex items-center justify-center shadow-elegant relative overflow-hidden">
+
+      {/* glow on hover */}
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-30 bg-gold blur-xl transition-opacity duration-500" />
+
+      <badge.icon className="w-9 h-9 text-gold relative z-10" />
+    </div>
+
+    <span className="mt-4 font-serif text-sm text-royal-purple font-semibold tracking-wide">
+      {badge.label}
+    </span>
+
+    <span className="font-sans text-xs text-muted-foreground">
+      {badge.desc}
+    </span>
+  </motion.div>
+))}
+
         </motion.div>
 
-        {/* Features Grid */}
-        <div className="grid gap-6 sm:gap-8 md:gap-10 md:grid-cols-2 px-4">
+        {/* ⭐ FEATURES */}
+        <div className="grid gap-10 md:grid-cols-2">
           {features.map((feature, index) => (
             <motion.div
               key={feature.title}
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 50 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{
-                duration: 0.9,
-                delay: 0.4 + index * 0.18,
-                ease: [0.23, 1, 0.32, 1],
+                duration: 1,
+                delay: 0.5 + index * 0.18,
+                ease: [0.22,1,0.36,1],
               }}
-              className="relative bg-card p-8 sm:p-10 md:p-12 rounded-2xl shadow-card hover:shadow-elegant transition-all duration-500 hover:-translate-y-1"
+              className="group relative bg-card p-10 md:p-12 rounded-sm shadow-card transition-all duration-500 hover:shadow-elegant hover:-translate-y-2"
             >
-              {/* Gold Accent Line */}
-              <div className="absolute top-0 left-0 h-full w-1 bg-gradient-to-b from-gold to-gold/40 rounded-l-2xl" />
+              {/* Animated gold line */}
+              <div className="absolute top-0 left-0 h-full w-[2px] bg-gradient-to-b from-gold to-gold/40 scale-y-0 group-hover:scale-y-100 transition-transform duration-500 origin-top" />
 
-              <h3 className="font-serif text-xl sm:text-2xl text-royal-purple mb-3 sm:mb-4">
+              {/* Interactive title */}
+              <h3 className="relative inline-block font-serif text-[26px] md:text-[28px] capitalize text-royal-purple font-medium tracking-[0.01em] leading-snug mb-4 transition-colors duration-500 group-hover:text-gold lowercase">
                 {feature.title}
+                <span className="absolute left-0 -bottom-1 h-[1px] w-0 bg-gold transition-all duration-500 group-hover:w-full"></span>
               </h3>
-              <p className="font-sans text-sm sm:text-base text-muted-foreground leading-relaxed">
+
+              <p className="font-serif text-[15px] text-royal-purple/70 leading-relaxed">
                 {feature.description}
               </p>
             </motion.div>
           ))}
         </div>
+
       </div>
     </section>
   );

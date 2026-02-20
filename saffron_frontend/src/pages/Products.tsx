@@ -6,6 +6,8 @@ import { products } from "@/data/products";
 import { useCart } from "@/hooks/useCart";
 import { useLikedProducts } from "@/hooks/useLikedProducts";
 import heroVideo from "@/assets/products-hero-video.mp4";
+import { Button } from "@/components/ui/button";
+
 
 const offers = [
   "🎁 Use code ROYAL25 for 25% off on all gift boxes!",
@@ -157,11 +159,11 @@ const Products = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: showHeroText ? 1 : 0, y: showHeroText ? 0 : 30 }}
               transition={{ duration: 1, delay: 0.7 }}
-              className="font-serif text-4xl md:text-6xl lg:text-7xl text-ivory mb-8 leading-tight"
+              className="font-serif text-4xl md:text-4xl lg:text-6xl text-ivory mb-8 leading-tight"
             >
               Each product begins
               <br />
-              <span className="text-gold">as a flower.</span>
+              <span className="text-gold">as a flower</span>
             </motion.h1>
 
             {/* Secondary Text */}
@@ -202,75 +204,119 @@ const Products = () => {
         </div>
 
         {/* Bottom Gradient Fade */}
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-ivory to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-ivory/10 via-ivory/10 to-transparent" />
+
       </section>
 
       {/* Animated Offers Banner */}
       <div id="products-section" className="bg-royal-purple-dark scroll-mt-0">
-        <div className="overflow-hidden py-3 bg-gradient-to-r from-gold/20 via-gold/10 to-gold/20">
-          <div className="animate-marquee whitespace-nowrap flex gap-16">
-            {[...offers, ...offers].map((offer, index) => (
-              <span key={index} className="text-ivory font-sans text-sm tracking-wide">
+        <div className="relative overflow-hidden py-3 bg-gradient-to-r from-gold/20 via-gold/10 to-gold/20">
+
+          <div className="flex whitespace-nowrap animate-marquee gap-16">
+            {[...offers, ...offers, ...offers].map((offer, index) => (
+              <span
+                key={index}
+                className="text-ivory font-sans text-sm tracking-wide"
+              >
                 {offer}
               </span>
             ))}
           </div>
+
         </div>
+
+        {/* Marquee Animation */}
+        <style>
+          {`
+      @keyframes marquee {
+        0% { transform: translateX(0%); }
+        100% { transform: translateX(-50%); }
+      }
+
+      .animate-marquee {
+        animation: marquee 25s linear infinite;
+      }
+    `}
+        </style>
       </div>
+
+
 
       {/* Page Header */}
       <section className="py-16 bg-ivory">
         <div className="container mx-auto px-6">
           <div className="text-center max-w-2xl mx-auto mb-12">
-            <p className="font-sans text-gold text-sm tracking-[0.3em] uppercase mb-4">
+
+            {/* Subtitle */}
+            <motion.p
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ amount: 0.6 }}   // triggers when 60% visible
+              transition={{
+                duration: 0.9,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              className="font-sans text-gold text-sm tracking-[0.35em] uppercase mb-4"
+            >
               Our Collection
-            </p>
-            <h2 className="font-serif text-4xl md:text-5xl text-royal-purple mb-6">
-              Premium Saffron Products
-            </h2>
-            <div className="w-24 h-px bg-gradient-to-r from-transparent via-gold to-transparent mx-auto" />
+            </motion.p>
+
+            {/* Main Heading */}
+            <motion.h2
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ amount: 0.6 }}
+              transition={{
+                duration: 1,
+                delay: 0.15,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              className="font-serif text-4xl md:text-5xl text-royal-purple mb-6"
+            >
+              Elite Saffron
+            </motion.h2>
+
+            {/* Gold Divider Animation */}
+            <motion.div
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ amount: 0.6 }}
+              transition={{
+                duration: 1.1,
+                delay: 0.3,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              className="w-24 h-px bg-gradient-to-r from-transparent via-gold to-transparent mx-auto origin-center"
+            />
+
           </div>
 
-          {/* Filters Bar */}
-          <div className="flex flex-wrap items-center justify-between gap-4 mb-8 sm:mb-10 px-4">
-            {/* Mobile Filter Toggle */}
-            <div className="flex items-center gap-2 w-full sm:w-auto overflow-x-auto pb-2 sm:pb-0 scrollbar-hide">
-              <button
-                onClick={() => setShowFilters(!showFilters)}
-                className="flex flex-shrink-0 items-center gap-2 px-5 py-3 bg-royal-purple text-ivory text-xs font-bold uppercase tracking-widest rounded-full shadow-royal"
-              >
-                <SlidersHorizontal className="w-4 h-4" />
-                Filters
-                {activeFiltersCount > 0 && (
-                  <span className="ml-1 w-5 h-5 bg-gold text-royal-purple-dark rounded-full text-[10px] flex items-center justify-center">
-                    {activeFiltersCount}
-                  </span>
-                )}
-              </button>
 
-              {/* Quick Sort (Mobile Only) */}
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="md:hidden px-4 py-3 bg-ivory-dark border border-gold/20 text-xs font-bold uppercase tracking-widest text-royal-purple focus:outline-none focus:border-gold rounded-full appearance-none pr-8 relative"
-                style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%235C0011\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'%3E%3C/path%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.75rem center', backgroundSize: '1rem' }}
-              >
-                <option value="featured">Featured</option>
-                <option value="price-low">Price ↑</option>
-                <option value="price-high">Price ↓</option>
-                <option value="rating">Top Rated</option>
-              </select>
-            </div>
+          {/* Filters Bar */}
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-10">
+            {/* Mobile Filter Toggle */}
+            <button
+              onClick={() => setShowFilters(!showFilters)}
+              className="md:hidden flex items-center gap-2 px-4 py-2.5 bg-royal-purple text-ivory text-sm font-medium rounded-full"
+            >
+              <SlidersHorizontal className="w-4 h-4" />
+              Filters
+              {activeFiltersCount > 0 && (
+                <span className="ml-1 w-5 h-5 bg-gold text-royal-purple-dark rounded-full text-xs flex items-center justify-center">
+                  {activeFiltersCount}
+                </span>
+              )}
+            </button>
 
             {/* Desktop Filters */}
-            <div className={`${showFilters ? "flex" : "hidden md:flex"} flex-wrap items-center gap-4 w-full md:w-auto p-6 md:p-0 bg-white md:bg-transparent rounded-2xl md:rounded-none shadow-elegant md:shadow-none border border-gold/10 md:border-none`}>
+            <div className={`${showFilters ? "flex" : "hidden"} md:flex flex-wrap items-center gap-4 w-full md:w-auto`}>
               {/* Price Range */}
-              <div className="flex flex-col gap-1 w-full md:w-auto">
-                <label className="text-[10px] text-gold font-bold uppercase tracking-widest mb-1">Price Range</label>
+              <div className="flex flex-col gap-1">
+                <label className="text-xs text-muted-foreground font-medium">Price Range</label>
                 <select
                   value={priceFilter}
                   onChange={(e) => setPriceFilter(e.target.value)}
-                  className="px-5 py-3 bg-ivory-dark border border-gray-100 text-sm focus:outline-none focus:border-gold md:min-w-[150px] rounded-full text-royal-purple font-medium"
+                  className="px-4 py-2 bg-ivory-dark border border-border text-sm focus:outline-none focus:border-gold min-w-[150px] rounded-full"
                 >
                   {priceRanges.map((range) => (
                     <option key={range.key} value={range.key}>
@@ -281,12 +327,12 @@ const Products = () => {
               </div>
 
               {/* Rating */}
-              <div className="flex flex-col gap-1 w-full md:w-auto">
-                <label className="text-[10px] text-gold font-bold uppercase tracking-widest mb-1">Rating</label>
+              <div className="flex flex-col gap-1">
+                <label className="text-xs text-muted-foreground font-medium">Rating</label>
                 <select
                   value={ratingFilter}
                   onChange={(e) => setRatingFilter(e.target.value)}
-                  className="px-5 py-3 bg-ivory-dark border border-gray-100 text-sm focus:outline-none focus:border-gold md:min-w-[130px] rounded-full text-royal-purple font-medium"
+                  className="px-4 py-2 bg-ivory-dark border border-border text-sm focus:outline-none focus:border-gold min-w-[130px] rounded-full"
                 >
                   {ratingOptions.map((option) => (
                     <option key={option.key} value={option.key}>
@@ -297,12 +343,12 @@ const Products = () => {
               </div>
 
               {/* Saffron Type */}
-              <div className="flex flex-col gap-1 w-full md:w-auto">
-                <label className="text-[10px] text-gold font-bold uppercase tracking-widest mb-1">Type</label>
+              <div className="flex flex-col gap-1">
+                <label className="text-xs text-muted-foreground font-medium">Type</label>
                 <select
                   value={typeFilter}
                   onChange={(e) => setTypeFilter(e.target.value)}
-                  className="px-5 py-3 bg-ivory-dark border border-gray-100 text-sm focus:outline-none focus:border-gold md:min-w-[120px] rounded-full text-royal-purple font-medium"
+                  className="px-4 py-2 bg-ivory-dark border border-border text-sm focus:outline-none focus:border-gold min-w-[120px] rounded-full"
                 >
                   {saffronTypes.map((type) => (
                     <option key={type.key} value={type.key}>
@@ -312,35 +358,25 @@ const Products = () => {
                 </select>
               </div>
 
-              {/* Clear Filters (Desktop) */}
+              {/* Clear Filters */}
               {activeFiltersCount > 0 && (
                 <button
                   onClick={clearFilters}
-                  className="hidden md:flex items-center gap-1 px-3 py-2 text-sm text-royal-purple hover:text-gold transition-colors mt-5 bg-gold/10 rounded-full"
+                  className="flex items-center gap-1 px-3 py-2 text-sm text-royal-purple hover:text-gold transition-colors mt-5"
                 >
                   <X className="w-4 h-4" />
                   Clear
                 </button>
               )}
-
-              {/* Mobile View Results Button */}
-              {showFilters && (
-                <button
-                  onClick={() => setShowFilters(false)}
-                  className="md:hidden w-full py-4 bg-royal-purple text-ivory text-sm font-bold uppercase tracking-widest rounded-full mt-4 shadow-royal"
-                >
-                  View {filteredProducts.length} Results
-                </button>
-              )}
             </div>
 
-            {/* Desktop Sort By */}
-            <div className="hidden md:flex items-center gap-3">
-              <span className="text-xs font-bold uppercase tracking-widest text-gold/70">Sort by:</span>
+            {/* Sort By */}
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-muted-foreground">Sort by:</span>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="px-5 py-3 bg-ivory-dark border border-gray-100 text-sm font-medium focus:outline-none focus:border-gold rounded-full text-royal-purple"
+                className="px-4 py-2 bg-ivory-dark border border-border text-sm focus:outline-none focus:border-gold rounded-full"
               >
                 <option value="featured">Featured</option>
                 <option value="price-low">Price: Low to High</option>
@@ -402,13 +438,26 @@ const Products = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-royal-purple-dark/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                   {/* Quick Add Button */}
-                  <button
-                    onClick={() => addToCart(product.id)}
-                    className="absolute bottom-4 left-1/2 -translate-x-1/2 px-6 py-3 bg-ivory text-royal-purple font-medium text-sm uppercase tracking-wider opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 hover:bg-gold hover:text-royal-purple-dark flex items-center gap-2 rounded-full"
+                  <div
+                    className="
+    absolute bottom-4 left-1/2 -translate-x-1/2
+    opacity-0 translate-y-4
+    group-hover:opacity-100 group-hover:translate-y-0
+    transition-all duration-500 ease-out
+  "
                   >
-                    <ShoppingCart className="w-4 h-4" />
-                    Add to Cart
-                  </button>
+                    <Button variant="white"
+                      onClick={() => addToCart(product.id)}
+                      className="min-w-[240px] h-[42px]"
+                    >
+                      <span className="flex items-center gap-3">
+                        <ShoppingCart className="w-4 h-4" />
+                        Add to Cart
+                      </span>
+                    </Button>
+                  </div>
+
+
                 </div>
 
                 {/* Content */}
@@ -431,13 +480,13 @@ const Products = () => {
                     </span>
                   </div>
 
-                  {/* Name */}
-                  <h3 className="font-serif text-lg text-royal-purple mb-1 group-hover:text-gold transition-colors">
+                   {/* Name */}
+                  <h3 className="font-serif text-[18px] capitalize text-royal-purple mb-1 tracking-[0.02em] leading-snug group-hover:text-gold transition-colors lowercase">
                     {product.name}
                   </h3>
 
                   {/* Description on Hover */}
-                  <p className="text-sm text-muted-foreground line-clamp-2 mb-3 opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-20 transition-all duration-500">
+                  <p className="font-serif text-[14px] leading-relaxed text-royal-purple/70 tracking-[0.02em] line-clamp-2 mb-3 opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-20 transition-all duration-500">
                     {product.description}
                   </p>
 
@@ -462,7 +511,10 @@ const Products = () => {
         </div>
       </section>
     </Layout>
+
   );
 };
+
+
 
 export default Products;

@@ -1,153 +1,318 @@
 import { Link, useLocation, Navigate } from "react-router-dom";
 import {
-    LayoutDashboard,
-    User,
-    MapPin,
-    Package,
-    LogOut,
-    ChevronRight,
-    Menu,
-    X
+  LayoutDashboard,
+  User,
+  MapPin,
+  Package,
+  
+  ChevronRight,
+  Menu,
+  X
 } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface ProfileLayoutProps {
-    children: React.ReactNode;
-    title: string;
-    description?: string;
+  children: React.ReactNode;
+  title: string;
+  description?: string;
 }
 
 const sidebarItems = [
-    {
-        title: "Dashboard",
-        href: "/profile",
-        icon: LayoutDashboard,
-    },
-    {
-        title: "Edit Profile",
-        href: "/profile/edit",
-        icon: User,
-    },
-    {
-        title: "Shipping Address",
-        href: "/profile/address",
-        icon: MapPin,
-    },
-    {
-        title: "Orders",
-        href: "/profile/orders",
-        icon: Package,
-    },
+  { title: "Dashboard", href: "/profile", icon: LayoutDashboard },
+  { title: "Edit Profile", href: "/profile/edit", icon: User },
+  { title: "Shipping Address", href: "/profile/address", icon: MapPin },
+  { title: "Orders", href: "/profile/orders", icon: Package },
 ];
 
 const ProfileLayout = ({ children, title, description }: ProfileLayoutProps) => {
-    const { user, signOut, isLoading } = useAuth();
-    const location = useLocation();
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { user, signOut, isLoading } = useAuth();
+  const location = useLocation();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-    if (isLoading) {
-        return null; // Or a loader
-    }
+  if (isLoading) return null;
+  if (!user) return <Navigate to="/auth" replace />;
 
-    if (!user) {
-        return <Navigate to="/auth" replace />;
-    }
+  return (
+    <Layout>
+      <div className="bg-ivory min-h-screen pt-24 pb-12">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
 
-    return (
-        <Layout>
-            <div className="bg-ivory min-h-screen pt-24 pb-12">
-                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                    {/* Breadcrumb */}
-                    <nav className="flex items-center text-sm text-muted-foreground mb-8">
-                        <Link to="/" className="hover:text-royal-purple transition-colors">
-                            Home
-                        </Link>
-                        <ChevronRight className="h-4 w-4 mx-2" />
-                        <span className="text-royal-purple font-medium">My Account</span>
-                    </nav>
+          {/* Breadcrumb */}
+          <nav className="flex items-center text-sm text-muted-foreground mb-6">
+            <Link to="/" className="hover:text-royal-purple transition-colors">
+              Home
+            </Link>
+            <ChevronRight className="h-4 w-4 mx-2" />
+            <span className="text-royal-purple font-medium">My Account</span>
+          </nav>
 
-                    <div className="flex flex-col lg:flex-row gap-8">
-                        {/* Sidebar Navigation */}
-                        <aside className={`
-              lg:w-64 flex-shrink-0 
-              ${isSidebarOpen
-                                ? 'fixed inset-0 z-50 bg-ivory/98 backdrop-blur-md p-6 overflow-y-auto lg:static lg:bg-transparent lg:p-0 lg:overflow-visible transition-all duration-300'
-                                : 'hidden lg:block'
-                            }
-            `}>
-                            <div className="flex items-center justify-between lg:hidden mb-8">
-                                <span className="font-serif text-2xl text-royal-purple">Account Menu</span>
-                                <button
-                                    onClick={() => setIsSidebarOpen(false)}
-                                    className="p-2 rounded-full hover:bg-black/5"
-                                >
-                                    <X className="h-6 w-6 text-royal-purple" />
-                                </button>
-                            </div>
+          {/* Header row with menu button */}
+          <div className="flex items-center justify-between mb-6">
 
-                            <div className="space-y-2 lg:space-y-1">
-                                {sidebarItems.map((item) => {
-                                    const isActive = location.pathname === item.href;
-                                    return (
-                                        <Link
-                                            key={item.href}
-                                            to={item.href}
-                                            onClick={() => setIsSidebarOpen(false)}
-                                            className={cn(
-                                                "flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-full transition-all duration-200",
-                                                isActive
-                                                    ? "bg-royal-purple text-ivory shadow-lg bg-gradient-to-r from-royal-purple to-royal-purple-light"
-                                                    : "text-royal-purple hover:bg-gold/10 hover:text-royal-purple-dark"
-                                            )}
-                                        >
-                                            <item.icon className="h-4 w-4" />
-                                            {item.title}
-                                        </Link>
-                                    );
-                                })}
-                                <button
-                                    onClick={() => signOut()}
-                                    className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-red-600 rounded-full hover:bg-red-50 transition-colors"
-                                >
-                                    <LogOut className="h-4 w-4" />
-                                    Sign Out
-                                </button>
-                            </div>
-                        </aside>
-
-                        {/* Mobile Menu Toggle */}
-                        <div className="lg:hidden mb-4">
-                            <button
-                                onClick={() => setIsSidebarOpen(true)}
-                                className="flex items-center gap-2 px-4 py-2 border border-royal-purple/20 rounded-full text-royal-purple"
-                            >
-                                <Menu className="h-4 w-4" />
-                                <span>Show Menu</span>
-                            </button>
-                        </div>
-
-                        {/* Main Content */}
-                        <main className="flex-1">
-                            <div className="bg-white/50 backdrop-blur-sm rounded-2xl border border-white/20 shadow-sm p-6 sm:p-8 animate-fade-in-up">
-                                <div className="mb-8">
-                                    <h1 className="font-serif text-3xl text-royal-purple mb-2">
-                                        {title}
-                                    </h1>
-                                    {description && (
-                                        <p className="text-muted-foreground">{description}</p>
-                                    )}
-                                </div>
-                                {children}
-                            </div>
-                        </main>
-                    </div>
-                </div>
+            <div>
+              <h1 className="font-serif text-3xl text-royal-purple">
+                {title}
+              </h1>
+              {description && (
+                <p className="text-muted-foreground mt-1">{description}</p>
+              )}
             </div>
-        </Layout>
-    );
+
+            {/* Hamburger Button */}
+            <button
+  onClick={() => setIsSidebarOpen(true)}
+  className="
+    group relative inline-flex items-center gap-3 rounded-full
+    px-5 py-3
+    border border-royal-purple/40
+    text-royal-purple
+    bg-transparent
+    font-sans text-xs tracking-[0.25em] uppercase
+    transition-all duration-500
+    hover:border-transparent
+    overflow-hidden
+  "
+>
+  <Menu className="w-4 h-4" />
+ 
+
+  {/* Running outline effect */}
+  <svg
+    className="absolute inset-0 w-full h-full pointer-events-none"
+    viewBox="0 0 276 46"
+    preserveAspectRatio="none"
+  >
+    {/* Base outline */}
+    <path
+      d="
+        M 1 23
+        A 22 22 0 0 1 23 1
+        L 253 1
+        A 22 22 0 0 1 275 23
+        A 22 22 0 0 1 253 45
+        L 23 45
+        A 22 22 0 0 1 1 23
+      "
+      className="rr-outline-base"
+      fill="transparent"
+      strokeWidth="0.8"
+      vectorEffect="non-scaling-stroke"
+    />
+
+    {/* Animated running line */}
+    <path
+      d="
+        M 1 23
+        A 22 22 0 0 1 23 1
+        L 253 1
+        A 22 22 0 0 1 275 23
+        A 22 22 0 0 1 253 45
+        L 23 45
+        A 22 22 0 0 1 1 23
+      "
+      className="rr-outline-anim"
+      fill="transparent"
+      strokeWidth="0.8"
+      vectorEffect="non-scaling-stroke"
+    />
+  </svg>
+</button>
+
+
+          </div>
+
+          {/* CONTENT */}
+          <div className="relative">
+            <main className="bg-white/60 backdrop-blur-sm rounded-2xl border border-white/20 shadow-sm p-6 sm:p-8 animate-fade-in-up">
+              {children}
+            </main>
+          </div>
+
+        </div>
+      </div>
+
+      {/* =============================
+         LUXURY SIDEBAR DRAWER
+      ============================== */}
+      <AnimatePresence>
+        {isSidebarOpen && (
+          <>
+            {/* BACKDROP */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsSidebarOpen(false)}
+              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
+            />
+
+            {/* SIDEBAR PANEL */}
+            <motion.aside
+  initial={{ x: -420, opacity: 0 }}
+  animate={{ x: 0, opacity: 1 }}
+  exit={{ x: -420, opacity: 0 }}
+  transition={{ type: "spring", stiffness: 220, damping: 26 }}
+  className="
+    fixed left-0 top-0 h-full w-[340px]
+    z-50
+    p-10
+    flex flex-col
+    text-ivory
+    overflow-hidden
+
+    bg-gradient-to-b
+    from-[#12051f]
+    via-[#160724]
+    to-[#0b0215]
+
+    shadow-[0_0_90px_rgba(0,0,0,0.75)]
+  "
+>
+
+  {/* ✨ Moving light gradient */}
+  <motion.div
+    className="absolute inset-0 pointer-events-none"
+    animate={{
+      opacity: [0.05, 0.08, 0.05],
+      x: [-40, 40, -40],
+    }}
+    transition={{
+      duration: 12,
+      repeat: Infinity,
+      ease: "easeInOut",
+    }}
+    style={{
+      background:
+        "radial-gradient(circle at 20% 30%, rgba(198,168,90,0.08), transparent 60%)",
+    }}
+  />
+
+  {/* Gold edge glow */}
+  <div className="absolute inset-y-0 right-0 w-px bg-gradient-to-b from-transparent via-gold/40 to-transparent" />
+
+  {/* ================= HEADER ================= */}
+  <div className="flex items-center justify-between mb-12 relative z-10">
+    <motion.h2
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.2 }}
+      className="font-serif text-2xl tracking-wide text-ivory"
+    >
+      My Account
+    </motion.h2>
+
+    <button
+      onClick={() => setIsSidebarOpen(false)}
+      className="p-2 rounded-full hover:bg-white/5 transition"
+    >
+      <X className="h-5 w-5 text-ivory/70" />
+    </button>
+  </div>
+
+  {/* ================= MENU ================= */}
+  <div className="space-y-8 relative z-10">
+
+    {sidebarItems.map((item, index) => {
+      const isActive = location.pathname === item.href;
+
+      return (
+        <motion.div
+          key={item.href}
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.25 + index * 0.08 }}
+        >
+          <Link
+            to={item.href}
+            onClick={() => setIsSidebarOpen(false)}
+            className="group flex items-center gap-4 relative"
+          >
+
+            {/* GOLD LINE */}
+            <motion.span
+              layout
+              className={cn(
+                "w-[1px] h-6 transition-all duration-500",
+                isActive
+                  ? "bg-gold"
+                  : "bg-white/30 group-hover:bg-gold"
+              )}
+            />
+
+            {/* TEXT */}
+            <span
+              className={cn(
+                "text-[13px] tracking-[0.30em] uppercase font-sans transition-all duration-500",
+                isActive
+                  ? "text-gold"
+                  : "text-ivory/70 group-hover:text-gold"
+              )}
+            >
+              {item.title}
+            </span>
+
+            {/* ✨ GOLD HOVER SLIDE */}
+            <motion.div
+              className="absolute left-0 bottom-[-6px] h-px bg-gradient-to-r from-gold/0 via-gold to-gold/0"
+              initial={{ width: 0, opacity: 0 }}
+              whileHover={{ width: "100%", opacity: 1 }}
+              transition={{ duration: 0.4 }}
+            />
+          </Link>
+        </motion.div>
+      );
+    })}
+
+    {/* SIGN OUT */}
+    <motion.button
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: 0.6 }}
+      onClick={() => signOut()}
+      className="
+        group flex items-center gap-4 mt-8
+        text-[13px] tracking-[0.30em] uppercase font-sans
+        text-red-400/80 transition-all duration-500
+      "
+    >
+      <span className="w-[1px] h-6 bg-red-400/50 group-hover:bg-red-400" />
+      <span className="group-hover:text-red-300">Sign Out</span>
+    </motion.button>
+
+  </div>
+
+  {/* ================= FOOTER SHIMMER ================= */}
+  <motion.div
+    className="mt-auto pt-12 relative z-10"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ delay: 0.8 }}
+  >
+    <motion.div
+      className="h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent"
+      animate={{
+        backgroundPosition: ["0% 0%", "200% 0%"],
+      }}
+      transition={{
+        duration: 6,
+        repeat: Infinity,
+        ease: "linear",
+      }}
+      style={{ backgroundSize: "200% 100%" }}
+    />
+  </motion.div>
+
+</motion.aside>
+
+          </>
+        )}
+      </AnimatePresence>
+    </Layout>
+  );
 };
 
 export default ProfileLayout;

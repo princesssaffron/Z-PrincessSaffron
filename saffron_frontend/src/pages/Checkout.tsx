@@ -219,12 +219,12 @@ const Checkout = () => {
           <div className="container mx-auto px-6 text-center">
             <h1 className="font-serif text-3xl text-royal-purple mb-4">Please Sign In</h1>
             <p className="text-muted-foreground mb-8">You need to be logged in to checkout</p>
-            <Link
-              to="/auth"
-              className="inline-block px-8 py-4 bg-royal-purple text-ivory font-semibold text-sm uppercase tracking-widest hover:bg-royal-purple-light transition-colors"
-            >
-              Sign In
-            </Link>
+            <Link to="/auth">
+  <Button>
+    Sign In
+  </Button>
+</Link>
+
           </div>
         </section>
       </Layout>
@@ -238,12 +238,12 @@ const Checkout = () => {
           <div className="container mx-auto px-6 text-center">
             <h1 className="font-serif text-3xl text-royal-purple mb-4">Your Cart is Empty</h1>
             <p className="text-muted-foreground mb-8">Add some products to checkout</p>
-            <Link
-              to="/products"
-              className="inline-block px-8 py-4 bg-royal-purple text-ivory font-semibold text-sm uppercase tracking-widest hover:bg-royal-purple-light transition-colors"
-            >
-              Shop Now
-            </Link>
+            <Link to="/products">
+  <Button>
+    Shop Now
+  </Button>
+</Link>
+
           </div>
         </section>
       </Layout>

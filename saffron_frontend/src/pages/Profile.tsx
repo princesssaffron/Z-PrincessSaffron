@@ -14,13 +14,34 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { motion, easeInOut } from "framer-motion";
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: easeInOut },
+  },
+};
 
 const Profile = () => {
   const { user } = useAuth();
   const { orders } = useOrders();
 
   const totalOrders = orders?.length || 0;
-  const completedOrders = orders?.filter((o) => o.status === "delivered").length || 0;
+  const completedOrders =
+    orders?.filter((o) => o.status === "delivered").length || 0;
   const pendingOrders = totalOrders - completedOrders;
 
   return (
@@ -28,69 +49,127 @@ const Profile = () => {
       title={`Welcome, ${user?.fullName || "User"}`}
       description="From your account dashboard you can view your recent orders, manage your shipping and billing addresses, and edit your password and account details."
     >
-      <div className="space-y-8">
-        {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="bg-white/50 border-royal-purple/10 shadow-sm hover:shadow-md transition-shadow">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">
-                Total Orders
-              </CardTitle>
-              <Package className="h-4 w-4 text-royal-purple" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-royal-purple">{totalOrders}</div>
-            </CardContent>
-          </Card>
-          <Card className="bg-white/50 border-amber-500/10 shadow-sm hover:shadow-md transition-shadow">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">
-                Pending
-              </CardTitle>
-              <Clock className="h-4 w-4 text-amber-600" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-amber-600">{pendingOrders}</div>
-            </CardContent>
-          </Card>
-          <Card className="bg-white/50 border-emerald-500/10 shadow-sm hover:shadow-md transition-shadow">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">
-                Completed
-              </CardTitle>
-              <CreditCard className="h-4 w-4 text-emerald-600" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-emerald-600">{completedOrders}</div>
-            </CardContent>
-          </Card>
-        </div>
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="show"
+        className="space-y-12"
+      >
 
-        {/* Account Information Summary */}
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-lg border border-royal-purple/10 bg-white/50">
-            <h3 className="text-lg font-serif text-royal-purple mb-4">Contact Information</h3>
+        {/* ================= QUICK STATS ================= */}
+        <motion.div
+          variants={containerVariants}
+          className="grid grid-cols-1 md:grid-cols-3 gap-6"
+        >
+          {[{
+            title: "Total Orders",
+            value: totalOrders,
+            icon: Package,
+            color: "text-royal-purple",
+          },
+          {
+            title: "Pending",
+            value: pendingOrders,
+            icon: Clock,
+            color: "text-amber-600",
+          },
+          {
+            title: "Completed",
+            value: completedOrders,
+            icon: CreditCard,
+            color: "text-emerald-600",
+          }].map((stat, index) => (
+            <motion.div key={index} variants={itemVariants}>
+              <Card className="group bg-white/60 backdrop-blur-md border border-royal-purple/10 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-500 rounded-2xl">
+                <CardHeader className="flex flex-row items-center justify-between pb-2">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">
+                    {stat.title}
+                  </CardTitle>
+                  <stat.icon className={`h-4 w-4 ${stat.color} group-hover:scale-110 transition`} />
+                </CardHeader>
+                <CardContent>
+                  <motion.div
+                    initial={{ scale: 0.8 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 0.4 }}
+                    className={`text-4xl font-bold ${stat.color}`}
+                  >
+                    {stat.value}
+                  </motion.div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* ================= ACCOUNT INFO ================= */}
+        <motion.div
+          variants={containerVariants}
+          className="grid md:grid-cols-2 gap-10"
+        >
+
+          {/* Contact Info */}
+          <motion.div
+            variants={itemVariants}
+            className="group p-8 rounded-2xl border border-royal-purple/10 bg-white/60 backdrop-blur-md shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-500"
+          >
+            <h3 className="text-lg font-medium tracking-wide text-royal-purple mb-6">
+              Contact Information
+            </h3>
+
             <div className="space-y-2 text-sm">
-              <p className="font-medium">{user?.fullName || "No Name Set"}</p>
-              <p className="text-muted-foreground">{user?.email}</p>
-              <div className="pt-4">
-                <Link to="/profile/edit">
-                  <Button variant="link" className="px-0 text-gold hover:text-royal-purple">Edit Profile</Button>
-                </Link>
-              </div>
+              <p className="font-medium text-royal-purple">
+                {user?.fullName || "No Name Set"}
+              </p>
+              <p className="text-muted-foreground">
+                {user?.email}
+              </p>
             </div>
-          </div>
-          {/* We could add logic to show default address here if available in profile context */}
-          <div className="p-6 rounded-lg border border-royal-purple/10 bg-white/50">
-            <h3 className="text-lg font-serif text-royal-purple mb-4">Address Book</h3>
-            <p className="text-sm text-muted-foreground mb-4">Manage your shipping and billing addresses.</p>
-            <Link to="/profile/address">
-              <Button variant="link" className="px-0 text-gold hover:text-royal-purple">Manage Addresses</Button>
-            </Link>
-          </div>
-        </div>
-      </div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="mt-8"
+            >
+              <Link to="/profile/edit">
+                <Button>
+                  Edit Profile
+                </Button>
+              </Link>
+            </motion.div>
+          </motion.div>
+
+          {/* Address */}
+          <motion.div
+            variants={itemVariants}
+            className="group p-8 rounded-2xl border border-royal-purple/10 bg-white/60 backdrop-blur-md shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-500"
+          >
+            <h3 className="text-lg font-medium tracking-wide text-royal-purple mb-6">
+              Address Book
+            </h3>
+
+            <p className="text-sm text-muted-foreground mb-6">
+              Manage your shipping and billing addresses.
+            </p><br/><br/>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+            >
+              <Link to="/profile/address">
+                <Button>
+                  Manage Addresses
+                </Button>
+              </Link>
+            </motion.div>
+          </motion.div>
+
+        </motion.div>
+      </motion.div>
     </ProfileLayout>
   );
 };
+
 export default Profile;

@@ -8,12 +8,13 @@ import {
   Phone,
   MapPin
 } from "lucide-react";
+import { motion } from "framer-motion";
+
 import logo from "@/assets/logo.png";
 import razorpayLogo from "@/assets/razorpay.png";
 import visaLogo from "@/assets/visa.svg";
 import mastercardLogo from "@/assets/mastercard.svg";
 import upiLogo from "@/assets/upi.svg";
-
 
 const footerLinks = {
   shop: [
@@ -45,187 +46,177 @@ const socialLinks = [
 ];
 
 const paymentMethods = [
-
-  {
-    name: "RazorPay",
-    logo: razorpayLogo,
-  },
-  {
-    name: "Visa",
-    logo: visaLogo,
-  },
-  {
-    name: "Mastercard",
-    logo: mastercardLogo,
-  },
-  {
-    name: "UPI",
-    logo: upiLogo,
-  }
-  
+  { name: "RazorPay", logo: razorpayLogo },
+  { name: "Visa", logo: visaLogo },
+  { name: "Mastercard", logo: mastercardLogo },
+  { name: "UPI", logo: upiLogo }
 ];
 
 const Footer = () => {
   return (
-    <footer className="bg-royal-purple-dark text-ivory">
-      {/* Main Footer Content */}
-      <div className="container mx-auto px-6 py-16">
+    <footer className="relative bg-royal-purple-dark text-ivory overflow-hidden">
+
+      {/* 🌟 Luxury Background Bloom */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute -top-40 right-[-150px] w-[520px] h-[520px] bg-gold/10 blur-[160px]" />
+        <div className="absolute -bottom-40 left-[-200px] w-[500px] h-[500px] bg-gold/10 blur-[160px]" />
+      </div>
+
+      {/* 🌟 Subtle Grain Texture */}
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff'%3E%3Ccircle cx='40' cy='40' r='1'/%3E%3C/g%3E%3C/svg%3E")`,
+          }}
+        />
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        className="relative container mx-auto px-6 py-16 font-rr"
+      >
+
+        {/* GRID */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10">
-          {/* Brand Column */}
+
+          {/* BRAND */}
           <div className="lg:col-span-2">
-            <Link to="/" className="inline-block mb-6">
+            <Link to="/" className="inline-block mb-6 group">
               <img
                 src={logo}
                 alt="Z Princess Saffron"
-                className="h-16 w-auto brightness-0 invert opacity-90"
+                className="h-16 w-auto brightness-0 invert opacity-90 group-hover:opacity-100 transition-all duration-300"
               />
             </Link>
-            <p className="text-ivory/70 text-sm leading-relaxed mb-6 max-w-xs">
-              Experience the world's finest Kashmiri saffron, hand-picked from the pristine valleys of Pampore with centuries of heritage.
+
+            <p className="font-rr text-ivory/70 text-sm leading-relaxed mb-6 max-w-xs tracking-wide">
+              Z Princess Saffron <br/> Royal Spice, Timeless Grace
             </p>
 
-            {/* Contact Info */}
             <div className="space-y-3">
-              <a
-                href="tel:+917200150588"
-                className="flex items-center gap-3 text-ivory/70 hover:text-gold transition-colors text-sm"
-              >
+              <a href="tel:+917200150588" className="flex items-center gap-3 text-ivory/70 hover:text-gold transition-colors text-sm font-rr tracking-wide">
                 <Phone className="w-4 h-4 text-gold" />
                 +91 72001 50588
               </a>
-              <a
-                href="mailto:zprincessaffron07@gmail.com"
-                className="flex items-center gap-3 text-ivory/70 hover:text-gold transition-colors text-sm"
-              >
+
+              <a href="mailto:zprincessaffron07@gmail.com" className="flex items-center gap-3 text-ivory/70 hover:text-gold transition-colors text-sm font-rr tracking-wide">
                 <Mail className="w-4 h-4 text-gold" />
                 zprincessaffron07@gmail.com
               </a>
-              <div className="flex items-start gap-3 text-ivory/70 text-sm">
+
+              <div className="flex items-start gap-3 text-ivory/70 text-sm font-rr tracking-wide">
                 <MapPin className="w-4 h-4 text-gold mt-0.5" />
                 Chennai, India
               </div>
             </div>
           </div>
 
-          {/* Shop Links */}
-          <div>
-            <h4 className="font-serif text-lg text-gold mb-5">Shop</h4>
-            <ul className="space-y-3">
-              {footerLinks.shop.map((link) => (
-                <li key={link.path}>
-                  <Link
-                    to={link.path}
-                    className="text-ivory/70 hover:text-gold transition-colors text-sm"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* LINK GROUPS */}
+          {Object.entries(footerLinks).map(([title, links]) => (
+            <div key={title}>
+              <h4 className="font-rr text-xs font-semibold text-ivory uppercase tracking-widest-rr mb-6">
+                {title}
+              </h4>
 
-          {/* Company Links */}
-          <div>
-            <h4 className="font-serif text-lg text-gold mb-5">Company</h4>
-            <ul className="space-y-3">
-              {footerLinks.company.map((link) => (
-                <li key={link.path}>
-                  <Link
-                    to={link.path}
-                    className="text-ivory/70 hover:text-gold transition-colors text-sm"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+              <ul className="space-y-3">
+                {links.map((link) => (
+                  <li key={link.path}>
+                    <Link
+                      to={link.path}
+                      className="
+  relative inline-block font-rr text-sm text-ivory/70
+  transition-all duration-300 tracking-wide
+  hover:text-gold
 
-          {/* Legal Links */}
-          <div>
-            <h4 className="font-serif text-lg text-gold mb-5">Legal</h4>
-            <ul className="space-y-3">
-              {footerLinks.legal.map((link) => (
-                <li key={link.path}>
-                  <Link
-                    to={link.path}
-                    className="text-ivory/70 hover:text-gold transition-colors text-sm"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+  /* TEXT GLOW */
+  hover:[text-shadow:0_0_6px_rgba(212,175,55,0.6)]
 
-          {/* Support Links */}
-          <div>
-            <h4 className="font-serif text-lg text-gold mb-5">Support</h4>
-            <ul className="space-y-3">
-              {footerLinks.support.map((link) => (
-                <li key={link.path}>
-                  <Link
-                    to={link.path}
-                    className="text-ivory/70 hover:text-gold transition-colors text-sm"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+  /*  UNDERLINE */
+  after:absolute after:left-0 after:bottom-[-2px]
+  after:h-px after:w-0 after:bg-gold
+  after:transition-all after:duration-300
+  hover:after:w-full
+
+  /* UNDERLINE GLOW */
+  after:shadow-none
+  hover:after:shadow-[0_0_6px_rgba(212,175,55,0.7)]
+"
+                    >
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+
         </div>
 
-        {/* Divider */}
-        <div className="my-10 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
+        {/* 🌟 GOLD SHIMMER DIVIDER */}
+        <div className="relative my-12 h-px overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gold/40 to-transparent" />
+          <div className="absolute inset-0 animate-[shimmer_6s_linear_infinite] bg-gradient-to-r from-transparent via-gold/60 to-transparent opacity-40" />
+        </div>
 
-        {/* Bottom Section */}
+        {/* BOTTOM */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+
+          {/* PAYMENTS */}
           <div className="flex flex-wrap items-center gap-4">
-            <span className="text-ivory/50 text-xs uppercase tracking-wider">
+            <span className="text-ivory/50 text-xs uppercase tracking-widest-rr font-rr">
               Secure Payments:
             </span>
 
             <div className="flex items-center gap-4">
               {paymentMethods.map((method) => (
-                <div
+                <motion.div
                   key={method.name}
-                  className="flex items-center gap-2 px-3 py-2 bg-ivory/10 rounded-md"
+                  whileHover={{ y: -2, scale: 1.03 }}
+                  className="flex items-center gap-2 px-3 py-2 bg-ivory/10 rounded-md hover:bg-ivory/20 transition-all duration-300 shadow-sm hover:shadow-gold-glow"
                 >
-                  <img
-                    src={method.logo}
-                    alt={method.name}
-                    className="h-5 w-auto object-contain"
-                  />
-                  <span className="text-xs text-ivory/70 font-medium">
+                  <img src={method.logo} alt={method.name} className="h-5 w-auto" />
+                  <span className="text-xs text-ivory/70 font-rr tracking-wide">
                     {method.name}
                   </span>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
 
-
-          {/* Social Links */}
+          {/* SOCIAL */}
           <div className="flex items-center gap-4">
-            {socialLinks.map((social) => (
-              <a
+            {socialLinks.map((social, i) => (
+              <motion.a
                 key={social.label}
                 href={social.href}
                 aria-label={social.label}
-                className="w-10 h-10 rounded-full border border-ivory/20 flex items-center justify-center text-ivory/70 hover:border-gold hover:text-gold hover:bg-gold/10 transition-all duration-300"
+                whileHover={{ y: -4, scale: 1.08 }}
+                animate={{ y: [0, -3, 0] }}
+                transition={{
+                  y: { duration: 4 + i, repeat: Infinity, ease: "easeInOut" }
+                }}
+                className="
+                  w-10 h-10 rounded-full border border-ivory/20
+                  flex items-center justify-center text-ivory/70
+                  hover:border-gold hover:text-gold hover:bg-gold/10
+                  transition-all duration-300
+                "
               >
                 <social.icon className="w-4 h-4" />
-              </a>
+              </motion.a>
             ))}
           </div>
-        </div>
-      </div>
 
-      {/* Copyright Bar */}
+        </div>
+      </motion.div>
+
+      {/* COPYRIGHT */}
       <div className="border-t border-ivory/10 py-5">
         <div className="container mx-auto px-6">
-          <p className="text-center text-ivory/50 text-xs tracking-wider">
+          <p className="text-center text-ivory/50 text-xs tracking-widest-rr font-rr">
             © 2026 Z Princess Saffron. All rights reserved.
           </p>
         </div>

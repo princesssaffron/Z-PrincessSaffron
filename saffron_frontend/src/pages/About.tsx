@@ -1,13 +1,10 @@
 import Layout from "@/components/layout/Layout";
-import { Award, Target,  FileCheck } from "lucide-react";
+import { Award, Target, FileCheck } from "lucide-react";
 import "@/styles/about-hero-3d.css";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 import corporateLogo from "@/assets/heyramlogo.png";
-<<<<<<< HEAD
 import kolam from "@/assets/kolam.png";
-=======
->>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
 
 //import CursorParticles from "@/components/about/CursorParticles";
 import AboutStory from "@/components/about/AboutStory";
@@ -78,67 +75,67 @@ const About = () => {
         {/* Optional overlay content (keep or remove later) */}
         <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
 
-  <motion.div
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    transition={{ duration: 1.2, ease: "easeOut" }}
-    className="max-w-3xl"
-  >
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+            className="max-w-3xl"
+          >
 
-    {/* Decorative Line */}
+            {/* Decorative Line */}
             <motion.div
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
               transition={{ duration: 1, delay: 1.2 }}
               className="w-24 h-px bg-gradient-to-r from-transparent via-gold to-transparent mx-auto"
             />
-<br/>
-<br/>
-    {/* Subtitle */}
-    <motion.p
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, delay: 0.5 }}
-      className="font-sans text-gold/90 text-sm tracking-[0.4em] uppercase mb-6 font-medium"
-    >
-      Our Heritage
-    </motion.p>
+            <br />
+            <br />
+            {/* Subtitle */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="font-sans text-gold/90 text-sm tracking-[0.4em] uppercase mb-6 font-medium"
+            >
+              Our Heritage
+            </motion.p>
 
-    {/* Main Title */}
-    <motion.h1
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 1, delay: 0.7 }}
-      className="font-cinzel text-4xl md:text-4xl lg:text-6xl text-ivory mb-8 leading-tight font-medium"
-    >
-      Tradition in every
-      <br/><span className="text-gold">thread</span> 
-      
-    </motion.h1>
+            {/* Main Title */}
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.7 }}
+              className="font-cinzel text-4xl md:text-4xl lg:text-6xl text-ivory mb-8 leading-tight font-medium"
+            >
+              Tradition in every
+              <br /><span className="text-gold">thread</span>
 
-    {/* Description */}
-    <motion.p
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, delay: 1 }}
-      className="font-sans text-ivory/70 text-lg md:text-xl tracking-wide mb-12"
-    >
-      More than a saffron brand 
-      <br/> a legacy of passion,
-      tradition, and excellence.
-    </motion.p>
+            </motion.h1>
 
-    {/* Bottom Gold Line */}
-    <motion.div
-      initial={{ scaleX: 0 }}
-      animate={{ scaleX: 1 }}
-      transition={{ duration: 1, delay: 1.2 }}
-      className="w-24 h-px bg-gradient-to-r from-transparent via-gold to-transparent mx-auto"
-    />
+            {/* Description */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1 }}
+              className="font-sans text-ivory/70 text-lg md:text-xl tracking-wide mb-12"
+            >
+              More than a saffron brand
+              <br /> a legacy of passion,
+              tradition, and excellence.
+            </motion.p>
 
-  </motion.div>
+            {/* Bottom Gold Line */}
+            <motion.div
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 1, delay: 1.2 }}
+              className="w-24 h-px bg-gradient-to-r from-transparent via-gold to-transparent mx-auto"
+            />
 
-</div>
+          </motion.div>
+
+        </div>
 
 
       </section>
@@ -152,34 +149,33 @@ const About = () => {
       {/* =========================
          CORPORATE SECTION
       ========================= */}
-<<<<<<< HEAD
       <section id="corporate" className="relative py-24 bg-ivory-dark overflow-hidden">
         {/* Decorative Kolam Motifs */}
 
-{/* ===== KOLAM DECORATIVE BACKGROUND ===== */}
+        {/* ===== KOLAM DECORATIVE BACKGROUND ===== */}
 
-<div className="absolute inset-0 pointer-events-none z-0 flex justify-center items-end overflow-hidden">
-  <img
-    src={kolam}
-    alt=""
-    className="
+        <div className="absolute inset-0 pointer-events-none z-0 flex justify-center items-end overflow-hidden">
+          <img
+            src={kolam}
+            alt=""
+            className="
       w-[520px]
       opacity-10
       mix-blend-multiply
       translate-y-1/2
       select-none
     "
-  />
+          />
 
-</div>
-{/* ===== SIDE KOLAMS (LEFT + RIGHT) ===== */}
-<div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+        </div>
+        {/* ===== SIDE KOLAMS (LEFT + RIGHT) ===== */}
+        <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
 
-  {/* LEFT KOLAM */}
-  <img
-    src={kolam}
-    alt=""
-    className="
+          {/* LEFT KOLAM */}
+          <img
+            src={kolam}
+            alt=""
+            className="
       absolute
       bottom-0
       left-[-120px]
@@ -188,13 +184,13 @@ const About = () => {
       mix-blend-multiply
       select-none
     "
-  />
+          />
 
-  {/* RIGHT KOLAM (mirrored) */}
-  <img
-    src={kolam}
-    alt=""
-    className="
+          {/* RIGHT KOLAM (mirrored) */}
+          <img
+            src={kolam}
+            alt=""
+            className="
       absolute
       bottom-0
       right-[-120px]
@@ -204,12 +200,9 @@ const About = () => {
       scale-x-[-1]
       select-none
     "
-  />
+          />
 
-</div>
-=======
-      <section id="corporate" className="py-24 bg-ivory-dark">
->>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
+        </div>
         <div className="container mx-auto px-6">
 
           <div className="text-center max-w-2xl mx-auto mb-16">
@@ -240,22 +233,18 @@ const About = () => {
                 </div>
 
                 {item.icon ? (
-  <div className="inline-flex p-3 bg-royal-purple/5 text-royal-purple mb-4 group-hover:bg-gold/10 group-hover:text-gold transition-colors duration-300">
-    <item.icon className="w-6 h-6" />
-  </div>
-) : (
-  <div className="mb-4">
-    <img
-      src={corporateLogo}
-      alt="HeyRam Infrastructure"
-<<<<<<< HEAD
-      className="h-5 w-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
-=======
-      className="h-8 w-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
->>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
-    />
-  </div>
-)}
+                  <div className="inline-flex p-3 bg-royal-purple/5 text-royal-purple mb-4 group-hover:bg-gold/10 group-hover:text-gold transition-colors duration-300">
+                    <item.icon className="w-6 h-6" />
+                  </div>
+                ) : (
+                  <div className="mb-4">
+                    <img
+                      src={corporateLogo}
+                      alt="HeyRam Infrastructure"
+                      className="h-5 w-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
+                    />
+                  </div>
+                )}
 
                 <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2 font-sans">
                   {item.label}
@@ -277,8 +266,8 @@ const About = () => {
   transition-colors
   break-words
 ">
-  {item.value}
-</p>
+                    {item.value}
+                  </p>
 
                   <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-[10px] px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity font-sans">
                     Click to Copy

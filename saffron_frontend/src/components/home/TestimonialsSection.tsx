@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import { motion, useInView, useAnimation } from "framer-motion";
-=======
-import { motion, useInView } from "framer-motion";
->>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
 import { useRef, useState, useEffect } from "react";
 import { Star, Quote } from "lucide-react";
 import WriteReviewModal from "./WriteReviewModal";
@@ -10,10 +6,7 @@ import { Button } from "@/components/ui/button";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
-<<<<<<< HEAD
-=======
 // Fallback static testimonials shown when no DB reviews exist
->>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
 const staticTestimonials = [
   {
     name: "Priya Sharma",
@@ -68,28 +61,20 @@ interface Review {
 }
 
 const getInitials = (name: string) =>
-<<<<<<< HEAD
-  name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2);
-=======
   name
     .split(" ")
     .map((n) => n[0])
     .join("")
     .toUpperCase()
     .slice(0, 2);
->>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
 
 const TestimonialsSection = () => {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-<<<<<<< HEAD
 
   const controls = useAnimation();
   const [isPaused, setIsPaused] = useState(false);
   const [xPos, setXPos] = useState(0);
-
-=======
->>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
   const [openReviewModal, setOpenReviewModal] = useState(false);
   const [dbReviews, setDbReviews] = useState<Review[]>([]);
 
@@ -107,19 +92,19 @@ const TestimonialsSection = () => {
     fetchReviews();
   }, []);
 
-<<<<<<< HEAD
+  // Merge DB reviews (shown first) with static fallback
   const allTestimonials =
     dbReviews.length > 0
       ? [
-          ...dbReviews.map((r) => ({
-            name: r.reviewer_name,
-            location: r.location || "",
-            rating: r.rating,
-            comment: r.review_text,
-            avatar: getInitials(r.reviewer_name),
-          })),
-          ...staticTestimonials,
-        ]
+        ...dbReviews.map((r) => ({
+          name: r.reviewer_name,
+          location: r.location || "",
+          rating: r.rating,
+          comment: r.review_text,
+          avatar: getInitials(r.reviewer_name),
+        })),
+        ...staticTestimonials,
+      ]
       : staticTestimonials;
 
   const loopTestimonials = [...allTestimonials, ...allTestimonials];
@@ -156,65 +141,30 @@ const TestimonialsSection = () => {
     setXPos(newX);
     controls.start({ x: newX, transition: { duration: 0.5 } });
   };
-=======
-  // Merge DB reviews (shown first) with static fallback
-  const allTestimonials =
-    dbReviews.length > 0
-      ? [
-        ...dbReviews.map((r) => ({
-          name: r.reviewer_name,
-          location: r.location || "",
-          rating: r.rating,
-          comment: r.review_text,
-          avatar: getInitials(r.reviewer_name),
-        })),
-        ...staticTestimonials,
-      ]
-      : staticTestimonials;
-
-  const loopTestimonials = [...allTestimonials, ...allTestimonials];
-  const [isPaused, setIsPaused] = useState(false);
->>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
 
   return (
     <>
       <section ref={ref} className="relative pt-24 pb-36 bg-ivory overflow-hidden">
-<<<<<<< HEAD
-
-        {/* HEADER */}
-        <div className="relative mx-auto max-w-7xl px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.9 }}
-=======
         <div className="relative mx-auto max-w-7xl px-6">
           {/* HEADER */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
->>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
             className="text-center mb-20"
           >
             <p className="font-sans text-gold text-sm tracking-[0.35em] uppercase mb-4">
               Customer Love
             </p>
-<<<<<<< HEAD
-            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-royal-purple">
-=======
             <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-royal-purple leading-tight">
->>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
               What Our Customers Say
             </h2>
             <div className="w-24 h-px bg-gradient-to-r from-transparent via-gold to-transparent mx-auto mt-6" />
           </motion.div>
         </div>
 
-<<<<<<< HEAD
         {/* ===== SCROLLER WITH FLOATING ARROWS ===== */}
         <div className="relative overflow-hidden">
-
           {/* LEFT ARROW */}
           <button
             onClick={moveLeft}
@@ -254,7 +204,10 @@ const TestimonialsSection = () => {
           </button>
 
           {/* TRACK */}
-          <motion.div className="flex gap-6 w-max px-6" animate={controls}>
+          <motion.div
+            className="flex gap-6 w-max px-6"
+            animate={controls}
+          >
             {loopTestimonials.map((testimonial, index) => (
               <div
                 key={index}
@@ -262,56 +215,23 @@ const TestimonialsSection = () => {
                 onMouseLeave={() => setIsPaused(false)}
                 className="
                   max-w-[300px] md:min-w-[360px] lg:max-w-[300px] max-h-[300px]
-=======
-        {/* AUTO SCROLL TRACK */}
-        <div className="overflow-hidden">
-          <motion.div
-  className="flex gap-6 w-max px-6"
-  animate={
-    isPaused
-      ? { x: undefined }   // stop animation
-      : { x: ["0%", "-50%"] }
-  }
-  transition={{
-    duration: 40,
-    repeat: Infinity,
-    ease: "linear",
-  }}
->
-            {loopTestimonials.map((testimonial, index) => (
-              <div
-                key={index}
-                 onMouseEnter={() => setIsPaused(true)}
-  onMouseLeave={() => setIsPaused(false)}
-                className="
-                  max-w-[300px]  md:min-w-[360px] lg:max-w-[300px] max-h-[300px]
->>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
                   bg-card p-6 md:p-8 rounded-xl
                   shadow-card transition-all duration-500
                   hover:shadow-elegant hover:-translate-y-1
                 "
               >
                 <Quote className="w-10 h-10 text-gold/30 mb-4" />
-<<<<<<< HEAD
 
-=======
->>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
                 <div className="flex gap-1 mb-4">
                   {Array.from({ length: testimonial.rating }).map((_, i) => (
                     <Star key={i} className="w-4 h-4 fill-gold text-gold" />
                   ))}
                 </div>
-<<<<<<< HEAD
 
-                <p className="font-rr text-[17px] md:text-[18px] text-royal-purple/80 leading-[1.7] tracking-[0.01em] mb-6">
+                <p className="font-rr font-medium text-[17px] md:text-[18px] text-royal-purple/80 leading-[1.7] tracking-[0.01em] mb-6">
                   “{testimonial.comment}”
                 </p>
 
-=======
-                <p className="font-rr font-medium text-[17px] md:text-[18px] text-royal-purple/80 leading-[1.7] tracking-[0.01em] mb-6">
-  “{testimonial.comment}”
-</p>
->>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
                 <div className="flex items-center gap-3">
                   <div className="w-11 h-11 rounded-full bg-gradient-royal flex items-center justify-center">
                     <span className="font-serif text-sm text-ivory">
@@ -327,20 +247,12 @@ const TestimonialsSection = () => {
                     </p>
                   </div>
                 </div>
-<<<<<<< HEAD
-
-=======
->>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
               </div>
             ))}
           </motion.div>
         </div>
 
-<<<<<<< HEAD
-        {/* CTA */}
-=======
         {/* CTA BUTTON */}
->>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
         <div className="text-center mt-24">
           <Button
             variant="section"
@@ -357,19 +269,11 @@ const TestimonialsSection = () => {
         onOpenChange={setOpenReviewModal}
         onReviewSubmitted={() => {
           setOpenReviewModal(false);
-<<<<<<< HEAD
-          fetchReviews();
-=======
           fetchReviews(); // Refresh reviews after submission
->>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
         }}
       />
     </>
   );
 };
 
-<<<<<<< HEAD
 export default TestimonialsSection;
-=======
-export default TestimonialsSection;
->>>>>>> bf7891647c5961d25726370e2def7c16046dfb73

@@ -115,11 +115,7 @@ const WriteReviewModal = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-lg bg-ivory border border-gold/20 shadow-elegant">
         <DialogHeader>
-<<<<<<< HEAD
           <DialogTitle className="font-sans text-2xl tracking-[0.11em] text-royal-purple text-center  font-light">
-=======
-          <DialogTitle className="font-sans text-2xl tracking-[0.01em] text-royal-purple text-center  font-medium">
->>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
             Share Your Experience
           </DialogTitle>
 

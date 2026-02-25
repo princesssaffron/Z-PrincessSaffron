@@ -58,7 +58,7 @@ const WhyChooseUs = () => {
         <motion.div
           initial={{ opacity: 0, y: 60 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 1.1, ease: [0.22,1,0.36,1] }}
+          transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
           className="text-center max-w-3xl mx-auto mb-20"
         >
           <span className="font-sans text-sm uppercase tracking-[0.35em] text-gold/70">
@@ -80,61 +80,61 @@ const WhyChooseUs = () => {
           className="flex flex-wrap justify-center gap-8 md:gap-14 mb-24"
         >
           {badges.map((badge, index) => (
-  <motion.div
-    key={badge.label}
+            <motion.div
+              key={badge.label}
 
-    /* entrance */
-    initial={{ opacity: 0, scale: 0.85 }}
-    animate={isInView ? { opacity: 1, scale: 1 } : {}}
-    
-    /* ⭐ floating loop */
-    whileInView={{
-      y: [0, -10, 0],
-      rotate: [0, 0.8, 0, -0.8, 0],
-    }}
-    viewport={{ once: false }}
+              /* entrance */
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={isInView ? { opacity: 1, scale: 1 } : {}}
 
-    transition={{
-      default: {
-        duration: 0.6,
-        delay: 0.35 + index * 0.15,
-        ease: [0.22,1,0.36,1],
-      },
-      y: {
-        duration: 4 + index,
-        repeat: Infinity,
-        ease: "easeInOut",
-      },
-      rotate: {
-        duration: 6 + index,
-        repeat: Infinity,
-        ease: "easeInOut",
-      },
-    }}
+              /* ⭐ floating loop */
+              whileInView={{
+                y: [0, -10, 0],
+                rotate: [0, 0.8, 0, -0.8, 0],
+              }}
+              viewport={{ once: false }}
 
-    /* pause on hover (luxury detail) */
-    whileHover={{ y: 0, rotate: 0 }}
+              transition={{
+                default: {
+                  duration: 0.6,
+                  delay: 0.35 + index * 0.15,
+                  ease: [0.22, 1, 0.36, 1],
+                },
+                y: {
+                  duration: 4 + index,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                },
+                rotate: {
+                  duration: 6 + index,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                },
+              }}
 
-    className="group flex flex-col items-center"
-  >
-    {/* Luxury seal */}
-    <div className="w-24 h-24 rounded-full bg-royal-purple-dark border border-gold/40 flex items-center justify-center shadow-elegant relative overflow-hidden">
+              /* pause on hover (luxury detail) */
+              whileHover={{ y: 0, rotate: 0 }}
 
-      {/* glow on hover */}
-      <div className="absolute inset-0 opacity-0 group-hover:opacity-30 bg-gold blur-xl transition-opacity duration-500" />
+              className="group flex flex-col items-center"
+            >
+              {/* Luxury seal */}
+              <div className="w-24 h-24 rounded-full bg-royal-purple-dark border border-gold/40 flex items-center justify-center shadow-elegant relative overflow-hidden">
 
-      <badge.icon className="w-9 h-9 text-gold relative z-10" />
-    </div>
+                {/* glow on hover */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-30 bg-gold blur-xl transition-opacity duration-500" />
 
-    <span className="mt-4 font-serif text-sm text-royal-purple font-semibold tracking-wide">
-      {badge.label}
-    </span>
+                <badge.icon className="w-9 h-9 text-gold relative z-10" />
+              </div>
 
-    <span className="font-sans text-xs text-muted-foreground">
-      {badge.desc}
-    </span>
-  </motion.div>
-))}
+              <span className="mt-4 font-serif text-sm text-royal-purple font-semibold tracking-wide">
+                {badge.label}
+              </span>
+
+              <span className="font-sans text-xs text-muted-foreground">
+                {badge.desc}
+              </span>
+            </motion.div>
+          ))}
 
         </motion.div>
 
@@ -148,7 +148,7 @@ const WhyChooseUs = () => {
               transition={{
                 duration: 1,
                 delay: 0.5 + index * 0.18,
-                ease: [0.22,1,0.36,1],
+                ease: [0.22, 1, 0.36, 1],
               }}
               className="group relative bg-card p-10 md:p-12 rounded-sm shadow-card transition-all duration-500 hover:shadow-elegant hover:-translate-y-2"
             >
@@ -156,20 +156,12 @@ const WhyChooseUs = () => {
               <div className="absolute top-0 left-0 h-full w-[2px] bg-gradient-to-b from-gold to-gold/40 scale-y-0 group-hover:scale-y-100 transition-transform duration-500 origin-top" />
 
               {/* Interactive title */}
-<<<<<<< HEAD
               <h3 className="relative inline-block font-rr text-[30px] md:text-[25px]  tracking-[0.1em] text-royal-purple leading-[1.4] mb-4 transition-colors duration-500 group-hover:text-gold">
-=======
-              <h3 className="relative inline-block font-sans text-[22px] md:text-[24px] font-medium tracking-[0.01em] text-royal-purple leading-[1.4] mb-4 transition-colors duration-500 group-hover:text-gold">
->>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
-  {feature.title}
-  <span className="absolute left-0 -bottom-1 h-[1px] w-0 bg-gold transition-all duration-500 group-hover:w-full"></span>
-</h3>
+                {feature.title}
+                <span className="absolute left-0 -bottom-1 h-[1px] w-0 bg-gold transition-all duration-500 group-hover:w-full"></span>
+              </h3>
 
-<<<<<<< HEAD
-             <p className="font-rr text-[18px]  text-royal-purple/65 leading-[1.65] tracking-[0.01em]">
-=======
-             <p className="font-sans text-[14px] font-medium text-royal-purple/65 leading-[1.65] tracking-[0.01em]">
->>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
+              <p className="font-rr text-[18px]  text-royal-purple/65 leading-[1.65] tracking-[0.01em]">
                 {feature.description}
               </p>
             </motion.div>

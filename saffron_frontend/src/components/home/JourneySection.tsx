@@ -10,13 +10,8 @@ import {
 
 import cultivationImg from "@/assets/saffron-cultivation.jpg";
 import pickingImg from "@/assets/saffron-picking.webp";
-<<<<<<< HEAD
 import extractionImg from "@/assets/saffron-extraction.jpg";
 import dryingImg from "@/assets/saffron-drying.jpg";
-=======
-import extractionImg from "@/assets/saffron-extraction.jpeg";
-import dryingImg from "@/assets/saffron-drying.jpeg";
->>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
 import packagingImg from "@/assets/saffron-packaging.jpg";
 
 const steps = [
@@ -96,7 +91,7 @@ const JourneySection = () => {
         <motion.div
           initial={{ opacity: 0, y: 60 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, ease: [0.22,1,0.36,1] }}
+          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
           viewport={{ once: true }}
           className="text-center px-6 max-w-3xl"
         >
@@ -136,7 +131,7 @@ const JourneySection = () => {
                   style={{ y: textFloat }}
                   initial={{ opacity: 0, x: isEven ? -80 : 80 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 1.1, ease: [0.22,1,0.36,1] }}
+                  transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
                   viewport={{ once: true, margin: "-200px" }}
                   className={isEven ? "" : "lg:order-2"}
                 >
@@ -204,9 +199,8 @@ const JourneySection = () => {
           </section>
         );
       })}
-    </section>
+    </section >
   );
 };
-
 
 export default JourneySection;

@@ -4,45 +4,46 @@ import Layout from "@/components/layout/Layout";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import nataraja from "@/assets/nataraja.jpeg";
 
+/* ---------- LEFT HERO STATUE ---------- */
+const LeftNataraja = () => (
+  <motion.img
+    src={nataraja}
+    alt=""
+    className="absolute left-0 top-0 pointer-events-none select-none opacity-[0.12] z-0"
+    style={{ width: "300px" }}
+    initial={false}
+    animate={{ scale: [1, 1.06, 0.98, 1] }}
+    transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+  />
+);
+
+/* ---------- RIGHT HERO STATUE ---------- */
+const RightNataraja = () => (
+  <motion.img
+    src={nataraja}
+    alt=""
+    className="absolute right-0 top-0 pointer-events-none select-none opacity-[0.12] z-0"
+    style={{ width: "300px" }}
+    initial={false}
+    animate={{ scale: [1, 1.06, 0.98, 1] }}
+    transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+  />
+);
+
+/* ---------- CONTACT INFO ---------- */
 const contactInfo = [
-  {
-    icon: MapPin,
-    label: "Our Office",
-    value: "Chennai, India",
-    subtext: null,
-  },
-  {
-    icon: Phone,
-    label: "Phone",
-    value: "+91 72001 50588",
-    subtext: null,
-    link: "tel:+917200150588",
-  },
-  {
-    icon: Mail,
-    label: "Email",
-    value: "zprincessaffron07@gmail.com",
-    subtext: null,
-    link: "mailto:zprincessaffron07@gmail.com",
-  },
-  {
-    icon: Clock,
-    label: "Office Hours",
-    value: "Monday to Sunday",
-    subtext: "9 AM to 6 PM",
-  },
+  { icon: MapPin, label: "Our Office", value: "Chennai, India" },
+  { icon: Phone, label: "Phone", value: "+91 72001 50588", link: "tel:+917200150588" },
+  { icon: Mail, label: "Email", value: "zprincessaffron07@gmail.com", link: "mailto:zprincessaffron07@gmail.com" },
+  { icon: Clock, label: "Office Hours", value: "Monday to Sunday", subtext: "9 AM to 6 PM" }
 ];
 
 const Contact = () => {
   const { toast } = useToast();
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    topic: "",
-    contactMethod: "",
-    message: "",
+    name: "", email: "", phone: "", topic: "", contactMethod: "", message: ""
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -81,6 +82,7 @@ const Contact = () => {
         contactMethod: "",
         message: "",
       });
+
     } catch {
       toast({
         title: "Error",
@@ -98,7 +100,12 @@ const Contact = () => {
       {/* ================= HERO ================= */}
       <section className="relative pt-32 pb-20 bg-gradient-to-b from-royal-purple-dark to-royal-purple overflow-hidden">
 
-        <div className="absolute inset-0 pointer-events-none">
+        {/* STATUES */}
+        <LeftNataraja />
+        <RightNataraja />
+
+        {/* Glow */}
+        <div className="absolute inset-0 pointer-events-none z-0">
           <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-gold/10 blur-[180px]" />
         </div>
 
@@ -111,17 +118,9 @@ const Contact = () => {
             variants={{ visible: { transition: { staggerChildren: 0.04 } } }}
           >
             {"Get In Touch".split("").map((char, i) => (
-              <motion.span
-                key={i}
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0 },
-                }}
+              <motion.span key={i}
+                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
                 transition={{ duration: 0.5 }}
-                whileHover={{
-                  color: "#D4AF37",
-                  textShadow: "0 0 8px rgba(212,175,55,0.7)",
-                }}
                 className="inline-block"
               >
                 {char === " " ? "\u00A0" : char}
@@ -130,23 +129,15 @@ const Contact = () => {
           </motion.p>
 
           <motion.h1
-            className="font-cinzel text-4xl md:text-4xl lg:text-5xl text-ivory mb-8 tracking-[0.25em] uppercase font-medium"
+            className="font-cinzel text-4xl md:text-5xl text-ivory mb-8 tracking-[0.25em] uppercase font-medium"
             initial="hidden"
             animate="visible"
             variants={{ visible: { transition: { staggerChildren: 0.06 } } }}
           >
             {"Contact Us".split("").map((char, i) => (
-              <motion.span
-                key={i}
-                variants={{
-                  hidden: { opacity: 0, y: 40 },
-                  visible: { opacity: 1, y: 0 },
-                }}
+              <motion.span key={i}
+                variants={{ hidden: { opacity: 0, y: 40 }, visible: { opacity: 1, y: 0 } }}
                 transition={{ duration: 0.6 }}
-                whileHover={{
-                  color: "#D4AF37",
-                  textShadow: "0 0 10px rgba(212,175,55,0.8)",
-                }}
                 className="inline-block"
               >
                 {char === " " ? "\u00A0" : char}
@@ -182,22 +173,16 @@ const Contact = () => {
                 <div className="inline-flex p-4 bg-gold/10 text-gold mb-4">
                   <info.icon className="w-6 h-6" />
                 </div>
-                <p className="text-sm text-muted-foreground uppercase tracking-wider mb-2">
-                  {info.label}
-                </p>
-                <p className="font-cinzel text-[14px] font-medium text-royal-purple tracking-wide break-words">
-  {info.value}
-</p>
-                {info.subtext && (
-                  <p className="text-sm text-muted-foreground mt-1">{info.subtext}</p>
-                )}
+                <p className="text-sm uppercase tracking-wider mb-2">{info.label}</p>
+                <p className="font-cinzel text-[14px] text-royal-purple break-words">{info.value}</p>
+                {info.subtext && <p className="text-sm mt-1">{info.subtext}</p>}
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ================= MINIMAL GLASS FORM ================= */}
+      {/* ================= FORM ================= */}
       <section className="py-28 bg-ivory">
         <div className="container mx-auto px-6">
           <div className="max-w-3xl mx-auto">
@@ -208,6 +193,10 @@ const Contact = () => {
               </h2>
               <div className="w-20 h-px bg-gradient-to-r from-transparent via-gold to-transparent mx-auto" />
             </div>
+
+            {/* FORM SAME AS YOURS BELOW */}
+
+            {/* FORM UNCHANGED BELOW */}
 
             <form onSubmit={handleSubmit} className="space-y-10 backdrop-blur-md bg-white/40 p-12 rounded-3xl border border-gold/20 shadow-[0_20px_60px_rgba(0,0,0,0.05)]">
 
@@ -255,7 +244,7 @@ const Contact = () => {
 
             <div className="mt-12 flex flex-col items-center text-center">
               <p className="text-muted-foreground mb-4">
-                Prefer instant mes`saging?
+                Prefer instant messaging?
               </p>
               <a href="https://wa.me/917200150588" target="_blank" rel="noopener noreferrer">
                 <Button variant="section" className="min-w-[220px]">

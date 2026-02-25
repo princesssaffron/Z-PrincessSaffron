@@ -1,5 +1,8 @@
 import { useState, useEffect, useRef } from "react";
+<<<<<<< HEAD
 import dancer from "@/assets/barathanatyam.jpg";
+=======
+>>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
 
 const sections = [
   { title: "Who We Are",          number: "01", accent: "#C9A84C", desc: "Fruit of passion, tradition, and technological excellence. Launched by HeyRam Infrastructure to bridge the digital future with age-old agricultural heritage." },
@@ -22,7 +25,11 @@ const ANGLE_STEP = 360 / COUNT; // 60deg per face
 const APOTHEM = Math.round(PANEL_W / (2 * Math.tan(Math.PI / COUNT)));
 // APOTHEM ≈ 277px for PANEL_W=320
 
+<<<<<<< HEAD
 const AUTO_MS = 1000;
+=======
+const AUTO_MS = 3800;
+>>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
 
 export default function SensoryExperience() {
   const [step, setStep] = useState(0);
@@ -74,7 +81,11 @@ export default function SensoryExperience() {
           height: 100%;
           position: relative;
           transform-style: preserve-3d;
+<<<<<<< HEAD
           transition: transform 0.9s cubic-bezier(0.77, 0, 0.18, 1);
+=======
+          transition: transform 0.92s cubic-bezier(0.77, 0, 0.18, 1);
+>>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
         }
         .panel {
           position: absolute;
@@ -90,6 +101,7 @@ export default function SensoryExperience() {
           position: absolute;
           bottom: -28px;
           left: 50%;
+<<<<<<< HEAD
           transform: translateX(-40%) scaleY(0.3);
           width: ${PANEL_W * 0.75}px;
           height: ${PANEL_W * 0.75}px;
@@ -119,6 +131,16 @@ export default function SensoryExperience() {
     opacity: 0.06;
   }
 }
+=======
+          transform: translateX(-50%) scaleY(0.3);
+          width: ${PANEL_W * 0.75}px;
+          height: ${PANEL_W * 0.75}px;
+          background: radial-gradient(ellipse, rgba(0,0,0,0.22) 0%, transparent 68%);
+          filter: blur(8px);
+          border-radius: 50%;
+          pointer-events: none;
+        }
+>>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
       `}</style>
 
       <section style={{
@@ -132,6 +154,7 @@ export default function SensoryExperience() {
         position: "relative",
         overflow: "hidden",
       }}>
+<<<<<<< HEAD
         {/* LEFT CULTURAL BACKGROUND */}
 <img
   src={dancer}
@@ -165,6 +188,8 @@ export default function SensoryExperience() {
     animation: "dancerZoomRight 6s ease-out forwards"
   }}
 />
+=======
+>>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
 
         {/* Ambient glow */}
         <div style={{
@@ -175,12 +200,22 @@ export default function SensoryExperience() {
 
         {/* HEADER */}
         <div style={{ textAlign: "center", marginBottom: "52px" }}>
+<<<<<<< HEAD
           <h2 className="font-cinzel text-4xl md:text-4xl text-royal-purple mb-6 tracking-[0.1em]" style={{
             color: "#2C1B4E",
             marginBottom: "14px"
           }}>
             Ancient <span style={{ color: "#C9A84C" }}>Heritage </span> Meets{" "}
             <span style={{ color: "#C9A84C" }}>Modern </span>Purity
+=======
+          <h2 style={{
+            fontFamily: "font-serif",
+            fontSize: "30px",
+            color: "#2C1B4E",  marginBottom: "14px"
+          }}>
+            Where Ancient Heritage Meets{" "}<br/>
+            <span style={{ color: "#C9A84C" }}>Modern Purity</span>
+>>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
           </h2>
           <div style={{
             width: "72px", height: "1px", margin: "0 auto",
@@ -197,7 +232,12 @@ export default function SensoryExperience() {
           <div style={{
             position: "absolute", inset: -40, pointerEvents: "none", zIndex: 0,
             background: `radial-gradient(ellipse at center, ${current.accent}18 0%, transparent 65%)`,
+<<<<<<< HEAD
             transition: "background 1s ease",
+=======
+            filter: "blur(24px)",
+            transition: "background 0.9s ease",
+>>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
             borderRadius: "8px",
           }} />
 
@@ -244,7 +284,11 @@ export default function SensoryExperience() {
                 width: i === step ? "28px" : "7px",
                 height: "7px", borderRadius: "4px",
                 background: i === step ? current.accent : "rgba(44,27,78,0.18)",
+<<<<<<< HEAD
                 transition: "all 0.3s ease",
+=======
+                transition: "all 0.4s ease",
+>>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
               }}
             />
           ))}
@@ -253,6 +297,7 @@ export default function SensoryExperience() {
         <br/>
 
         {/* QUOTE */}
+<<<<<<< HEAD
         <div style={{ textAlign: "center", marginTop: "48px", maxWidth: "700px", marginInline: "auto" }}>
   <p className="font-sans text-lg md:text-xl lg:text-4xl leading-[1.9] tracking-[0.03em] text-royal-purple/80">
     "Every thread must whisper{" "}
@@ -261,6 +306,16 @@ export default function SensoryExperience() {
     <em style={{ color: "#B8960C", fontStyle: "normal" }}>healing</em>"
   </p>
 </div>
+=======
+        <div style={{ textAlign: "center", marginTop: "48px", maxWidth: "600px" }}>
+          <p className="space-y-10 md:space-y-14 text-base md:text-xl leading-[1.9] text-royal-purple/80 font-rr" >
+            "Every thread must whisper{" "}
+            <em style={{ color: "#C9A84C", fontStyle: "normal" }}>luxury</em>,{" "}
+            <em style={{ color: "#D4AF37", fontStyle: "normal" }}>heritage</em>, and{" "}
+            <em style={{ color: "#B8960C", fontStyle: "normal" }}>healing</em>"
+          </p>
+        </div>
+>>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
       </section>
     </>
   );
@@ -277,7 +332,11 @@ function PanelContent({ section }: { section: typeof sections[0] }) {
       {/* Top shimmer */}
       <div style={{
         position: "absolute", top: 0, left: 0, right: 0, height: "1px",
+<<<<<<< HEAD
         background: `linear-gradient(90deg, transparent, ${section.accent}90, ${section.accent}, ${section.accent}80, transparent)`,
+=======
+        background: `linear-gradient(90deg, transparent, ${section.accent}80, ${section.accent}, ${section.accent}80, transparent)`,
+>>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
       }} />
       {/* Left shimmer */}
       <div style={{
@@ -303,26 +362,43 @@ function PanelContent({ section }: { section: typeof sections[0] }) {
         }}>
           {section.number}
         </span>
+<<<<<<< HEAD
         <div style={{ flex: 1, height: "1px", background: `linear-gradient(10deg, ${section.accent}28, transparent)` }} />
         <span style={{
           fontFamily: "'JetBrains Mono', monospace", fontSize: "9px",
           letterSpacing: "0.3em", textTransform: "uppercase",
           color: `${section.accent}50`,
         }}></span>
+=======
+        <div style={{ flex: 1, height: "1px", background: `linear-gradient(90deg, ${section.accent}28, transparent)` }} />
+        <span style={{
+          fontFamily: "'JetBrains Mono', monospace", fontSize: "9px",
+          letterSpacing: "0.3em", textTransform: "uppercase",
+          color: `${section.accent}30`,
+        }}>Legacy</span>
+>>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
       </div>
 
       {/* Middle */}
       <div>
+<<<<<<< HEAD
         <h3 className="font-light"  style={{
           fontFamily: "font-sans",
           fontSize: "20px", color: "#F5F0E8",
           lineHeight: 1.12, letterSpacing: "0.05em", marginBottom: "14px",
+=======
+        <h3 style={{
+          fontFamily: "font-rr",
+          fontSize: "24px", fontWeight: 10, color: "#F5F0E8",
+          lineHeight: 1.12, letterSpacing: "-0.01em", marginBottom: "14px",
+>>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
         }}>
           {section.title}
         </h3>
         <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px" }}>
           <div style={{ width: "22px", height: "1px", background: section.accent }} />
           <div style={{ width: "5px", height: "5px", transform: "rotate(45deg)", background: section.accent,  flexShrink: 0 }} />
+<<<<<<< HEAD
           <div style={{ flex: 1, height: "1px", background: `linear-gradient( ${section.accent}28, transparent)` }} />
         </div>
         <p className="font-light" style={{
@@ -330,6 +406,15 @@ function PanelContent({ section }: { section: typeof sections[0] }) {
           fontSize: "15px", 
           lineHeight: 1.85, color: "rgba(245,240,232,0.65)",
           letterSpacing: "0.05em",
+=======
+          <div style={{ flex: 1, height: "1px", background: `linear-gradient(90deg, ${section.accent}28, transparent)` }} />
+        </div>
+        <p style={{
+          fontFamily: "font-rr",
+          fontSize: "14px", 
+          lineHeight: 1.85, color: "rgba(245,240,232,0.65)",
+          letterSpacing: "0.01em",
+>>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
         }}>
           {section.desc}
         </p>

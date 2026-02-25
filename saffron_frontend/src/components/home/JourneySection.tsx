@@ -10,8 +10,13 @@ import {
 
 import cultivationImg from "@/assets/saffron-cultivation.jpg";
 import pickingImg from "@/assets/saffron-picking.webp";
+<<<<<<< HEAD
 import extractionImg from "@/assets/saffron-extraction.jpg";
 import dryingImg from "@/assets/saffron-drying.jpg";
+=======
+import extractionImg from "@/assets/saffron-extraction.jpeg";
+import dryingImg from "@/assets/saffron-drying.jpeg";
+>>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
 import packagingImg from "@/assets/saffron-packaging.jpg";
 
 const steps = [

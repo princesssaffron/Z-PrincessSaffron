@@ -4,7 +4,10 @@ import "@/styles/about-hero-3d.css";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 import corporateLogo from "@/assets/heyramlogo.png";
+<<<<<<< HEAD
 import kolam from "@/assets/kolam.png";
+=======
+>>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
 
 //import CursorParticles from "@/components/about/CursorParticles";
 import AboutStory from "@/components/about/AboutStory";
@@ -149,6 +152,7 @@ const About = () => {
       {/* =========================
          CORPORATE SECTION
       ========================= */}
+<<<<<<< HEAD
       <section id="corporate" className="relative py-24 bg-ivory-dark overflow-hidden">
         {/* Decorative Kolam Motifs */}
 
@@ -203,6 +207,9 @@ const About = () => {
   />
 
 </div>
+=======
+      <section id="corporate" className="py-24 bg-ivory-dark">
+>>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
         <div className="container mx-auto px-6">
 
           <div className="text-center max-w-2xl mx-auto mb-16">
@@ -241,7 +248,11 @@ const About = () => {
     <img
       src={corporateLogo}
       alt="HeyRam Infrastructure"
+<<<<<<< HEAD
       className="h-5 w-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
+=======
+      className="h-8 w-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
+>>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
     />
   </div>
 )}

@@ -156,12 +156,20 @@ const WhyChooseUs = () => {
               <div className="absolute top-0 left-0 h-full w-[2px] bg-gradient-to-b from-gold to-gold/40 scale-y-0 group-hover:scale-y-100 transition-transform duration-500 origin-top" />
 
               {/* Interactive title */}
+<<<<<<< HEAD
               <h3 className="relative inline-block font-rr text-[30px] md:text-[25px]  tracking-[0.1em] text-royal-purple leading-[1.4] mb-4 transition-colors duration-500 group-hover:text-gold">
+=======
+              <h3 className="relative inline-block font-sans text-[22px] md:text-[24px] font-medium tracking-[0.01em] text-royal-purple leading-[1.4] mb-4 transition-colors duration-500 group-hover:text-gold">
+>>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
   {feature.title}
   <span className="absolute left-0 -bottom-1 h-[1px] w-0 bg-gold transition-all duration-500 group-hover:w-full"></span>
 </h3>
 
+<<<<<<< HEAD
              <p className="font-rr text-[18px]  text-royal-purple/65 leading-[1.65] tracking-[0.01em]">
+=======
+             <p className="font-sans text-[14px] font-medium text-royal-purple/65 leading-[1.65] tracking-[0.01em]">
+>>>>>>> bf7891647c5961d25726370e2def7c16046dfb73
                 {feature.description}
               </p>
             </motion.div>

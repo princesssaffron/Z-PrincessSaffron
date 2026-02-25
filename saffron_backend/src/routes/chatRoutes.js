@@ -2,6 +2,32 @@ import express from "express";
 
 const router = express.Router();
 
+/**
+ * @swagger
+ * tags:
+ *   name: Chat
+ *   description: AI Chat bot interactions
+ */
+
+/**
+ * @swagger
+ * /api/chat:
+ *   post:
+ *     summary: Chat with the Saffron bot
+ *     tags: [Chat]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               message:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Bot response
+ */
 router.post("/", async (req, res) => {
     const { message } = req.body;
 

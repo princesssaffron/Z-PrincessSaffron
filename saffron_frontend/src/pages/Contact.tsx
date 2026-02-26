@@ -4,34 +4,6 @@ import Layout from "@/components/layout/Layout";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import nataraja from "@/assets/nataraja.jpeg";
-
-/* ---------- LEFT HERO STATUE ---------- */
-const LeftNataraja = () => (
-  <motion.img
-    src={nataraja}
-    alt=""
-    className="absolute left-0 top-0 pointer-events-none select-none opacity-[0.12] z-0"
-    style={{ width: "300px" }}
-    initial={false}
-    animate={{ scale: [1, 1.06, 0.98, 1] }}
-    transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
-  />
-);
-
-/* ---------- RIGHT HERO STATUE ---------- */
-const RightNataraja = () => (
-  <motion.img
-    src={nataraja}
-    alt=""
-    className="absolute right-0 top-0 pointer-events-none select-none opacity-[0.12] z-0"
-    style={{ width: "300px" }}
-    initial={false}
-    animate={{ scale: [1, 1.06, 0.98, 1] }}
-    transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
-  />
-);
-
 /* ---------- CONTACT INFO ---------- */
 const contactInfo = [
   { icon: MapPin, label: "Our Office", value: "Chennai, India" },
@@ -99,10 +71,6 @@ const Contact = () => {
 
       {/* ================= HERO ================= */}
       <section className="relative pt-32 pb-20 bg-gradient-to-b from-royal-purple-dark to-royal-purple overflow-hidden">
-
-        {/* STATUES */}
-        <LeftNataraja />
-        <RightNataraja />
 
         {/* Glow */}
         <div className="absolute inset-0 pointer-events-none z-0">

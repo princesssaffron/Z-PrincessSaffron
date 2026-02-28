@@ -2,7 +2,11 @@ import { motion, useScroll, useTransform, useMotionTemplate } from "framer-motio
 import { useRef } from "react";
 
 import healthImage from "@/assets/moments-health.jpg";
+<<<<<<< HEAD
 import beautyImage from "@/assets/moments-beauty.jpeg";
+=======
+import beautyImage from "@/assets/moments-beauty.png";
+>>>>>>> 58dcbbedd6f0ee02e50806344b1b995b3318348d
 import culinaryImage from "@/assets/moments-culinary.jpg";
 
 const chapters = [
@@ -98,4 +102,8 @@ const SaffronMomentsSection = () => {
   );
 };
 
+<<<<<<< HEAD
 export default SaffronMomentsSection;
+=======
+export default SaffronMomentsSection;
+>>>>>>> 58dcbbedd6f0ee02e50806344b1b995b3318348d

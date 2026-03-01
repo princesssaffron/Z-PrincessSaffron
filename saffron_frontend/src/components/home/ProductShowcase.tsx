@@ -110,7 +110,7 @@ const ProductShowcase = () => {
 
                 <div className="relative h-[420px] md:h-[800px] overflow-hidden">
                   <img
-                    src={product.id < 3 ? product.image : resolveProductImage(product.image)}
+                    src={resolveProductImage(product.image)}
                     alt={product.name}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />

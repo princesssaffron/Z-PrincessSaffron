@@ -207,7 +207,7 @@ const AdminDashboard = () => {
                 value={productData.name}
                 onChange={handleInputChange}
                 required
-                className="font-rr border-gold/20 focus:ring-gold"
+                className="font-rr border-gold/20 focus:ring-gold text-royal-purple"
               />
             </FormField>
 
@@ -231,7 +231,7 @@ const AdminDashboard = () => {
                 value={productData.price}
                 onChange={handleInputChange}
                 required
-                className="font-rr border-gold/20 focus:ring-gold"
+                className="font-rr border-gold/20 focus:ring-gold text-royal-purple"
               />
             </FormField>
 
@@ -241,7 +241,7 @@ const AdminDashboard = () => {
                 type="number"
                 value={productData.originalPrice}
                 onChange={handleInputChange}
-                className="font-rr border-gold/20 focus:ring-gold"
+                className="font-rr border-gold/20 focus:ring-gold text-royal-purple"
               />
             </FormField>
 
@@ -285,7 +285,7 @@ const AdminDashboard = () => {
               name="tag"
               value={productData.tag}
               onChange={handleInputChange}
-              className="font-rr border-gold/20 focus:ring-gold"
+              className="font-rr border-gold/20 focus:ring-gold text-royal-purple"
             />
           </FormField>
 
@@ -296,7 +296,7 @@ const AdminDashboard = () => {
               value={productData.description}
               onChange={handleInputChange}
               required
-              className="min-h-[140px] font-rr border-gold/20 focus:ring-gold"
+              className="min-h-[140px] font-rr border-gold/20 focus:ring-gold text-royal-purple"
             />
           </FormField>
 

@@ -103,28 +103,30 @@
 }
 
 @layer base {
-  
+
 
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Manrope', sans-serif;
     font-weight: 300;
-    letter-spacing: 0.04em;   /* subtle RR spacing */
+    letter-spacing: 0.04em;
+    /* subtle RR spacing */
   }
 
- /* Rolls-Royce Heading Style */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: 'Manrope', sans-serif;
-  font-weight: 300;
-  letter-spacing: 0.2em;   /* wide RR spacing */
-  text-transform: uppercase;
-  line-height: 1.4;
-}
+  /* Rolls-Royce Heading Style */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    /* wide RR spacing */
+    text-transform: uppercase;
+    line-height: 1.4;
+  }
 
   /* Paragraphs */
   p {
@@ -145,14 +147,14 @@ h6 {
   }
 
   input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
-  box-shadow: 0 0 0 1000px transparent inset !important;
-  -webkit-text-fill-color: white !important;
-  transition: background-color 5000s ease-in-out 0s;
-}
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+    box-shadow: 0 0 0 1000px transparent inset !important;
+    -webkit-text-fill-color: currentColor !important;
+    transition: background-color 5000s ease-in-out 0s;
+  }
 
   /* Footer text */
   footer,
@@ -167,21 +169,22 @@ input:-webkit-autofill:active {
 
   /* Cards */
   .card-luxury h1,
-.card-luxury h2,
-.card-luxury h3,
-footer h1,
-footer h2,
-footer h3 {
-  letter-spacing: 0.2em;
-  font-weight: 300;
-  text-transform: uppercase;
-}
+  .card-luxury h2,
+  .card-luxury h3,
+  footer h1,
+  footer h2,
+  footer h3 {
+    letter-spacing: 0.2em;
+    font-weight: 300;
+    text-transform: uppercase;
+  }
+
   /* Large section headings */
-section h1,
-section h2 {
-  letter-spacing: 0.22em;
-  font-weight: 300;
-}
+  section h1,
+  section h2 {
+    letter-spacing: 0.22em;
+    font-weight: 300;
+  }
 
 }
 
@@ -497,7 +500,7 @@ section h2 {
 }
 
 
- 
+
 @layer base {
   body {
     @apply font-sans font-medium;

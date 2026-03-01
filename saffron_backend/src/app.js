@@ -10,6 +10,7 @@ import messageRoutes from "./routes/messageRoutes.js";
 import newsletterRoutes from "./routes/newsletterRoutes.js";
 import chatRoutes from "./routes/chatRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./config/swagger.js";
 
@@ -30,6 +31,7 @@ app.use("/api/messages", messageRoutes);
 app.use("/api/newsletter", newsletterRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/products", productRoutes);
+app.use("/api/admin", adminRoutes);
 
 app.get("/api/health", (req, res) => {
     res.json({ status: "Backend is running 🚀" });

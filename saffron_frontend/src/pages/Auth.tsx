@@ -202,7 +202,7 @@ const Auth = () => {
                     onChange={(e) =>
                       setFormData({ ...formData, name: e.target.value })
                     }
-                    className="w-full bg-transparent border-b border-white pl-8 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white transition-colors"
+                    className="w-full bg-transparent border-b border-white pl-8 py-2 !text-white placeholder-white/50 focus:outline-none focus:border-white transition-colors"
                     placeholder="Enter Name"
                   />
                 </div>
@@ -216,7 +216,7 @@ const Auth = () => {
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
                   }
-                  className="w-full bg-transparent border-b border-white pl-8 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white transition-colors"
+                  className="w-full bg-transparent border-b border-white pl-8 py-2 !text-white placeholder-white/50 focus:outline-none focus:border-white transition-colors"
                   placeholder="Enter Email"
                 />
               </div>
@@ -229,7 +229,7 @@ const Auth = () => {
                   onChange={(e) =>
                     setFormData({ ...formData, password: e.target.value })
                   }
-                  className="w-full bg-transparent border-b border-white pl-8 pr-10 py-2 text-white placeholder-white/50 focus:outline-none focus:border-white transition-colors"
+                  className="w-full bg-transparent border-b border-white pl-8 pr-10 py-2 !text-white placeholder-white/50 focus:outline-none focus:border-white transition-colors"
                   placeholder="Enter Password"
                 />
                 <button

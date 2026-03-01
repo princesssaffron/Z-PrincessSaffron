@@ -1,6 +1,7 @@
 import Cart from "../models/cartModel.js";
+import Product from "../models/productModel.js";
 
-// @desc    Get user cart
+// @desc    Get user cart with stock validation
 // @route   GET /api/cart
 // @access  Private
 export const getCart = async (req, res) => {
@@ -9,6 +10,33 @@ export const getCart = async (req, res) => {
 
         if (!cart) {
             cart = await Cart.create({ user: req.user._id, items: [] });
+            return res.json([]);
+        }
+
+        // Logic Rule: If stock reduced -> auto adjust cart
+        let itemsChanged = false;
+        const validatedItems = [];
+
+        for (const item of cart.items) {
+            const product = await Product.findOne({ id: item.product_id });
+
+            if (!product || product.stock === 0) {
+                // Remove item if product is gone or out of stock
+                itemsChanged = true;
+                continue;
+            }
+
+            if (item.quantity > product.stock) {
+                // Reduce quantity to match available stock
+                item.quantity = product.stock;
+                itemsChanged = true;
+            }
+            validatedItems.push(item);
+        }
+
+        if (itemsChanged) {
+            cart.items = validatedItems;
+            await cart.save();
         }
 
         res.json(cart.items);
@@ -17,16 +45,30 @@ export const getCart = async (req, res) => {
     }
 };
 
-// @desc    Add item to cart or update quantity
+// @desc    Add item to cart or update quantity with stock validation
 // @route   POST /api/cart
 // @access  Private
 export const addToCart = async (req, res) => {
     const { product_id, quantity } = req.body;
 
     try {
+        const product = await Product.findOne({ id: product_id });
+        if (!product) {
+            return res.status(404).json({ message: "Product not found" });
+        }
+
+        // Logic Rule: Quantity cannot exceed stock
+        if (product.stock <= 0) {
+            return res.status(400).json({ message: "Product is out of stock" });
+        }
+
         let cart = await Cart.findOne({ user: req.user._id });
 
         if (!cart) {
+            // New cart
+            if (quantity > product.stock) {
+                return res.status(400).json({ message: `Only ${product.stock} items available in stock` });
+            }
             cart = await Cart.create({
                 user: req.user._id,
                 items: [{ product_id, quantity }],
@@ -37,8 +79,16 @@ export const addToCart = async (req, res) => {
             );
 
             if (itemIndex > -1) {
-                cart.items[itemIndex].quantity += quantity;
+                // Logic Rule: If product already exists -> increase quantity
+                const newTotalQuantity = cart.items[itemIndex].quantity + quantity;
+                if (newTotalQuantity > product.stock) {
+                    return res.status(400).json({ message: `Cannot add more. Only ${product.stock} items in stock (you have ${cart.items[itemIndex].quantity} in cart)` });
+                }
+                cart.items[itemIndex].quantity = newTotalQuantity;
             } else {
+                if (quantity > product.stock) {
+                    return res.status(400).json({ message: `Only ${product.stock} items available in stock` });
+                }
                 cart.items.push({ product_id, quantity });
             }
             await cart.save();
@@ -50,7 +100,7 @@ export const addToCart = async (req, res) => {
     }
 };
 
-// @desc    Update item quantity
+// @desc    Update item quantity with stock validation
 // @route   PUT /api/cart/:productId
 // @access  Private
 export const updateCartItem = async (req, res) => {
@@ -58,6 +108,11 @@ export const updateCartItem = async (req, res) => {
     const product_id = parseInt(req.params.productId);
 
     try {
+        const product = await Product.findOne({ id: product_id });
+        if (!product) {
+            return res.status(404).json({ message: "Product not found" });
+        }
+
         const cart = await Cart.findOne({ user: req.user._id });
 
         if (cart) {
@@ -69,6 +124,10 @@ export const updateCartItem = async (req, res) => {
                 if (quantity <= 0) {
                     cart.items.splice(itemIndex, 1);
                 } else {
+                    // Logic Rule: Quantity cannot exceed stock
+                    if (quantity > product.stock) {
+                        return res.status(400).json({ message: `Only ${product.stock} items available in stock` });
+                    }
                     cart.items[itemIndex].quantity = quantity;
                 }
                 await cart.save();

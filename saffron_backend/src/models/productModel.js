@@ -14,6 +14,7 @@ const productSchema = new mongoose.Schema(
         price: {
             type: Number,
             required: true,
+            min: [0, "Price cannot be negative"],
         },
         originalPrice: {
             type: Number,
@@ -41,9 +42,25 @@ const productSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        stock: {
+            type: Number,
+            default: 0,
+            min: [0, "Stock cannot be negative"],
+        },
     },
     { timestamps: true }
 );
+
+// Automatic tag management based on stock
+productSchema.pre("save", async function () {
+    if (this.isModified("stock")) {
+        if (this.stock === 0) {
+            this.tag = "Out of Stock";
+        } else if (this.stock > 0 && this.tag === "Out of Stock") {
+            this.tag = ""; // Clear the tag if stock is back and it was "Out of Stock"
+        }
+    }
+});
 
 const Product = mongoose.model("Product", productSchema);
 export default Product;

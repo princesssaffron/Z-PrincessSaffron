@@ -34,15 +34,27 @@ const ProductShowcase = () => {
   const [offset, setOffset] = useState(0);
 
   useEffect(() => {
+    const fetchWithRetry = async (url: string, retries = 3, delayMs = 1000): Promise<any> => {
+      for (let attempt = 1; attempt <= retries; attempt++) {
+        try {
+          const response = await fetch(url);
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          return await response.json();
+        } catch (error) {
+          if (attempt === retries) throw error;
+          console.warn(`Fetch attempt ${attempt} failed, retrying in ${delayMs}ms…`, error);
+          await new Promise((res) => setTimeout(res, delayMs * attempt)); // exponential back-off
+        }
+      }
+    };
+
     const fetchProducts = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/products");
-        if (!response.ok) throw new Error("Failed to fetch products");
-        const data = await response.json();
+        const data = await fetchWithRetry("http://localhost:5000/api/products");
         // Show only the first 2 products as per original design
         setApiProducts(data.slice(0, 2));
       } catch (error) {
-        console.error("Error fetching products:", error);
+        console.error("Error fetching products after retries:", error);
       } finally {
         setIsLoading(false);
       }

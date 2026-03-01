@@ -1,5 +1,12 @@
 import express from "express";
-import { getProducts, createProduct } from "../controllers/productController.js";
+import {
+    getProducts,
+    createProduct,
+    getProductById,
+    updateProduct,
+    deleteProduct,
+} from "../controllers/productController.js";
+import { protect, admin } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
@@ -45,6 +52,53 @@ const router = express.Router();
  *       201:
  *         description: Product created
  */
-router.route("/").get(getProducts).post(createProduct);
+router.route("/").get(getProducts).post(protect, admin, createProduct);
+
+/**
+ * @swagger
+ * /api/products/{id}:
+ *   get:
+ *     summary: Get a product by ID
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Product data
+ *       404:
+ *         description: Product not found
+ *   put:
+ *     summary: Update a product
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Product updated
+ *   delete:
+ *     summary: Delete a product
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Product deleted
+ */
+router.route("/:id")
+    .get(getProductById)
+    .put(protect, admin, updateProduct)
+    .delete(protect, admin, deleteProduct);
 
 export default router;

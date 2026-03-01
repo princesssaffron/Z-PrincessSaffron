@@ -2,8 +2,13 @@ import mongoose from "mongoose";
 
 const reviewSchema = new mongoose.Schema(
     {
-        reviewer_name: {
-            type: String,
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+            ref: "User",
+        },
+        product_id: {
+            type: Number,
             required: true,
         },
         rating: {
@@ -26,6 +31,9 @@ const reviewSchema = new mongoose.Schema(
     },
     { timestamps: true }
 );
+
+// Ensure one review per user per product
+reviewSchema.index({ user: 1, product_id: 1 }, { unique: true });
 
 const Review = mongoose.model("Review", reviewSchema);
 export default Review;

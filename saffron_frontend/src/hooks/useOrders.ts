@@ -161,8 +161,9 @@ export const useOrders = () => {
         },
       });
 
+      const data = await response.json();
       if (!response.ok) {
-        throw new Error("Failed to cancel order");
+        throw new Error(data.message || "Failed to cancel order");
       }
 
       toast({
@@ -172,11 +173,11 @@ export const useOrders = () => {
 
       await fetchOrders();
       return true;
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error cancelling order:", error);
       toast({
         title: "Error",
-        description: "Failed to cancel order",
+        description: error.message || "Failed to cancel order",
         variant: "destructive",
       });
       return false;

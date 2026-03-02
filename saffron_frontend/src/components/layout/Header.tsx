@@ -46,7 +46,12 @@ const Header = () => {
   useEffect(() => {
     const forceSolidPages = ["/cart", "/wishlist", "/checkout"];
 
-    if (forceSolidPages.includes(location.pathname) || location.pathname.startsWith("/profile")) {
+    if (
+      forceSolidPages.includes(location.pathname) ||
+      location.pathname.startsWith("/profile") ||
+      location.pathname.startsWith("/order") ||
+      location.pathname.startsWith("/admin")
+    ) {
       setIsScrolled(true);
       return;
     }
@@ -200,12 +205,14 @@ const Header = () => {
                     "
                   >
 
-                    {/* ===== USER MENU ===== */}
                     {user ? (
                       <>
-                        <div className="px-6 py-4 border-b border-gray-100">
-                          <p className="text-xs tracking-widest text-black-400 font-medium">
-                            MY ACCOUNT
+                        <div className="px-6 py-5 border-b border-gray-100 bg-royal-purple/5">
+                          <p className="text-[10px] tracking-[0.2em] text-royal-purple/50 font-bold uppercase mb-1">
+                            Welcome
+                          </p>
+                          <p className="text-sm font-serif font-semibold text-royal-purple truncate">
+                            {user.fullName}
                           </p>
                         </div>
 

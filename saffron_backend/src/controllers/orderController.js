@@ -1,19 +1,15 @@
 import User from "../models/userModel.js";
 import Cart from "../models/cartModel.js";
 import Product from "../models/productModel.js";
+import Order from "../models/orderModel.js";
 
 // @desc    Get user orders
 // @route   GET /api/users/orders
 // @access  Private
 export const getOrders = async (req, res) => {
     try {
-        const user = await User.findById(req.user._id);
-
-        if (user) {
-            res.json(user.orders);
-        } else {
-            res.status(404).json({ message: "User not found" });
-        }
+        const orders = await Order.find({ user: req.user._id }).sort({ createdAt: -1 });
+        res.json(orders);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -25,13 +21,8 @@ export const getOrders = async (req, res) => {
 export const createOrder = async (req, res) => {
     try {
         const { checkoutData } = req.body;
-        const user = await User.findById(req.user._id);
 
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
-
-        // 1. Validate items against stock (Check stock again!)
+        // 1. Validate items against stock
         for (const item of checkoutData.items) {
             const product = await Product.findOne({ id: item.product_id });
             if (!product) {
@@ -44,29 +35,29 @@ export const createOrder = async (req, res) => {
             }
         }
 
-        // 2. Reduce stock (Atomic update would be better, but we'll do sequential for now as per simple logic)
+        // 2. Reduce stock
         for (const item of checkoutData.items) {
             const product = await Product.findOne({ id: item.product_id });
             product.stock -= item.quantity;
-            await product.save(); // Model hook handles "Out of Stock" tag
+            await product.save();
         }
 
-        // 3. Create order record
-        const newOrder = {
+        // 3. Create order record in dedicated collection
+        const order = new Order({
+            user: req.user._id,
             orderId: Math.random().toString(36).substring(2, 11).toUpperCase(),
             subtotal: checkoutData.subtotal,
             discount: checkoutData.discount,
             shipping: checkoutData.shipping,
             total: checkoutData.total,
-            status: checkoutData.paymentMethod === "cod" ? "pending" : "paid",
+            status: checkoutData.paymentMethod === "cod" ? "pending" : "confirmed",
             items: checkoutData.items,
             shippingDetails: checkoutData.shippingDetails,
             paymentMethod: checkoutData.paymentMethod,
-            createdAt: new Date(),
-        };
+            razorpayOrderId: checkoutData.razorpayOrderId,
+        });
 
-        user.orders.push(newOrder);
-        await user.save();
+        const createdOrder = await order.save();
 
         // 4. Clear user cart
         const cart = await Cart.findOne({ user: req.user._id });
@@ -75,7 +66,7 @@ export const createOrder = async (req, res) => {
             await cart.save();
         }
 
-        res.status(201).json(newOrder);
+        res.status(201).json(createdOrder);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -86,23 +77,13 @@ export const createOrder = async (req, res) => {
 // @access  Private
 export const cancelOrder = async (req, res) => {
     try {
-        const user = await User.findById(req.user._id);
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
-
         const requestedId = String(req.params.orderId).trim();
 
-        const orderIndex = user.orders.findIndex((o) => {
-            const currentOrderId = String(o.orderId || "").trim();
-            return currentOrderId === requestedId;
-        });
+        const order = await Order.findOne({ orderId: requestedId, user: req.user._id });
 
-        if (orderIndex === -1) {
+        if (!order) {
             return res.status(404).json({ message: "Order not found" });
         }
-
-        const order = user.orders[orderIndex];
 
         if (order.status === "cancelled") {
             return res.status(400).json({ message: "Order is already cancelled" });
@@ -120,8 +101,7 @@ export const cancelOrder = async (req, res) => {
         }
 
         order.status = "cancelled";
-        user.markModified('orders');
-        await user.save();
+        await order.save();
 
         res.json(order);
     } catch (error) {

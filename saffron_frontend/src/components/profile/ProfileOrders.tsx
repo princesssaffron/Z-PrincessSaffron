@@ -19,6 +19,7 @@ const statusLabels: Record<OrderStatus, string> = {
   out_for_delivery: "Out for Delivery",
   delivered: "Delivered",
   cancelled: "Cancelled",
+  paid: "Order Paid",
 };
 
 const ProfileOrders = ({ orders, isLoading }: ProfileOrdersProps) => {
@@ -26,7 +27,7 @@ const ProfileOrders = ({ orders, isLoading }: ProfileOrdersProps) => {
   const [activeTab, setActiveTab] = useState("current");
 
   const currentOrders = orders.filter((order) =>
-    ["pending", "confirmed", "processing", "shipped", "out_for_delivery"].includes(order.status)
+    ["pending", "confirmed", "processing", "shipped", "out_for_delivery", "paid"].includes(order.status)
   );
 
   const orderHistory = orders.filter((order) =>
@@ -72,15 +73,15 @@ const ProfileOrders = ({ orders, isLoading }: ProfileOrdersProps) => {
   );
 
   const renderEmptyState = (message: string) => (
-  <div className="text-center py-16">
-    <Package className="w-12 h-12 text-muted-foreground/30 mx-auto mb-6" />
-    <p className="text-muted-foreground mb-8">{message}</p>
+    <div className="text-center py-16">
+      <Package className="w-12 h-12 text-muted-foreground/30 mx-auto mb-6" />
+      <p className="text-muted-foreground mb-8">{message}</p>
 
-    <Button variant="section" onClick={() => navigate("/products")}>
-      Start Shopping
-    </Button>
-  </div>
-)
+      <Button variant="section" onClick={() => navigate("/products")}>
+        Start Shopping
+      </Button>
+    </div>
+  )
 
 
   if (isLoading) {
@@ -110,11 +111,11 @@ const ProfileOrders = ({ orders, isLoading }: ProfileOrdersProps) => {
       <Tabs value={activeTab} onValueChange={setActiveTab}>
 
         {/* CLEAN RR STYLE TABS */}
-       <TabsList className="grid w-full grid-cols-2 mb-10 bg-transparent border-b border-border rounded-none">
+        <TabsList className="grid w-full grid-cols-2 mb-10 bg-transparent border-b border-border rounded-none">
 
-  <TabsTrigger
-    value="current"
-    className="
+          <TabsTrigger
+            value="current"
+            className="
     px-6 py-2
     tracking-[0.18em] text-sm transition-all
 
@@ -125,13 +126,13 @@ const ProfileOrders = ({ orders, isLoading }: ProfileOrdersProps) => {
     data-[state=active]:text-white
     data-[state=active]:shadow-md
     "
-  >
-    Current Orders ({currentOrders.length})
-  </TabsTrigger>
+          >
+            Current Orders ({currentOrders.length})
+          </TabsTrigger>
 
-  <TabsTrigger
-    value="history"
-    className="
+          <TabsTrigger
+            value="history"
+            className="
     px-6 py-2 
     tracking-[0.18em] text-sm transition-all
 
@@ -142,11 +143,11 @@ const ProfileOrders = ({ orders, isLoading }: ProfileOrdersProps) => {
     data-[state=active]:text-white
     data-[state=active]:shadow-md
     "
-  >
-    Order History ({orderHistory.length})
-  </TabsTrigger>
+          >
+            Order History ({orderHistory.length})
+          </TabsTrigger>
 
-</TabsList>
+        </TabsList>
 
         <TabsContent value="current" className="space-y-4">
           {currentOrders.length > 0

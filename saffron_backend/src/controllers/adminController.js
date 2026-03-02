@@ -1,5 +1,6 @@
 import User from "../models/userModel.js";
 import Product from "../models/productModel.js";
+import Order from "../models/orderModel.js";
 
 // @desc    Get dashboard overview stats
 // @route   GET /api/admin/stats
@@ -8,15 +9,14 @@ export const getDashboardStats = async (req, res) => {
     try {
         const totalUsers = await User.countDocuments({});
 
-        // Aggregate orders and revenue from nested user orders (filtering out cancelled/pending)
-        const orderStats = await User.aggregate([
-            { $unwind: "$orders" },
-            { $match: { "orders.status": { $nin: ["cancelled", "pending"] } } },
+        // Direct aggregation on Order collection
+        const orderStats = await Order.aggregate([
+            { $match: { status: { $nin: ["cancelled", "pending"] } } },
             {
                 $group: {
                     _id: null,
                     totalOrders: { $sum: 1 },
-                    totalRevenue: { $sum: "$orders.total" },
+                    totalRevenue: { $sum: "$total" },
                 },
             },
         ]);
@@ -44,13 +44,12 @@ export const getDashboardStats = async (req, res) => {
 // @access  Private/Admin
 export const getSalesReport = async (req, res) => {
     try {
-        const dailySales = await User.aggregate([
-            { $unwind: "$orders" },
-            { $match: { "orders.status": { $nin: ["cancelled", "pending"] } } },
+        const dailySales = await Order.aggregate([
+            { $match: { status: { $nin: ["cancelled", "pending"] } } },
             {
                 $group: {
-                    _id: { $dateToString: { format: "%Y-%m-%d", date: "$orders.createdAt" } },
-                    revenue: { $sum: "$orders.total" },
+                    _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+                    revenue: { $sum: "$total" },
                     orders: { $sum: 1 },
                 },
             },
@@ -58,13 +57,12 @@ export const getSalesReport = async (req, res) => {
             { $limit: 30 }, // Last 30 days
         ]);
 
-        const monthlySales = await User.aggregate([
-            { $unwind: "$orders" },
-            { $match: { "orders.status": { $nin: ["cancelled", "pending"] } } },
+        const monthlySales = await Order.aggregate([
+            { $match: { status: { $nin: ["cancelled", "pending"] } } },
             {
                 $group: {
-                    _id: { $dateToString: { format: "%Y-%m", date: "$orders.createdAt" } },
-                    revenue: { $sum: "$orders.total" },
+                    _id: { $dateToString: { format: "%Y-%m", date: "$createdAt" } },
+                    revenue: { $sum: "$total" },
                     orders: { $sum: 1 },
                 },
             },

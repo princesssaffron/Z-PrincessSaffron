@@ -4,7 +4,7 @@ import { useToast } from "@/hooks/use-toast";
 
 const API_URL = "http://localhost:5000/api";
 
-export type OrderStatus = 'pending' | 'confirmed' | 'processing' | 'shipped' | 'out_for_delivery' | 'delivered' | 'cancelled';
+export type OrderStatus = 'pending' | 'confirmed' | 'processing' | 'shipped' | 'out_for_delivery' | 'delivered' | 'cancelled' | 'paid';
 
 export interface OrderItem {
   product_id: number;
@@ -25,6 +25,7 @@ export interface Order {
   paymentMethod: string;
   items: OrderItem[];
   couponCode?: string;
+  razorpayOrderId?: string;
   estimatedDelivery?: string;
   trackingNumber?: string;
   createdAt: string;
@@ -48,6 +49,7 @@ export interface CheckoutData {
   couponCode: string | null;
   shippingDetails: ShippingDetails;
   paymentMethod: string;
+  razorpayOrderId?: string;
   items: {
     product_id: number;
     product_name: string;

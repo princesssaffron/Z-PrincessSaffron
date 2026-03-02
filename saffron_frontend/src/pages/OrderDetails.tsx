@@ -16,7 +16,9 @@ const statusSteps: { status: OrderStatus; label: string; icon: React.ElementType
 
 const getStatusIndex = (status: OrderStatus): number => {
   if (status === "cancelled") return -1;
-  return statusSteps.findIndex((step) => step.status === status);
+  // Map "paid" to "confirmed" for backward compatibility or if backend still uses it
+  const effectiveStatus = status === "paid" ? "confirmed" : status;
+  return statusSteps.findIndex((step) => step.status === effectiveStatus);
 };
 
 const OrderDetails = () => {

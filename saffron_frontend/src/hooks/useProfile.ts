@@ -33,7 +33,7 @@ export interface ProfileUpdate {
 }
 
 export const useProfile = () => {
-  const { user } = useAuth();
+  const { user, updateUserData } = useAuth();
   const { toast } = useToast();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -79,10 +79,9 @@ export const useProfile = () => {
         throw new Error("Failed to update profile");
       }
 
-      toast({
-        title: "Profile updated",
-        description: "Your profile has been updated successfully",
-      });
+      if (updates.fullName) {
+        updateUserData({ fullName: updates.fullName });
+      }
 
       await fetchProfile();
       return true;

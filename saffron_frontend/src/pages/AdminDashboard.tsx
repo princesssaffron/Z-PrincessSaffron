@@ -409,22 +409,25 @@ const AdminDashboard = () => {
                   {/* Stats Cards */}
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {[
-                      { label: "Total Users", value: stats?.totalUsers ?? 0, icon: <Users className="w-5 h-5" />, color: "bg-blue-50 text-blue-600" },
-                      { label: "Total Orders", value: stats?.totalOrders ?? 0, icon: <ShoppingBag className="w-5 h-5" />, color: "bg-green-50 text-green-600" },
-                      { label: "Total Revenue", value: `₹${(stats?.totalRevenue ?? 0).toLocaleString()}`, icon: <IndianRupee className="w-5 h-5" />, color: "bg-amber-50 text-amber-600" },
-                      { label: "Low Stock Items", value: stats?.lowStockCount ?? 0, icon: <AlertTriangle className="w-5 h-5" />, color: "bg-red-50 text-red-600", alert: (stats?.lowStockCount ?? 0) > 0 },
+                      { label: "Total Users", value: stats?.totalUsers ?? 0, icon: <Users className="w-5 h-5" />, color: "bg-blue-50 text-blue-600", border: "border-blue-100" },
+                      { label: "Total Orders", value: stats?.totalOrders ?? 0, icon: <ShoppingBag className="w-5 h-5" />, color: "bg-green-50 text-green-600", border: "border-green-100" },
+                      { label: "Total Revenue", value: `₹${(stats?.totalRevenue ?? 0).toLocaleString()}`, icon: <IndianRupee className="w-5 h-5" />, color: "bg-amber-50 text-amber-600", border: "border-amber-100" },
+                      { label: "Low Stock Items", value: stats?.lowStockCount ?? 0, icon: <AlertTriangle className="w-5 h-5" />, color: "bg-red-50 text-red-600", border: "border-red-100", alert: (stats?.lowStockCount ?? 0) > 0 },
                     ].map((stat, i) => (
-                      <div key={i} className="bg-white border border-gold/15 rounded-2xl p-6 shadow-sm">
+                      <div key={i} className={`bg-white border ${stat.border} rounded-3xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md transition-all duration-300`}>
                         <div className="flex items-center justify-between mb-4">
-                          <div className={`w-10 h-10 rounded-xl ${stat.color} flex items-center justify-center`}>
+                          <div className={`w-12 h-12 rounded-2xl ${stat.color} flex items-center justify-center shadow-inner`}>
                             {stat.icon}
                           </div>
                           {stat.alert && (
-                            <span className="flex h-2 w-2 rounded-full bg-red-500 animate-pulse" />
+                            <div className="flex items-center gap-1.5 px-2.5 py-1 bg-red-100 text-red-600 rounded-full animate-pulse">
+                              <span className="h-2 w-2 rounded-full bg-red-500" />
+                              <span className="text-[10px] font-bold uppercase tracking-wider">Action Needed</span>
+                            </div>
                           )}
                         </div>
-                        <p className="text-xs font-semibold tracking-[0.1em] uppercase text-royal-purple/40">{stat.label}</p>
-                        <h3 className="text-2xl font-semibold text-royal-purple mt-1">{statsLoading ? "..." : stat.value}</h3>
+                        <p className="text-[10px] font-bold tracking-[0.15em] uppercase text-royal-purple/40">{stat.label}</p>
+                        <h3 className="text-3xl font-serif text-royal-purple mt-1">{statsLoading ? "..." : stat.value}</h3>
                       </div>
                     ))}
                   </div>
@@ -445,24 +448,34 @@ const AdminDashboard = () => {
                         </div>
                       </div>
 
-                      <div className="h-[300px] flex flex-col justify-end gap-1">
+                      <div className="h-[320px] pt-4">
                         {salesLoading ? (
                           <div className="h-full flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin text-gold" /></div>
                         ) : !salesData || (salesPeriod === "daily" ? !salesData.daily?.length : !salesData.monthly?.length) ? (
-                          <div className="h-full flex items-center justify-center text-royal-purple/30 text-sm">No sales data yet</div>
+                          <div className="h-full flex items-center justify-center text-royal-purple/30 text-sm italic">No sales activity tracked for this period</div>
                         ) : (
-                          <div className="flex items-end justify-between h-48 px-4 gap-2">
-                            {(salesPeriod === "daily" ? salesData.daily : salesData.monthly).slice(-15).map((d: any, i) => {
-                              const maxRevenue = Math.max(...(salesPeriod === "daily" ? salesData.daily : salesData.monthly).map(x => x.revenue), 1);
-                              const height = (d.revenue / maxRevenue) * 100;
+                          <div className="flex items-end justify-between h-56 px-4 gap-3 bg-ivory/20 rounded-2xl p-6 border border-gold/5">
+                            {(salesPeriod === "daily" ? salesData.daily : salesData.monthly).slice(-12).map((d: any, i) => {
+                              const maxRevenue = Math.max(...(salesPeriod === "daily" ? salesData.daily : salesData.monthly).map(x => x.revenue), 1000);
+                              const height = Math.max((d.revenue / maxRevenue) * 100, 4); // Min 4% height to see something
                               return (
-                                <div key={i} className="flex-1 flex flex-col items-center group relative">
-                                  <div className="absolute -top-8 bg-royal-purple text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
-                                    {salesPeriod === "daily" ? d.date : d.month}: ₹{d.revenue.toLocaleString()}
+                                <div key={i} className="flex-1 flex flex-col items-center group relative h-full justify-end">
+                                  {/* Tooltip */}
+                                  <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-royal-purple text-white text-[10px] px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-xl z-20 pointer-events-none scale-90 group-hover:scale-100">
+                                    <p className="font-bold whitespace-nowrap">{salesPeriod === "daily" ? d.date : d.month}</p>
+                                    <p className="text-gold whitespace-nowrap">₹{d.revenue.toLocaleString()}</p>
+                                    <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-royal-purple rotate-45" />
                                   </div>
-                                  <div className="w-full bg-gold/20 rounded-t-sm group-hover:bg-gold transition-colors" style={{ height: `${height}%` }} />
-                                  <span className="text-[8px] text-royal-purple/30 mt-2 rotate-45 origin-left whitespace-nowrap">
-                                    {salesPeriod === "daily" ? d.date.split('-').slice(2).join('') : d.month.split('-').slice(1).join('')}
+
+                                  {/* Bar */}
+                                  <div
+                                    className="w-full bg-gradient-to-t from-gold/40 to-gold/80 rounded-t-lg group-hover:from-gold group-hover:to-gold-light transition-all duration-500 shadow-sm"
+                                    style={{ height: `${height}%` }}
+                                  />
+
+                                  {/* Label */}
+                                  <span className="text-[9px] font-bold text-royal-purple/40 mt-3 rotate-45 origin-left whitespace-nowrap group-hover:text-royal-purple transition-colors">
+                                    {salesPeriod === "daily" ? d.date.split('-').slice(2).join('/') : d.month.split('-').slice(1).join('/')}
                                   </span>
                                 </div>
                               );
@@ -488,14 +501,27 @@ const AdminDashboard = () => {
                           <div className="py-10 text-center text-royal-purple/30 text-xs">All products well stocked</div>
                         ) : (
                           (stats?.lowStockProducts || []).map((p: any) => (
-                            <div key={p.id} className="flex items-center gap-3 p-3 rounded-xl border border-red-50">
-                              <img src={p.image} className="w-10 h-10 object-cover rounded-lg shrink-0 border border-gold/10" onError={(e) => { (e.target as HTMLImageElement).src = "https://placehold.co/40x40/fee2e2/ef4444?text=!"; }} />
+                            <div key={p.id} className="flex items-center gap-4 p-4 rounded-xl border border-red-100/50 bg-red-50/30 hover:bg-red-50/50 transition-colors group">
+                              <img
+                                src={p.image}
+                                className="w-12 h-12 object-cover rounded-xl shrink-0 border border-red-100 shadow-sm"
+                                onError={(e) => { (e.target as HTMLImageElement).src = "https://placehold.co/48x48/fee2e2/ef4444?text=!"; }}
+                              />
                               <div className="flex-1 min-w-0">
-                                <p className="text-xs font-semibold text-royal-purple truncate">{p.name}</p>
-                                <p className="text-[10px] text-red-500 font-bold uppercase tracking-widest mt-0.5">Stock: {p.stock}</p>
+                                <p className="text-sm font-semibold text-royal-purple truncate mb-0.5">{p.name}</p>
+                                <div className="flex items-center gap-2">
+                                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-100 text-red-600 uppercase tracking-tighter">
+                                    Low Stock: {p.stock}
+                                  </span>
+                                </div>
                               </div>
-                              <Button size="sm" variant="section" onClick={() => { setTab("stock"); }} className="h-7 w-7 p-0 rounded-full">
-                                <Pencil className="w-3 h-3" />
+                              <Button
+                                size="icon"
+                                variant="ghost"
+                                onClick={() => { setTab("stock"); }}
+                                className="h-8 w-8 rounded-full text-royal-purple/40 hover:text-royal-purple hover:bg-gold/10 transition-all opacity-0 group-hover:opacity-100"
+                              >
+                                <Pencil className="w-3.5 h-3.5" />
                               </Button>
                             </div>
                           ))

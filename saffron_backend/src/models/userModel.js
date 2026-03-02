@@ -31,36 +31,7 @@ const userSchema = new mongoose.Schema(
         shipping_pincode: String,
         shipping_country: String,
         likedProducts: [{ type: Number }],
-        orders: [
-            {
-                orderId: String,
-                subtotal: Number,
-                discount: Number,
-                shipping: Number,
-                total: Number,
-                status: { type: String, default: "pending" },
-                items: [
-                    {
-                        product_id: Number,
-                        product_name: String,
-                        product_image: String,
-                        quantity: Number,
-                        price: Number,
-                    },
-                ],
-                shippingDetails: {
-                    name: String,
-                    email: String,
-                    phone: String,
-                    address: String,
-                    city: String,
-                    state: String,
-                    pincode: String,
-                },
-                paymentMethod: String,
-                createdAt: { type: Date, default: Date.now },
-            },
-        ],
+        likedProducts: [{ type: Number }],
     },
     { timestamps: true }
 );

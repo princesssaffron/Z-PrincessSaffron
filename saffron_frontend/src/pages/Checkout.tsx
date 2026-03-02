@@ -127,15 +127,34 @@ const Checkout = () => {
     setIsSubmitting(true);
 
     try {
-      // 1. Create Order in Supabase
+      // 1. Create secure Razorpay Order in Backend
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/payments/create-order`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${user.token}`,
+        },
+        body: JSON.stringify({
+          amount: total,
+          currency: "INR",
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create Razorpay secure order");
+      }
+
+      const rzpOrder = await response.json();
+
+      // 2. Create local Order in Database
       const orderId = await createOrder({
         subtotal,
         discount: discountAmount,
         shipping,
         total,
         couponCode: savedCoupon,
-        shippingDetails, // Use local state directly
-        paymentMethod: "razorpay", // Force razorpay
+        shippingDetails,
+        paymentMethod: "razorpay",
         items: cartProducts.map((item) => ({
           product_id: item.product_id,
           product_name: item.product!.name,
@@ -143,26 +162,24 @@ const Checkout = () => {
           quantity: item.quantity,
           price: item.product!.price,
         })),
+        razorpayOrderId: rzpOrder.id, // Store the RZP order ID
       });
 
       if (!orderId) {
-        throw new Error("Failed to create order");
+        throw new Error("Failed to create local order record");
       }
 
-      // 2. Initialize Razorpay
+      // 3. Initialize Razorpay Modal
       const options = {
-        key: import.meta.env.VITE_RAZORPAY_KEY_ID, // Ensure this is in .env
-        amount: total * 100, // Amount in paise
-        currency: "INR",
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+        amount: rzpOrder.amount, // Secured from backend
+        currency: rzpOrder.currency,
         name: "Z Princess Saffron",
         description: "Premium Kashmiri Saffron",
-        image: "https://Lovable.dev/opengraph-image-p98pqg.png", // Or your logo
-        order_id: "", // If implementing backend order gen, put it here. For client-only demo, leave empty or remove.
+        image: "https://Lovable.dev/opengraph-image-p98pqg.png",
+        order_id: rzpOrder.id, // THE SECURE ORDER ID FROM BACKEND
         handler: async function (response: any) {
           // Payment Success
-          // In a real staging/prod, you'd verify signature on backend.
-          // For now, we assume success and clear cart.
-
           await clearCart();
           sessionStorage.removeItem("appliedCoupon");
           sessionStorage.removeItem("discountPercent");
@@ -180,7 +197,7 @@ const Checkout = () => {
           contact: shippingDetails.phone
         },
         theme: {
-          color: "#6c38cc" // royal-purple
+          color: "#6c38cc"
         },
         modal: {
           ondismiss: function () {
@@ -197,15 +214,11 @@ const Checkout = () => {
       const razorpay = new (window as any).Razorpay(options);
       razorpay.open();
 
-      // Note: setIsSubmitting(false) is handled in ondismiss or handler usually, 
-      // but since open() is non-blocking, we might want to keep it true until modal closes?
-      // For ondismiss handler above handles it.
-
     } catch (error) {
       console.error("Checkout Error:", error);
       toast({
         title: "Checkout Failed",
-        description: "Something went wrong. Please try again.",
+        description: error instanceof Error ? error.message : "Something went wrong. Please try again.",
         variant: "destructive",
       });
       setIsSubmitting(false);
@@ -220,10 +233,10 @@ const Checkout = () => {
             <h1 className="font-serif text-3xl text-royal-purple mb-4">Please Sign In</h1>
             <p className="text-muted-foreground mb-8">You need to be logged in to checkout</p>
             <Link to="/auth">
-  <Button>
-    Sign In
-  </Button>
-</Link>
+              <Button>
+                Sign In
+              </Button>
+            </Link>
 
           </div>
         </section>
@@ -239,10 +252,10 @@ const Checkout = () => {
             <h1 className="font-serif text-3xl text-royal-purple mb-4">Your Cart is Empty</h1>
             <p className="text-muted-foreground mb-8">Add some products to checkout</p>
             <Link to="/products">
-  <Button>
-    Shop Now
-  </Button>
-</Link>
+              <Button>
+                Shop Now
+              </Button>
+            </Link>
 
           </div>
         </section>
@@ -276,16 +289,16 @@ const Checkout = () => {
                       Delivery Address
                     </h2>
                     <Button
-  type="button"
-  variant="royal"
-  size="sm"
-  onClick={handleFetchFromProfile}
-  disabled={profileLoading}
-  className="flex items-center justify-center gap-3 whitespace-nowrap"
->
-  
-  <span className="leading-none">Fetch from Profile</span>
-</Button>
+                      type="button"
+                      variant="royal"
+                      size="sm"
+                      onClick={handleFetchFromProfile}
+                      disabled={profileLoading}
+                      className="flex items-center justify-center gap-3 whitespace-nowrap"
+                    >
+
+                      <span className="leading-none">Fetch from Profile</span>
+                    </Button>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -420,13 +433,13 @@ const Checkout = () => {
                   </div>
 
                   <Button
-  type="submit"
-  variant="royal"
-  disabled={isSubmitting}
-  className="w-full mt-6"
->
-  {isSubmitting ? "Processing..." : "Pay Now"}
-</Button>
+                    type="submit"
+                    variant="royal"
+                    disabled={isSubmitting}
+                    className="w-full mt-6"
+                  >
+                    {isSubmitting ? "Processing..." : "Pay Now"}
+                  </Button>
 
                   <div className="flex items-center justify-center gap-2 mt-4 text-xs text-muted-foreground">
                     <Shield className="w-4 h-4" />

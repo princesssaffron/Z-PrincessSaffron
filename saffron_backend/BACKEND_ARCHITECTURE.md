@@ -78,4 +78,5 @@ saffron_backend/src/
 1. **Environment**: Create a `.env` file with `MONGO_URI`, `JWT_SECRET`, and `GOOGLE_CLIENT_ID`.
 2. **Install**: `npm install`
 3. **Run**: `npm run dev` (Nodemon) or `npm start` (Node).
-4. **API Docs**: Visit `http://localhost:5000/api-docs` to view full Swagger documentation.
+4. **API Docs**: Visit ` to view full Swagger documentation.
+`http://localhost:5000/api-docs

@@ -17,7 +17,7 @@ const AboutStory = () => {
           loop
           muted
           playsInline
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover opacity-50"
         >
           <source src="/videos/about-bg.mp4" type="video/mp4" />
         </video>

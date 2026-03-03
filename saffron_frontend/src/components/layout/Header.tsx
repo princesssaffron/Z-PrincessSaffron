@@ -211,7 +211,7 @@ const Header = () => {
                           <p className="text-[10px] tracking-[0.2em] text-royal-purple/50 font-bold uppercase mb-1">
                             Welcome
                           </p>
-                          <p className="text-sm font-serif font-semibold text-royal-purple truncate">
+                          <p className="text-sm font-serif font-light text-royal-purple truncate">
                             {user.fullName}
                           </p>
                         </div>

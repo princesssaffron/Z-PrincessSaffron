@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import {
   Plus, Pencil, Trash2, Upload, X,
-  LayoutDashboard, Boxes, LogOut, Store, Loader2,
+  LayoutDashboard, Boxes, Loader2,
   Users, ShoppingBag, IndianRupee, AlertTriangle, TrendingUp,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -336,8 +336,8 @@ const AdminDashboard = () => {
         </div>
       ) : (
         <>
-          <Upload className="mx-auto w-8 h-8 text-royal-purple/30 mb-3" />
-          <p className="text-xs text-royal-purple/40 mb-3">PNG, JPG up to 2 MB</p>
+          <Upload className="mx-auto w-8 h-8 text-royal-purple/90 mb-3" />
+          <p className="text-xs font-rr text-royal-purple/40 mb-3">PNG, JPG up to 2 MB</p>
           <input type="file" accept="image/*" onChange={onFile} required={required} className="text-sm text-royal-purple/60" />
         </>
       )}
@@ -349,23 +349,23 @@ const AdminDashboard = () => {
     <div className="min-h-screen bg-ivory flex flex-col">
 
       {/* HEADER */}
-      <header className="border-b border-gold/20 bg-white sticky top-0 z-50 shadow-sm">
+      <header className="border-b border-[#C6A85A]/20 bg-white sticky top-0 z-50 shadow-sm">
         <div className="max-w-screen-xl mx-auto px-6 h-18 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center">
-              <LayoutDashboard className="w-5 h-5 text-gold" />
+            <div className="w-10 h-10 rounded-full bg-[#C6A85A]/10 flex items-center justify-center">
+              <LayoutDashboard className="w-5 h-5 text-[#C6A85A] font-rr" />
             </div>
             <div>
-              <h1 className="font-serif text-lg tracking-[0.2em] uppercase text-royal-purple">Princess Saffron</h1>
-              <p className="text-[10px] tracking-[0.3em] uppercase text-royal-purple/40">Admin Dashboard</p>
+              <h1 className="font-cinzel text-md font-medium tracking-[0.2em] uppercase text-royal-purple">Z Princess Saffron</h1>
+              <p className="text-[10px] tracking-[0.3em] uppercase font-medium text-royal-purple/40 font-rr">Admin Dashboard</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <Button variant="section" onClick={() => navigate("/")} className="gap-2 text-xs tracking-widest uppercase">
-              <Store className="w-4 h-4" /> Storefront
+              Storefront
             </Button>
             <Button variant="royal" onClick={() => { signOut(); navigate("/auth"); }} className="gap-2 text-xs tracking-widest uppercase">
-              <LogOut className="w-4 h-4" /> Logout
+              Logout
             </Button>
           </div>
         </div>
@@ -376,14 +376,14 @@ const AdminDashboard = () => {
 
         {/* SIDEBAR */}
         <aside className="w-56 shrink-0">
-          <nav className="bg-white border border-gold/15 rounded-2xl p-3 shadow-sm space-y-1 sticky top-24">
+          <nav className="bg-white border border-gold/15  p-3 shadow-sm space-y-1 sticky top-24">
             {tabs.map((t) => (
               <button
                 key={t.id}
                 onClick={() => setTab(t.id)}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm tracking-wider transition-all duration-200 text-left ${tab === t.id
-                  ? "bg-gold text-white font-semibold shadow"
-                  : "text-royal-purple/70 hover:bg-gold/10 hover:text-royal-purple"
+                className={`w-full flex items-center gap-3 px-4 py-3 font-rr font-light text-sm tracking-wider transition-all duration-200 text-left ${tab === t.id
+                  ? " text-royal-purple font-light shadow"
+                  : "text-royal-purple/70  hover:text-gold"
                   }`}
               >
                 {t.icon}
@@ -409,10 +409,10 @@ const AdminDashboard = () => {
                   {/* Stats Cards */}
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {[
-                      { label: "Total Users", value: stats?.totalUsers ?? 0, icon: <Users className="w-5 h-5" />, color: "bg-blue-50 text-blue-600", border: "border-blue-100" },
-                      { label: "Total Orders", value: stats?.totalOrders ?? 0, icon: <ShoppingBag className="w-5 h-5" />, color: "bg-green-50 text-green-600", border: "border-green-100" },
-                      { label: "Total Revenue", value: `₹${(stats?.totalRevenue ?? 0).toLocaleString()}`, icon: <IndianRupee className="w-5 h-5" />, color: "bg-amber-50 text-amber-600", border: "border-amber-100" },
-                      { label: "Low Stock Items", value: stats?.lowStockCount ?? 0, icon: <AlertTriangle className="w-5 h-5" />, color: "bg-red-50 text-red-600", border: "border-red-100", alert: (stats?.lowStockCount ?? 0) > 0 },
+                      { label: "Total Users", value: stats?.totalUsers ?? 0, icon: <Users className="w-5 h-5" />, color: "bg-blue-50 font-medium text-blue-600", border: "border-blue-100" },
+                      { label: "Total Orders", value: stats?.totalOrders ?? 0, icon: <ShoppingBag className="w-5 h-5" />, color: "bg-green-50 font-medium text-green-600", border: "border-green-100" },
+                      { label: "Total Revenue", value: `₹${(stats?.totalRevenue ?? 0).toLocaleString()}`, icon: <IndianRupee className="w-5 h-5" />, color: "bg-amber-50 font-medium text-amber-600", border: "border-amber-100" },
+                      { label: "Low Stock Items", value: stats?.lowStockCount ?? 0, icon: <AlertTriangle className="w-5 h-5" />, color: "bg-red-50 font-medium text-red-600", border: "border-red-100", alert: (stats?.lowStockCount ?? 0) > 0 },
                     ].map((stat, i) => (
                       <div key={i} className={`bg-white border ${stat.border} rounded-3xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md transition-all duration-300`}>
                         <div className="flex items-center justify-between mb-4">
@@ -426,8 +426,10 @@ const AdminDashboard = () => {
                             </div>
                           )}
                         </div>
-                        <p className="text-[10px] font-bold tracking-[0.15em] uppercase text-royal-purple/40">{stat.label}</p>
-                        <h3 className="text-3xl font-serif text-royal-purple mt-1">{statsLoading ? "..." : stat.value}</h3>
+                        <p className="text-[10px] font-bold font-rr tracking-[0.15em] uppercase text-royal-purple/40">{stat.label}</p>
+                        <h3 className="text-xl font-rr font-light text-royal-purple mt-1">
+                          {statsLoading ? "..." : stat.value}
+                        </h3>
                       </div>
                     ))}
                   </div>
@@ -440,11 +442,11 @@ const AdminDashboard = () => {
                           <div className="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center">
                             <TrendingUp className="w-5 h-5 text-gold" />
                           </div>
-                          <h2 className="font-serif text-xl tracking-[0.1em] uppercase text-royal-purple">Sales Performance</h2>
+                          <h2 className="font-serif text-lg tracking-[0.1em] uppercase text-royal-purple">Sales Performance</h2>
                         </div>
                         <div className="flex bg-ivory p-1 rounded-lg">
-                          <button onClick={() => setSalesPeriod("daily")} className={`px-4 py-1.5 text-[10px] tracking-widest uppercase rounded-md transition-all ${salesPeriod === "daily" ? "bg-white text-gold shadow-sm font-bold" : "text-royal-purple/40"}`}>Daily</button>
-                          <button onClick={() => setSalesPeriod("monthly")} className={`px-4 py-1.5 text-[10px] tracking-widest uppercase rounded-md transition-all ${salesPeriod === "monthly" ? "bg-white text-gold shadow-sm font-bold" : "text-royal-purple/40"}`}>Monthly</button>
+                          <button onClick={() => setSalesPeriod("daily")} className={`px-4 py-1.5 text-[10px] font-medium tracking-widest uppercase rounded-md transition-all ${salesPeriod === "daily" ? "bg-white text-gold font-rr shadow-sm font-bold" : "text-royal-purple/40"}`}>Daily</button>
+                          <button onClick={() => setSalesPeriod("monthly")} className={`px-4 py-1.5 text-[10px] font-medium tracking-widest uppercase rounded-md transition-all ${salesPeriod === "monthly" ? "bg-white text-gold font-rr shadow-sm font-bold" : "text-royal-purple/40"}`}>Monthly</button>
                         </div>
                       </div>
 
@@ -491,7 +493,7 @@ const AdminDashboard = () => {
                         <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center">
                           <AlertTriangle className="w-5 h-5 text-red-500" />
                         </div>
-                        <h2 className="font-serif text-xl tracking-[0.1em] uppercase text-royal-purple">Low Stock</h2>
+                        <h2 className="font-serif text-lg tracking-[0.1em] uppercase text-royal-purple">Low Stock</h2>
                       </div>
 
                       <div className="space-y-4 max-h-[300px] overflow-y-auto pr-2">
@@ -502,11 +504,7 @@ const AdminDashboard = () => {
                         ) : (
                           (stats?.lowStockProducts || []).map((p: any) => (
                             <div key={p.id} className="flex items-center gap-4 p-4 rounded-xl border border-red-100/50 bg-red-50/30 hover:bg-red-50/50 transition-colors group">
-                              <img
-                                src={p.image}
-                                className="w-12 h-12 object-cover rounded-xl shrink-0 border border-red-100 shadow-sm"
-                                onError={(e) => { (e.target as HTMLImageElement).src = "https://placehold.co/48x48/fee2e2/ef4444?text=!"; }}
-                              />
+
                               <div className="flex-1 min-w-0">
                                 <p className="text-sm font-semibold text-royal-purple truncate mb-0.5">{p.name}</p>
                                 <div className="flex items-center gap-2">
@@ -534,16 +532,16 @@ const AdminDashboard = () => {
 
               {/* ── ADD PRODUCT ────────────────────────────────────────── */}
               {tab === "add" && (
-                <div className="bg-white border border-gold/15 rounded-2xl p-10 shadow-sm">
+                <div className="bg-white border border-gold/15 rounded-2xl p-10 shadow-sm ">
                   <div className="flex items-center gap-3 mb-10">
                     <div className="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center">
                       <Plus className="w-5 h-5 text-gold" />
                     </div>
                     <h2 className="font-serif text-2xl tracking-[0.15em] uppercase text-royal-purple">Add New Product</h2>
                   </div>
-                  <form onSubmit={handleAdd} className="space-y-8">
-                    <div className="grid md:grid-cols-2 gap-8">
-                      <FormField label="Product Name">
+                  <form onSubmit={handleAdd} className="space-y-8 ">
+                    <div className="grid md:grid-cols-2 gap-8 ">
+                      <FormField label="Product Name" >
                         <Input value={addData.name} onChange={(e) => setAddData((p) => ({ ...p, name: e.target.value }))} required className={inputCls} />
                       </FormField>
                       <FormField label="Category">
@@ -578,7 +576,7 @@ const AdminDashboard = () => {
                     <FormField label="Description">
                       <Textarea value={addData.description} onChange={(e) => setAddData((p) => ({ ...p, description: e.target.value }))} required className={`min-h-[120px] ${inputCls}`} />
                     </FormField>
-                    <div className="flex justify-end">
+                    <div className="flex justify-center">
                       <Button variant="royal" type="submit" disabled={addLoading} className="px-10 tracking-widest uppercase text-xs">
                         {addLoading ? <><Loader2 className="w-4 h-4 animate-spin mr-2" />Saving…</> : "Save Product"}
                       </Button>
@@ -618,19 +616,20 @@ const AdminDashboard = () => {
                         <div className="space-y-3">
                           {products.map((p) => (
                             <div key={p._id} className="flex items-center gap-4 p-4 border border-gold/10 rounded-xl hover:border-gold/30 transition-colors">
-                              <img
-                                src={p.image}
-                                className="w-14 h-14 object-cover rounded-lg border border-gold/10 shrink-0"
-                                onError={(e) => { (e.target as HTMLImageElement).src = "https://placehold.co/56x56/f5f0e8/C6A85A?text=IMG"; }}
-                              />
+
                               <div className="flex-1 min-w-0">
-                                <p className="font-medium text-royal-purple truncate">{p.name}</p>
-                                <p className="text-xs text-royal-purple/40 mt-0.5">₹{p.price.toLocaleString()} · {p.category} · Stock: {p.stock ?? 0}</p>
+                                <p className="font-light text-royal-purple truncate">{p.name}</p>
+                                <p className="text-xs font-rr text-royal-purple/40 mt-0.5">₹{p.price.toLocaleString()} · {p.category} · Stock: {p.stock ?? 0}</p>
                               </div>
-                              <Button size="sm" variant="section"
-                                onClick={() => { setEditProduct(p); setEditImagePreview(p.image?.startsWith("data:") ? p.image : null); }}
-                                className="shrink-0 gap-1.5 text-xs tracking-widest uppercase">
-                                <Pencil className="w-3.5 h-3.5" /> Edit
+                              <Button
+                                variant="section"
+                                onClick={() => {
+                                  setEditProduct(p);
+                                  setEditImagePreview(p.image?.startsWith("data:") ? p.image : null);
+                                }}
+                                className="shrink-0 h-8 px-7 text-[11px] uppercase w-auto min-w-0"
+                              >
+                                EDIT
                               </Button>
                             </div>
                           ))}
@@ -706,8 +705,13 @@ const AdminDashboard = () => {
                       </div>
                       <h2 className="font-serif text-2xl tracking-[0.15em] uppercase text-royal-purple">Delete Product</h2>
                     </div>
-                    <Button variant="section" onClick={fetchProducts} disabled={listLoading} className="text-xs tracking-widest uppercase">
-                      {listLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Refresh"}
+                    <Button
+                      variant="section"
+                      onClick={fetchProducts}
+                      disabled={listLoading}
+                      className="h-8 px-3 text-[11px] tracking-wide uppercase w-40 min-w-0"
+                    >
+                      {listLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : "Refresh"}
                     </Button>
                   </div>
 
@@ -719,14 +723,10 @@ const AdminDashboard = () => {
                     <div className="space-y-3">
                       {products.map((p) => (
                         <div key={p._id} className="flex items-center gap-4 p-4 border border-gold/10 rounded-xl hover:border-gold/30 transition-colors">
-                          <img
-                            src={p.image}
-                            className="w-14 h-14 object-cover rounded-lg border border-gold/10 shrink-0"
-                            onError={(e) => { (e.target as HTMLImageElement).src = "https://placehold.co/56x56/f5f0e8/C6A85A?text=IMG"; }}
-                          />
+
                           <div className="flex-1 min-w-0">
-                            <p className="font-medium text-royal-purple truncate">{p.name}</p>
-                            <p className="text-xs text-royal-purple/40">ID: {p.id} · ₹{p.price.toLocaleString()} · Stock: {p.stock ?? 0}</p>
+                            <p className="font-light font-rr text-royal-purple truncate">{p.name}</p>
+                            <p className="text-xs font-rr text-royal-purple/40">ID: {p.id} · ₹{p.price.toLocaleString()} · Stock: {p.stock ?? 0}</p>
                           </div>
                           {deleteId === p._id ? (
                             <div className="flex items-center gap-2 shrink-0">
@@ -758,11 +758,29 @@ const AdminDashboard = () => {
                       <h2 className="font-serif text-2xl tracking-[0.15em] uppercase text-royal-purple">Manage Stock</h2>
                     </div>
                     <div className="flex gap-3">
-                      <Button variant="section" onClick={fetchProducts} disabled={listLoading} className="text-xs tracking-widest uppercase">
-                        {listLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Refresh"}
+                      <Button
+                        variant="section"
+                        onClick={fetchProducts}
+                        disabled={listLoading}
+                        className="h-8 px-3 text-[11px] tracking-wide uppercase w-28 min-w-0"
+                      >
+                        {listLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : "Refresh"}
                       </Button>
-                      <Button variant="royal" onClick={handleSaveStock} disabled={stockSaving || listLoading} className="text-xs tracking-widest uppercase px-8">
-                        {stockSaving ? <><Loader2 className="w-4 h-4 animate-spin mr-2" />Saving…</> : "Save Stock"}
+
+                      <Button
+                        variant="royal"
+                        onClick={handleSaveStock}
+                        disabled={stockSaving || listLoading}
+                        className="h-8 px-3 text-[11px] tracking-wide uppercase w-28 min-w-0"
+                      >
+                        {stockSaving ? (
+                          <>
+                            <Loader2 className="w-3 h-3 animate-spin mr-1" />
+                            Saving…
+                          </>
+                        ) : (
+                          "Save Stock"
+                        )}
                       </Button>
                     </div>
                   </div>
@@ -775,23 +793,19 @@ const AdminDashboard = () => {
                     <div className="space-y-3">
                       {products.map((p) => (
                         <div key={p._id} className="flex items-center gap-4 p-4 border border-gold/10 rounded-xl hover:border-gold/30 transition-colors">
-                          <img
-                            src={p.image}
-                            className="w-14 h-14 object-cover rounded-lg border border-gold/10 shrink-0"
-                            onError={(e) => { (e.target as HTMLImageElement).src = "https://placehold.co/56x56/f5f0e8/C6A85A?text=IMG"; }}
-                          />
+
                           <div className="flex-1 min-w-0">
-                            <p className="font-medium text-royal-purple truncate">{p.name}</p>
-                            <p className="text-xs text-royal-purple/40 mt-0.5">₹{p.price.toLocaleString()} · {p.category}</p>
+                            <p className="font-light  font-rr text-royal-purple truncate">{p.name}</p>
+                            <p className="text-xs font-rr text-royal-purple/40 mt-0.5">₹{p.price.toLocaleString()} · {p.category}</p>
                           </div>
                           <div className="flex items-center gap-2 shrink-0">
-                            <label className="text-xs text-royal-purple/50 uppercase tracking-wider">Stock</label>
+                            <label className="text-xs font-rr text-royal-purple/50 uppercase tracking-wider">Stock</label>
                             <Input
                               type="number"
                               min={0}
                               value={(stockMap[p._id] ?? p.stock) === 0 ? "" : (stockMap[p._id] ?? p.stock)}
                               onChange={(e) => setStockMap((m) => ({ ...m, [p._id]: e.target.value === "" ? 0 : Number(e.target.value) }))}
-                              className={`w-24 text-center ${inputCls}`}
+                              className={`w-16 text-center ${inputCls}`}
                             />
                           </div>
                         </div>
@@ -800,7 +814,7 @@ const AdminDashboard = () => {
                   )}
 
                   {products.length > 0 && !listLoading && (
-                    <div className="flex justify-end mt-6">
+                    <div className="flex justify-center mt-6">
                       <Button variant="royal" onClick={handleSaveStock} disabled={stockSaving} className="text-xs tracking-widest uppercase px-10">
                         {stockSaving ? <><Loader2 className="w-4 h-4 animate-spin mr-2" />Saving…</> : "Save All Stock"}
                       </Button>

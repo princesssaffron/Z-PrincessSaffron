@@ -116,6 +116,7 @@ const ProfileOrders = ({ orders, isLoading }: ProfileOrdersProps) => {
           <TabsTrigger
             value="current"
             className="
+            font-rr font-light
     px-6 py-2
     tracking-[0.18em] text-sm transition-all
 
@@ -149,7 +150,7 @@ const ProfileOrders = ({ orders, isLoading }: ProfileOrdersProps) => {
 
         </TabsList>
 
-        <TabsContent value="current" className="space-y-4">
+        <TabsContent value="current" className="space-y-4 font-rr font-light">
           {currentOrders.length > 0
             ? currentOrders.map(renderOrderCard)
             : renderEmptyState("No current orders")}

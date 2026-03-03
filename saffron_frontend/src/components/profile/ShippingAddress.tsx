@@ -1,5 +1,6 @@
 import { useState } from "react";
-import {  Loader2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { Loader2 } from "lucide-react";
 import { Country, State, City } from "country-state-city";
 
 import { Input } from "@/components/ui/input";
@@ -13,6 +14,7 @@ interface ShippingAddressProps {
 }
 
 const ShippingAddress = ({ profile, onUpdate }: ShippingAddressProps) => {
+  const { toast } = useToast();
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
@@ -26,13 +28,35 @@ const ShippingAddress = ({ profile, onUpdate }: ShippingAddressProps) => {
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    // Custom validation for pincode: only numeric and max 6 digits
+    if (name === "shipping_pincode") {
+      const numericValue = value.replace(/\D/g, "").slice(0, 6);
+      setFormData((prev) => ({
+        ...prev,
+        [name]: numericValue,
+      }));
+      return;
+    }
+
     setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [name]: value,
     }));
   };
 
   const handleSave = async () => {
+    // Validate Pincode
+    if (formData.shipping_pincode && formData.shipping_pincode.length !== 6) {
+      toast({
+        title: "Invalid Pincode",
+        description: "Pincode must be exactly 6 digits.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSaving(true);
     const success = await onUpdate(formData);
     if (success) setIsEditing(false);
@@ -68,9 +92,9 @@ const ShippingAddress = ({ profile, onUpdate }: ShippingAddressProps) => {
   const cities =
     selectedCountry && selectedState
       ? City.getCitiesOfState(
-          selectedCountry.isoCode,
-          selectedState.isoCode
-        )
+        selectedCountry.isoCode,
+        selectedState.isoCode
+      )
       : [];
 
   return (
@@ -199,6 +223,9 @@ const ShippingAddress = ({ profile, onUpdate }: ShippingAddressProps) => {
                   value={formData.shipping_pincode}
                   onChange={handleInputChange}
                   className="rounded-full h-11 px-6"
+                  type="tel"
+                  maxLength={6}
+                  inputMode="numeric"
                 />
               </div>
 
@@ -223,30 +250,30 @@ const ShippingAddress = ({ profile, onUpdate }: ShippingAddressProps) => {
             </div>
 
           </div>
-     ) : hasAddress ? (
-  <div className="flex justify-center">
-    <div className="w-full max-w-2xl bg-white/60 backdrop-blur-sm border border-royal-purple/20 rounded-2xl shadow-lg p-10">
-      
-      <p className="text-center text-[10px] tracking-[0.45em] font-bold uppercase text-royal-purple/50 mb-8">
-        Saved Shipping Address
-      </p>
+        ) : hasAddress ? (
+          <div className="flex justify-center">
+            <div className="w-full max-w-2xl bg-white/60 backdrop-blur-sm border border-royal-purple/20 rounded-2xl shadow-lg p-10">
 
-      <div className="font-sans text-royal-purple text-[20px] font-medium leading-7 tracking-[0.02em] text-center justify-center space-y-1">
-       <p> {profile?.shipping_address}, 
-        {profile?.shipping_area && profile.shipping_area}</p>
-        <p>
-          {profile?.shipping_city}
-          {profile?.shipping_state && `, ${profile.shipping_state}`}
-          {profile?.shipping_pincode && ` – ${profile.shipping_pincode}`}
-        </p>
-        <p>{profile?.shipping_country}</p>
-      </div>
+              <p className="text-center text-[10px] tracking-[0.45em] font-bold uppercase text-royal-purple/50 mb-8">
+                Saved Shipping Address
+              </p>
 
-    </div>
-  </div>
+              <div className="font-sans text-royal-purple text-[20px] font-medium leading-7 tracking-[0.02em] text-center justify-center space-y-1">
+                <p> {profile?.shipping_address},
+                  {profile?.shipping_area && profile.shipping_area}</p>
+                <p>
+                  {profile?.shipping_city}
+                  {profile?.shipping_state && `, ${profile.shipping_state}`}
+                  {profile?.shipping_pincode && ` – ${profile.shipping_pincode}`}
+                </p>
+                <p>{profile?.shipping_country}</p>
+              </div>
+
+            </div>
+          </div>
 
 
-): (
+        ) : (
           <p className="text-center text-muted-foreground">
             No address saved yet.
           </p>

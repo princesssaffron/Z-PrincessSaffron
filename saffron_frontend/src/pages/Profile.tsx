@@ -15,6 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { motion, easeInOut } from "framer-motion";
+import { useProfile } from "@/hooks/useProfile";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -38,16 +39,30 @@ const itemVariants = {
 const Profile = () => {
   const { user } = useAuth();
   const { orders } = useOrders();
+  const { profile, isLoading: profileLoading } = useProfile();
 
   const totalOrders = orders?.length || 0;
   const completedOrders =
     orders?.filter((o) => o.status === "delivered").length || 0;
   const pendingOrders = totalOrders - completedOrders;
 
+  const hasAddress = profile?.shipping_address;
+  const formattedAddress = hasAddress ? (
+    <div className="space-y-1 text-sm text-muted-foreground italic">
+      <p>{profile.shipping_address}</p>
+      <p>{profile.shipping_area}</p>
+      <p>{profile.shipping_city}, {profile.shipping_state} - {profile.shipping_pincode}</p>
+    </div>
+  ) : (
+    <p className="text-md text-muted-foreground mb-6">
+      Manage your shipping and billing addresses.
+    </p>
+  );
+
   return (
     <ProfileLayout
       title={`Welcome, ${user?.fullName || "User"}`}
-      description="From your account dashboard you can view your recent orders, manage your shipping and billing addresses, and edit your password and account details."
+      description="You can view your recent orders, manage your shipping and billing addresses, and edit your password and account details."
     >
       <motion.div
         variants={containerVariants}
@@ -113,11 +128,11 @@ const Profile = () => {
             variants={itemVariants}
             className="group p-8 rounded-2xl border border-royal-purple/10 bg-white/60 backdrop-blur-md shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-500"
           >
-            <h3 style={{ letterSpacing: "0.20em" }} className="text-lg font-rr tracking-wide text-royal-purple mb-6">
+            <h3 style={{ letterSpacing: "0.20em" }} className="text-lg font-rr  font-medium tracking-wide text-royal-purple mb-6">
               Contact Information
             </h3>
 
-            <div className="space-y-2 text-sm">
+            <div className="space-y-2 text-md">
               <p className="font-medium text-royal-purple">
                 {user?.fullName || "No Name Set"}
               </p>
@@ -145,13 +160,18 @@ const Profile = () => {
             variants={itemVariants}
             className="group p-8 rounded-2xl border border-royal-purple/10 bg-white/60 backdrop-blur-md shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-500"
           >
-            <h3 style={{ letterSpacing: "0.20em" }} className="text-lg font-rr tracking-wide letterSpacing text-royal-purple mb-6">
+            <h3 style={{ letterSpacing: "0.20em" }} className="text-lg font-rr font-medium tracking-wide letterSpacing text-royal-purple mb-6">
               Address Book
             </h3>
 
-            <p className="text-sm text-muted-foreground mb-6">
-              Manage your shipping and billing addresses.
-            </p><br/><br/>
+            {profileLoading ? (
+              <p className="text-sm text-muted-foreground italic">Loading address...</p>
+            ) : (
+              <div className="mb-6">
+                {formattedAddress}
+              </div>
+            )}
+            <br />
 
             <motion.div
               initial={{ opacity: 0 }}

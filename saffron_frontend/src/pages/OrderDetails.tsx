@@ -109,20 +109,27 @@ const OrderDetails = () => {
     <Layout>
       <section className="pt-28 pb-20 bg-ivory min-h-screen">
         <div className="container mx-auto px-6">
-          <Link
-            to="/orders"
-            className="inline-flex items-center gap-2 text-muted-foreground hover:text-royal-purple mb-8 transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back to Orders
-          </Link>
-
+         <Link
+  to="/orders"
+  className="group inline-flex items-center gap-2 text-muted-foreground 
+             hover:text-royal-purple mb-8 transition-all duration-300 
+             hover:scale-105"
+>
+  <ArrowLeft
+      className="w-5 h-5 transition-transform duration-300 
+                 group-hover:-translate-x-1 
+                 group-hover:text-royal-purple"
+    />
+  <span className="transition-colors duration-300">
+    BACK TO ORDERS
+  </span>
+</Link>
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-10">
             <div>
               <h1 className="font-serif text-3xl text-royal-purple mb-2">
-                Order #{order.orderId.slice(0, 8).toUpperCase()}
+                Order {order.orderId.slice(0, 8).toUpperCase()}
               </h1>
-              <p className="text-muted-foreground">
+              <p className="text-muted-foreground font-sans">
                 Placed on {new Date(order.createdAt).toLocaleDateString("en-IN", {
                   year: "numeric",
                   month: "long",
@@ -132,12 +139,20 @@ const OrderDetails = () => {
             </div>
             {canCancel && (
               <button
-                onClick={handleCancel}
-                disabled={isCancelling}
-                className="mt-4 md:mt-0 px-6 py-2 border border-red-500 text-red-500 font-medium text-sm uppercase tracking-widest hover:bg-red-50 transition-colors disabled:opacity-50 rounded-full"
-              >
-                {isCancelling ? "Cancelling..." : "Cancel Order"}
-              </button>
+  onClick={handleCancel}
+  disabled={isCancelling}
+  className="group mt-4 md:mt-0 px-6 py-2 
+             border border-red-500 text-red-500 
+             font-medium text-sm uppercase tracking-widest 
+             rounded-full
+             transition-all duration-300
+             hover:bg-red-500 hover:text-white
+             hover:shadow-lg hover:-translate-y-1
+             active:scale-95
+             disabled:opacity-50 disabled:cursor-not-allowed"
+>
+  {isCancelling ? "Cancelling..." : "Cancel Order"}
+</button>
             )}
           </div>
 
@@ -145,7 +160,7 @@ const OrderDetails = () => {
             {/* Order Tracking */}
             <div className="lg:col-span-2 space-y-8">
               {/* Status Timeline */}
-              <div className="bg-card p-6 rounded-2xl shadow-card">
+              <div className="bg-card p-6 font-sans rounded-2xl shadow-card">
                 <h2 className="font-serif text-xl text-royal-purple mb-6">Order Status</h2>
 
                 {isCancelled ? (
@@ -169,9 +184,9 @@ const OrderDetails = () => {
                           <div key={step.status} className="relative flex items-center gap-4">
                             <div
                               className={`relative z-10 w-8 h-8 rounded-full flex items-center justify-center ${isCompleted
-                                ? "bg-gold text-royal-purple-dark"
+                                ? "bg-[#C6A85A] text-royal-purple-dark"
                                 : "bg-muted text-muted-foreground"
-                                } ${isCurrent ? "ring-2 ring-gold ring-offset-2" : ""}`}
+                                } ${isCurrent ? "ring-2 ring-[#C6A85A] ring-offset-2" : ""}`}
                             >
                               <Icon className="w-4 h-4" />
                             </div>
@@ -225,9 +240,9 @@ const OrderDetails = () => {
                         />
                       )}
                       <div className="flex-1">
-                        <p className="font-medium">{item.product_name}</p>
-                        <p className="text-sm text-muted-foreground">Quantity: {item.quantity}</p>
-                        <p className="text-gold font-medium">
+                        <p className="font-medium font-rr">{item.product_name}</p>
+                        <p className="text-sm text-muted-foreground font-rr">Quantity: {item.quantity}</p>
+                        <p className="text-[#C6A85A] font-medium">
                           ₹{(item.price * item.quantity).toLocaleString()}
                         </p>
                       </div>
@@ -248,7 +263,7 @@ const OrderDetails = () => {
                     <span>₹{Number(order.subtotal).toLocaleString()}</span>
                   </div>
                   {Number(order.discount) > 0 && (
-                    <div className="flex justify-between text-sm text-green-600">
+                    <div className="flex justify-between text-sm text-green-600 font-rr">
                       <span>Discount {order.couponCode && `(${order.couponCode})`}</span>
                       <span>-₹{Number(order.discount).toLocaleString()}</span>
                     </div>
@@ -257,14 +272,14 @@ const OrderDetails = () => {
                     <span className="text-muted-foreground">Shipping</span>
                     <span>{Number(order.shipping) === 0 ? "Free" : `₹${Number(order.shipping)}`}</span>
                   </div>
-                  <div className="flex justify-between text-lg font-bold pt-3 border-t border-border">
+                  <div className="flex justify-between text-lg font-rrfont-bold pt-3 border-t border-border">
                     <span>Total</span>
-                    <span className="text-gold">₹{Number(order.total).toLocaleString()}</span>
+                    <span className="text-[#C6A85A]">₹{Number(order.total).toLocaleString()}</span>
                   </div>
                 </div>
                 <div className="mt-4 pt-4 border-t border-border">
-                  <p className="text-sm text-muted-foreground">Payment Method</p>
-                  <p className="font-medium capitalize">{order.paymentMethod === "cod" ? "Cash on Delivery" : order.paymentMethod}</p>
+                  <p className="text-sm text-muted-foreground font-rr">Payment Method</p>
+                  <p className="font-medium font-rr capitalize">{order.paymentMethod === "cod" ? "Cash on Delivery" : order.paymentMethod}</p>
                 </div>
               </div>
 
@@ -275,18 +290,18 @@ const OrderDetails = () => {
                   <div className="flex items-start gap-2">
                     <MapPin className="w-4 h-4 text-muted-foreground mt-0.5" />
                     <div>
-                      <p className="font-medium">{order.shippingDetails.name}</p>
-                      <p className="text-muted-foreground">{order.shippingDetails.address}</p>
-                      <p className="text-muted-foreground">
+                      <p className="font-medium font-rr">{order.shippingDetails.name}</p>
+                      <p className="text-muted-foreground font-rr">{order.shippingDetails.address}</p>
+                      <p className="text-muted-foreground font-rr">
                         {order.shippingDetails.city}, {order.shippingDetails.state} - {order.shippingDetails.pincode}
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 font-rr">
                     <Phone className="w-4 h-4 text-muted-foreground" />
                     <span>{order.shippingDetails.phone}</span>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 font-rr">
                     <Mail className="w-4 h-4 text-muted-foreground" />
                     <span>{order.shippingDetails.email}</span>
                   </div>

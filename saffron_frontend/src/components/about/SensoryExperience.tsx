@@ -110,7 +110,7 @@ export default function SensoryExperience() {
 
         @keyframes dancerIn {
           from { opacity: 0; transform: translateY(-50%) scale(0.94); }
-          to   { opacity: 0.06; transform: translateY(-50%) scale(1); }
+          to   { opacity: 0.045; transform: translateY(-50%) scale(1); }
         }
         @keyframes dancerInR {
           from { opacity: 0; transform: translateY(-50%) scaleX(-1) scale(0.94); }
@@ -151,7 +151,7 @@ export default function SensoryExperience() {
 
         {/* Dancer BGs */}
         <img src={dancer} alt="" aria-hidden style={{
-          position: "absolute", left: "-20px", top: "50%", height: "90%",
+          position: "absolute", left: "5px", top: "50%", height: "90%",
           objectFit: "contain", filter: "grayscale(100%) contrast(70%)",
           pointerEvents: "none", zIndex: 0,
           animation: "dancerIn 6s ease-out forwards",

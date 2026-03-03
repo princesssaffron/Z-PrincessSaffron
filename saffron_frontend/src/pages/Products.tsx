@@ -509,12 +509,13 @@ const Products = () => {
                     </div>
 
                     {/* Name */}
-                    <h3 className="font-cinzel text-[20px] tracking-[0.05em] text-royal-purple mb-3 leading-[1.4] group-hover:text-gold transition-colors duration-300 ">
+                    <h3 className="font-sans capitalize text-[20px] tracking-[0.06em] font-light text-royal-purple mb-3 group-hover:text-gold transition-colors duration-300">
                       {product.name}
                     </h3>
 
-                    {/* Description on Hover */}
-                    <p className="font-rr text-[15px] font-medium text-royal-purple/70 leading-[1.6] tracking-[0.02em] line-clamp-2 mb-4 opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-20 transition-all duration-500">
+
+
+                    <p className="font-sans  text-[15px] text-royal-purple/70 leading-[1.6] tracking-[0.02em] line-clamp-2 mb-4 max-h-0 group-hover:opacity-100 group-hover:max-h-20 transition-all duration-500">
                       {product.description}
                     </p>
 

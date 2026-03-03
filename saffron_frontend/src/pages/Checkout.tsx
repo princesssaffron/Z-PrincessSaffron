@@ -132,7 +132,7 @@ const Checkout = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${user.token}`,
+          "Authorization": `Bearer ${user?.token}`,
         },
         body: JSON.stringify({
           amount: total,
@@ -156,7 +156,7 @@ const Checkout = () => {
         shippingDetails,
         paymentMethod: "razorpay",
         items: cartProducts.map((item) => ({
-          product_id: item.product_id,
+          product_id: typeof item.product_id === 'string' ? parseInt(item.product_id) : item.product_id,
           product_name: item.product!.name,
           product_image: item.product!.image,
           quantity: item.quantity,
@@ -197,7 +197,7 @@ const Checkout = () => {
           contact: shippingDetails.phone
         },
         theme: {
-          color: "#6c38cc"
+          color: "#2E0F3A"
         },
         modal: {
           ondismiss: function () {
@@ -404,7 +404,7 @@ const Checkout = () => {
                         />
                         <div className="flex-1">
                           <p className="text-sm font-medium">{product!.name}</p>
-                          <p className="text-xs text-muted-foreground">Qty: {quantity}</p>
+                          <p className="text-xs font-rr text-muted-foreground">Qty: {quantity}</p>
                           <p className="text-sm text-gold">₹{(product!.price * quantity).toLocaleString()}</p>
                         </div>
                       </div>

@@ -34,13 +34,45 @@ const ProfileOverview = ({
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    // Custom validation for phone fields: only 10 digits allowed
+    if (name === "phone" || name === "alternate_phone") {
+      const numericValue = value.replace(/\D/g, "").slice(0, 10);
+      setFormData((prev) => ({
+        ...prev,
+        [name]: numericValue,
+      }));
+      return;
+    }
+
     setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [name]: value,
     }));
   };
 
   const handleSave = async () => {
+    // Validate Primary Phone
+    if (formData.phone && formData.phone.length !== 10) {
+      toast({
+        title: "Invalid Phone Number",
+        description: "Primary phone must be exactly 10 digits.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate Alternate Phone (if provided)
+    if (formData.alternate_phone && formData.alternate_phone.length !== 10) {
+      toast({
+        title: "Invalid Alternate Phone",
+        description: "Alternate phone must be exactly 10 digits if provided.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSaving(true);
     const success = await onUpdate(formData);
     if (success) setIsEditing(false);
@@ -170,6 +202,8 @@ const ProfileOverview = ({
               name="phone"
               onChange={handleInputChange}
               display={profile?.phone}
+              type="tel"
+              maxLength={10}
             />
 
             <Field
@@ -179,6 +213,8 @@ const ProfileOverview = ({
               name="alternate_phone"
               onChange={handleInputChange}
               display={profile?.alternate_phone}
+              type="tel"
+              maxLength={10}
             />
           </div>
         </div>
@@ -216,7 +252,7 @@ const ProfileOverview = ({
 
 /* ---------- reusable fields ---------- */
 
-const Field = ({ label, editing, value, name, onChange, display }: any) => (
+const Field = ({ label, editing, value, name, onChange, display, ...props }: any) => (
   <div className="space-y-2 w-full">
 
     <Label className="tracking-[0.15em] text-xs uppercase">
@@ -229,6 +265,8 @@ const Field = ({ label, editing, value, name, onChange, display }: any) => (
         onChange={onChange}
         placeholder={`Enter ${label}`}
         className="rounded-full"
+        type={props.type || "text"}
+        {...props}
       />
     ) : (
       <p className="py-2">{display || "Not set"}</p>

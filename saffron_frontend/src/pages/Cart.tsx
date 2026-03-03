@@ -199,7 +199,7 @@ const Cart = () => {
                     <h3 className="font-serif text-lg text-royal-purple mb-1">
                       {product!.name}
                     </h3>
-                    <p className="text-sm text-muted-foreground mb-4">
+                    <p className="text-md text-muted-foreground mb-4">
                       {product!.description}
                     </p>
                     <div className="flex items-center justify-between">
@@ -284,7 +284,7 @@ const Cart = () => {
 
                 <div className="space-y-3 border-t border-border pt-4">
                   <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Subtotal</span>
+                    <span className="text-muted-foreground text-md font-rr">Subtotal</span>
                     <span>₹{subtotal.toLocaleString()}</span>
                   </div>
                   {discountAmount > 0 && (
@@ -298,7 +298,7 @@ const Cart = () => {
                     <span>{shipping === 0 ? "Free" : `₹${shipping}`}</span>
                   </div>
                   {shipping > 0 && (
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs font-rr text-muted-foreground">
                       Free shipping on orders above ₹2000
                     </p>
                   )}
@@ -316,7 +316,7 @@ const Cart = () => {
                   Proceed to Checkout
                 </Button>
 
-                <p className="text-xs text-muted-foreground text-center mt-4">
+                <p className="text-xs font-rr text-muted-foreground text-center mt-4">
                   Secure checkout powered by trusted payment partners
                 </p>
               </div>

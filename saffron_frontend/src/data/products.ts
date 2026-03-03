@@ -88,6 +88,6 @@ export const products: Product[] = [
   },
 ];
 
-export const getProductById = (id: number): Product | undefined => {
-  return products.find((product) => product.id === id);
+export const getProductById = (id: number | string): Product | undefined => {
+  return products.find((product) => product.id.toString() === id.toString());
 };

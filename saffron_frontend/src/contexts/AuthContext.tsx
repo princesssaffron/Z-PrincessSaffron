@@ -17,6 +17,8 @@ interface AuthContextType {
   signInWithGoogle: (token: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
   updateUserData: (updatedUser: Partial<User>) => void;
+  forgotPassword: (email: string) => Promise<{ error: any; resetToken?: string }>;
+  resetPassword: (token: string, password: string) => Promise<{ error: any }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -127,8 +129,49 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
+  const forgotPassword = async (email: string) => {
+    try {
+      const response = await fetch(`${API_URL}/auth/forgot-password`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+      console.log("Forgot Password Response Data:", data);
+
+      if (!response.ok) {
+        throw new Error(data.message || "Something went wrong");
+      }
+
+      return { error: null, resetToken: data.resetToken };
+    } catch (error) {
+      return { error, resetToken: undefined };
+    }
+  };
+
+  const resetPassword = async (token: string, password: string) => {
+    try {
+      const response = await fetch(`${API_URL}/auth/reset-password/${token}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Reset failed");
+      }
+
+      return { error: null };
+    } catch (error) {
+      return { error };
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, isLoading, signUp, signIn, signInWithGoogle, signOut, updateUserData }}>
+    <AuthContext.Provider value={{ user, isLoading, signUp, signIn, signInWithGoogle, signOut, updateUserData, forgotPassword, resetPassword }}>
       {children}
     </AuthContext.Provider>
   );

@@ -4,6 +4,17 @@ import { useToast } from "@/hooks/use-toast";
 
 const API_URL = "http://localhost:5000/api";
 
+export interface Address {
+  _id: string;
+  shipping_address: string;
+  shipping_area: string;
+  shipping_city: string;
+  shipping_state: string;
+  shipping_pincode: string;
+  shipping_country: string;
+  isDefault: boolean;
+}
+
 export interface Profile {
   _id: string;
   fullName: string | null;
@@ -11,12 +22,13 @@ export interface Profile {
   avatar_url: string | null;
   phone: string | null;
   alternate_phone: string | null;
-  shipping_address: string | null;
-  shipping_area: string | null;
-  shipping_city: string | null;
-  shipping_state: string | null;
-  shipping_pincode: string | null;
-  shipping_country: string | null;
+  addresses: Address[];
+  shipping_address?: string;
+  shipping_area?: string;
+  shipping_city?: string;
+  shipping_state?: string;
+  shipping_pincode?: string;
+  shipping_country?: string;
 }
 
 export interface ProfileUpdate {
@@ -112,11 +124,107 @@ export const useProfile = () => {
     fetchProfile();
   }, [fetchProfile]);
 
+  const addAddress = async (address: Omit<Address, "_id" | "isDefault"> & { isDefault?: boolean }): Promise<boolean> => {
+    if (!user || !user.token) return false;
+    try {
+      const response = await fetch(`${API_URL}/users/profile/addresses`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify(address),
+      });
+      if (response.ok) {
+        await fetchProfile();
+        toast({ title: "Success", description: "Address added successfully" });
+        return true;
+      }
+      throw new Error("Failed to add address");
+    } catch (error) {
+      console.error("Error adding address:", error);
+      toast({ title: "Error", description: "Failed to add address", variant: "destructive" });
+      return false;
+    }
+  };
+
+  const updateAddress = async (addressId: string, updates: Partial<Address>): Promise<boolean> => {
+    if (!user || !user.token) return false;
+    try {
+      const response = await fetch(`${API_URL}/users/profile/addresses/${addressId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify(updates),
+      });
+      if (response.ok) {
+        await fetchProfile();
+        toast({ title: "Success", description: "Address updated successfully" });
+        return true;
+      }
+      throw new Error("Failed to update address");
+    } catch (error) {
+      console.error("Error updating address:", error);
+      toast({ title: "Error", description: "Failed to update address", variant: "destructive" });
+      return false;
+    }
+  };
+
+  const deleteAddress = async (addressId: string): Promise<boolean> => {
+    if (!user || !user.token) return false;
+    try {
+      const response = await fetch(`${API_URL}/users/profile/addresses/${addressId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      if (response.ok) {
+        await fetchProfile();
+        toast({ title: "Success", description: "Address deleted successfully" });
+        return true;
+      }
+      throw new Error("Failed to delete address");
+    } catch (error) {
+      console.error("Error deleting address:", error);
+      toast({ title: "Error", description: "Failed to delete address", variant: "destructive" });
+      return false;
+    }
+  };
+
+  const setDefaultAddress = async (addressId: string): Promise<boolean> => {
+    if (!user || !user.token) return false;
+    try {
+      const response = await fetch(`${API_URL}/users/profile/addresses/${addressId}/default`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      if (response.ok) {
+        await fetchProfile();
+        toast({ title: "Success", description: "Default address set successfully" });
+        return true;
+      }
+      throw new Error("Failed to set default address");
+    } catch (error) {
+      console.error("Error setting default address:", error);
+      toast({ title: "Error", description: "Failed to set default address", variant: "destructive" });
+      return false;
+    }
+  };
+
   return {
     profile,
     isLoading,
     fetchProfile,
     updateProfile,
     hasCompleteAddress,
+    addAddress,
+    updateAddress,
+    deleteAddress,
+    setDefaultAddress,
   };
 };

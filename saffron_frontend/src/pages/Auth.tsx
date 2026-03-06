@@ -241,6 +241,17 @@ const Auth = () => {
                 </button>
               </div>
 
+              {isLogin && (
+                <div className="flex justify-end">
+                  <Link
+                    to="/forgot-password"
+                    className="text-xs text-white/70 hover:text-white transition-colors"
+                  >
+                    Forgot Password?
+                  </Link>
+                </div>
+              )}
+
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                 <Button variant="section"
                   type="submit"

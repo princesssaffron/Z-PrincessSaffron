@@ -4,7 +4,14 @@ import ShippingAddress from "@/components/profile/ShippingAddress";
 import { Loader2 } from "lucide-react";
 
 const Address = () => {
-  const { profile, isLoading, updateProfile } = useProfile();
+  const { 
+    profile, 
+    isLoading, 
+    addAddress, 
+    updateAddress, 
+    deleteAddress, 
+    setDefaultAddress 
+  } = useProfile();
 
   if (isLoading) {
     return (
@@ -26,7 +33,10 @@ const Address = () => {
         <div className="w-full max-w-4xl">
           <ShippingAddress
             profile={profile}
-            onUpdate={updateProfile}
+            addAddress={addAddress}
+            updateAddress={updateAddress}
+            deleteAddress={deleteAddress}
+            setDefaultAddress={setDefaultAddress}
           />
         </div>
       </div>

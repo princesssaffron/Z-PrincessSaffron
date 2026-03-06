@@ -30,8 +30,23 @@ const userSchema = new mongoose.Schema(
         shipping_state: String,
         shipping_pincode: String,
         shipping_country: String,
+        addresses: [
+            {
+                shipping_address: String,
+                shipping_area: String,
+                shipping_city: String,
+                shipping_state: String,
+                shipping_pincode: String,
+                shipping_country: String,
+                isDefault: {
+                    type: Boolean,
+                    default: false,
+                },
+            },
+        ],
         likedProducts: [{ type: Number }],
-        likedProducts: [{ type: Number }],
+        resetPasswordToken: String,
+        resetPasswordExpires: Date,
     },
     { timestamps: true }
 );

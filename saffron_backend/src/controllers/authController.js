@@ -1,6 +1,8 @@
 import User from "../models/userModel.js";
 import { generateToken } from "../config/generateToken.js";
 import { OAuth2Client } from "google-auth-library";
+import crypto from "crypto";
+import nodemailer from "nodemailer";
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -162,5 +164,120 @@ export const googleLogin = async (req, res) => {
     } catch (error) {
         console.error("Google Auth Error:", error);
         res.status(401).json({ message: error.message || "Google authentication failed" });
+    }
+};
+// @desc    Forgot Password
+// @route   POST /api/auth/forgot-password
+// @access  Public
+export const forgotPassword = async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            // Return success even if user doesn't exist to prevent email enumeration
+            return res.json({ message: "Email sent" });
+        }
+
+        // Generate reset token
+        const resetToken = crypto.randomBytes(20).toString("hex");
+
+        // Hash token and set to resetPasswordToken field
+        user.resetPasswordToken = crypto
+            .createHash("sha256")
+            .update(resetToken)
+            .digest("hex");
+
+        // Set expire (10 minutes)
+        user.resetPasswordExpires = Date.now() + 10 * 60 * 1000;
+
+        await user.save();
+
+        const resetUrl = `http://localhost:8080/reset-password/${resetToken}`;
+
+        // Log the reset URL to the console for development testing
+        console.log("-----------------------------------------");
+        console.log(`Password Reset Symbol link for ${user.email}:`);
+        console.log(resetUrl);
+        console.log("-----------------------------------------");
+
+        const message = `
+        You are receiving this email because you (or someone else) has requested the reset of a password.
+        Please click on the following link, or paste this into your browser to complete the process:
+        
+        ${resetUrl}
+
+        If you did not request this, please ignore this email and your password will remain unchanged.
+        `;
+
+        // Send email only if credentials exist
+        if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+            try {
+                const transporter = nodemailer.createTransport({
+                    service: "Gmail",
+                    auth: {
+                        user: process.env.EMAIL_USER,
+                        pass: process.env.EMAIL_PASS,
+                    },
+                });
+
+                await transporter.sendMail({
+                    to: user.email,
+                    subject: "Password Reset Request",
+                    text: message,
+                });
+            } catch (error) {
+                console.error("Email Error:", error);
+                // In development, we continue even if mail fails since we log to console
+            }
+        } else {
+            console.log("-----------------------------------------");
+            console.log("NOTICE: Email sending skipped (missing credentials in .env)");
+            console.log("The reset link below is for your manual testing:");
+            console.log(resetUrl);
+            console.log("-----------------------------------------");
+        }
+
+        res.json({ message: "Email sent" });
+    } catch (error) {
+        console.error("Forgot Password Error:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+// @desc    Reset Password
+// @route   POST /api/auth/reset-password/:token
+// @access  Public
+export const resetPassword = async (req, res) => {
+    const { password } = req.body;
+    const { token } = req.params;
+
+    try {
+        // Hash the token from URL
+        const resetPasswordToken = crypto
+            .createHash("sha256")
+            .update(token)
+            .digest("hex");
+
+        const user = await User.findOne({
+            resetPasswordToken,
+            resetPasswordExpires: { $gt: Date.now() },
+        });
+
+        if (!user) {
+            return res.status(400).json({ message: "Invalid or expired token" });
+        }
+
+        // Set new password
+        user.password = password;
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpires = undefined;
+
+        await user.save();
+
+        res.json({ message: "Password reset successful" });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 };

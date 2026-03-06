@@ -1,5 +1,12 @@
 import express from "express";
-import { getUserProfile, updateUserProfile } from "../controllers/userController.js";
+import {
+    getUserProfile,
+    updateUserProfile,
+    addUserAddress,
+    updateUserAddress,
+    deleteUserAddress,
+    setDefaultAddress,
+} from "../controllers/userController.js";
 import { getLikedProducts, toggleLikeProduct } from "../controllers/likedController.js";
 import { getOrders, createOrder, cancelOrder } from "../controllers/orderController.js";
 import { protect } from "../middleware/authMiddleware.js";
@@ -45,6 +52,10 @@ const router = express.Router();
  *         description: Profile updated
  */
 router.route("/profile").get(protect, getUserProfile).put(protect, updateUserProfile);
+
+router.route("/profile/addresses").post(protect, addUserAddress);
+router.route("/profile/addresses/:addressId").put(protect, updateUserAddress).delete(protect, deleteUserAddress);
+router.route("/profile/addresses/:addressId/default").put(protect, setDefaultAddress);
 
 /**
  * @swagger

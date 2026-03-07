@@ -72,6 +72,8 @@ router.post("/login", loginUser);
  *       200:
  *         description: Google login successful
  */
+router.post("/google", googleLogin);
+
 /**
  * @swagger
  * /api/auth/forgot-password:

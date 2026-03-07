@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Plus, Edit2, Trash2, CheckCircle2 } from "lucide-react";
+import { Loader2,  Edit2, Trash2, CheckCircle2 } from "lucide-react";
 import { Country, State, City } from "country-state-city";
 
 import { Input } from "@/components/ui/input";
@@ -106,7 +106,7 @@ const ShippingAddress = ({
       <div className="w-full max-w-4xl bg-white/70 backdrop-blur-md border border-white/30 rounded-2xl shadow-[0_10px_60px_rgba(0,0,0,0.08)] p-10">
         
         <div className="text-center mb-12">
-          <h2 className="font-serif text-3xl tracking-[0.30em] text-royal-purple uppercase">
+          <h2 className="font-serif text-2xl tracking-[0.30em] text-royal-purple uppercase">
             Shipping Addresses
           </h2>
         </div>
@@ -114,7 +114,7 @@ const ShippingAddress = ({
         {!isAdding && (
           <div className="flex justify-center mb-10">
             <Button variant="section" onClick={() => setIsAdding(true)}>
-              <Plus className="w-4 h-4 mr-2" /> Add New Address
+              Add New Address
             </Button>
           </div>
         )}
@@ -179,7 +179,7 @@ const ShippingAddress = ({
                     </div>
                   )}
                   
-                  <div className="font-sans text-royal-purple text-[18px] font-medium leading-7 tracking-[0.02em] mb-6">
+                  <div className="font-rr  text-royal-purple text-[18px] font-medium leading-7 tracking-[0.02em] mb-6">
                     <p>{address.shipping_address}, {address.shipping_area}</p>
                     <p>{address.shipping_city}, {address.shipping_state} – {address.shipping_pincode}</p>
                     <p>{address.shipping_country}</p>

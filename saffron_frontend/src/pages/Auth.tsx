@@ -245,7 +245,7 @@ const Auth = () => {
                 <div className="flex justify-end">
                   <Link
                     to="/forgot-password"
-                    className="text-xs text-white/70 hover:text-white transition-colors"
+                    className="font-rr text-xs text-white/70 hover:text-white transition-colors"
                   >
                     Forgot Password?
                   </Link>

@@ -114,7 +114,7 @@ const ProfileOverview = ({
         <h2
           className="
       font-serif
-      text-3xl
+      text-2xl
       tracking-[0.35em]
       text-royal-purple
       uppercase

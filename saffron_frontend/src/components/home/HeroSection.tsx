@@ -3,24 +3,29 @@ import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import heroVideo from "@/assets/hero-video.mp4";
-import heroImage from "@/assets/hero-saffron.jpg";
+
 
 const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
 
-      {/* Background Video */}
+       {/* Background Video */}
 <div className="absolute inset-0">
+
+  {/* Gradient Background (shows before video loads) */}
+  <div className="absolute inset-0 bg-gradient-to-b from-[#0b0b0b] via-[#1a1a1a] to-black"></div>
+
+  {/* Video */}
   <video
     autoPlay
     muted
     loop
     playsInline
-    poster={heroImage}
     className="absolute inset-0 w-full h-full object-cover"
   >
     <source src={heroVideo} type="video/mp4" />
   </video>
+
 </div>
 
       {/* Content */}

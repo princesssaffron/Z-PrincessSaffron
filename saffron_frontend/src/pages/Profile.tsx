@@ -177,7 +177,7 @@ const Profile = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6 }}
-            >
+            ><br/>
               <Link to="/profile/address">
                 <Button variant="section">
                   Manage Addresses

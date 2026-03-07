@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+
 import {
   Plus, Pencil, Trash2, Upload, X,
   LayoutDashboard, Boxes, Loader2,
@@ -118,30 +119,30 @@ const AdminDashboard = () => {
     }
   }, [toast]);
 
-  const fetchStats = useCallback(async () => {
-    if (!user?.token) {
-      console.log("No user token, skipping stats fetch");
-      return;
-    }
-    setStatsLoading(true);
-    try {
-      console.log("Fetching admin stats from:", `${BASE_URL}/admin/stats`);
-      const res = await fetch(`${BASE_URL}/admin/stats`, {
-        headers: { Authorization: `Bearer ${user.token}` },
-      });
-      if (!res.ok) throw new Error(`Stats fetch failed: ${res.status}`);
-      const data = await res.json();
-      console.log("Stats data received:", data);
-      setStats(data);
-    } catch (err) {
-      console.error("Error fetching stats:", err);
-      toast({ title: "Error", description: "Could not load stats", variant: "destructive" });
-    } finally {
-      setStatsLoading(false);
-    }
-  }, [toast, user]);
+const fetchStats = useCallback(async () => {
+  if (!user?.token) {
+    console.log("No user token, skipping stats fetch");
+    return;
+  }
+  setStatsLoading(true);
+  try {
+    console.log("Fetching admin stats from:", `${BASE_URL}/admin/stats`);
+    const res = await fetch(`${BASE_URL}/admin/stats`, {
+      headers: { Authorization: `Bearer ${user.token}` },
+    });
+    if (!res.ok) throw new Error(`Stats fetch failed: ${res.status}`);
+    const data = await res.json();
+    console.log("Stats data received:", data);
+    setStats(data);
+  } catch (err) {
+    console.error("Error fetching stats:", err);
+    toast({ title: "Error", description: "Could not load stats", variant: "destructive" });
+  } finally {
+    setStatsLoading(false);
+  }
+}, [toast, user]);
 
-  const fetchSales = useCallback(async () => {
+const fetchSales = useCallback(async () => {
     if (!user?.token) return;
     setSalesLoading(true);
     try {
@@ -403,132 +404,201 @@ const AdminDashboard = () => {
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.2 }}
             >
-              {/* ── DASHBOARD OVERVIEW ─────────────────────────────────── */}
-              {tab === "dashboard" && (
-                <div className="space-y-8">
-                  {/* Stats Cards */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {[
-                      { label: "Total Users", value: stats?.totalUsers ?? 0, icon: <Users className="w-5 h-5" />, color: "bg-blue-50 font-medium text-blue-600", border: "border-blue-100" },
-                      { label: "Total Orders", value: stats?.totalOrders ?? 0, icon: <ShoppingBag className="w-5 h-5" />, color: "bg-green-50 font-medium text-green-600", border: "border-green-100" },
-                      { label: "Total Revenue", value: `₹${(stats?.totalRevenue ?? 0).toLocaleString()}`, icon: <IndianRupee className="w-5 h-5" />, color: "bg-amber-50 font-medium text-amber-600", border: "border-amber-100" },
-                      { label: "Low Stock Items", value: stats?.lowStockCount ?? 0, icon: <AlertTriangle className="w-5 h-5" />, color: "bg-red-50 font-medium text-red-600", border: "border-red-100", alert: (stats?.lowStockCount ?? 0) > 0 },
-                    ].map((stat, i) => (
-                      <div key={i} className={`bg-white border ${stat.border} rounded-3xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md transition-all duration-300`}>
-                        <div className="flex items-center justify-between mb-4">
-                          <div className={`w-12 h-12 rounded-2xl ${stat.color} flex items-center justify-center shadow-inner`}>
-                            {stat.icon}
-                          </div>
-                          {stat.alert && (
-                            <div className="flex items-center gap-1.5 px-2.5 py-1 bg-red-100 text-red-600 rounded-full animate-pulse">
-                              <span className="h-2 w-2 rounded-full bg-red-500" />
-                              <span className="text-[10px] font-bold uppercase tracking-wider">Action Needed</span>
-                            </div>
-                          )}
-                        </div>
-                        <p className="text-[10px] font-bold font-rr tracking-[0.15em] uppercase text-royal-purple/40">{stat.label}</p>
-                        <h3 className="text-xl font-rr font-light text-royal-purple mt-1">
-                          {statsLoading ? "..." : stat.value}
-                        </h3>
-                      </div>
-                    ))}
-                  </div>
+             {/* ── DASHBOARD OVERVIEW ─────────────────────────────────── */}
+{tab === "dashboard" && (
+  <div className="space-y-8">
 
-                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    {/* Sales Report */}
-                    <div className="lg:col-span-2 bg-white border border-gold/15 rounded-2xl p-8 shadow-sm">
-                      <div className="flex items-center justify-between mb-8">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center">
-                            <TrendingUp className="w-5 h-5 text-gold" />
-                          </div>
-                          <h2 className="font-serif text-lg tracking-[0.1em] uppercase text-royal-purple">Sales Performance</h2>
-                        </div>
-                        <div className="flex bg-ivory p-1 rounded-lg">
-                          <button onClick={() => setSalesPeriod("daily")} className={`px-4 py-1.5 text-[10px] font-medium tracking-widest uppercase rounded-md transition-all ${salesPeriod === "daily" ? "bg-white text-gold font-rr shadow-sm font-bold" : "text-royal-purple/40"}`}>Daily</button>
-                          <button onClick={() => setSalesPeriod("monthly")} className={`px-4 py-1.5 text-[10px] font-medium tracking-widest uppercase rounded-md transition-all ${salesPeriod === "monthly" ? "bg-white text-gold font-rr shadow-sm font-bold" : "text-royal-purple/40"}`}>Monthly</button>
-                        </div>
-                      </div>
+    {/* Stats Cards */}
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      variants={{
+        hidden: {},
+        visible: {
+          transition: {
+            staggerChildren: 0.15,
+          },
+        },
+      }}
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+    >
+      {[
+        { label: "Total Users", value: stats?.totalUsers ?? 0, icon: <Users className="w-5 h-5" />, color: "bg-blue-50 text-blue-600", border: "border-blue-100" },
+        { label: "Total Orders", value: stats?.totalOrders ?? 0, icon: <ShoppingBag className="w-5 h-5" />, color: "bg-green-50 text-green-600", border: "border-green-100" },
+        { label: "Total Revenue", value: `₹${(stats?.totalRevenue ?? 0).toLocaleString()}`, icon: <IndianRupee className="w-5 h-5" />, color: "bg-amber-50 text-amber-600", border: "border-amber-100" },
+        { label: "Low Stock Items", value: stats?.lowStockCount ?? 0, icon: <AlertTriangle className="w-5 h-5" />, color: "bg-red-50 text-red-600", border: "border-red-100", alert: (stats?.lowStockCount ?? 0) > 0 },
+      ].map((stat, i) => (
+        <motion.div
+          key={i}
+          variants={{
+            hidden: { opacity: 0, y: 40 },
+            visible: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          whileHover={{ scale: 1.03, y: -4 }}
+          className={`bg-white border ${stat.border} rounded-3xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md transition-all duration-300`}
+        >
+          <div className="flex items-center justify-between mb-4">
+            <div className={`w-12 h-12 rounded-2xl ${stat.color} flex items-center justify-center shadow-inner`}>
+              {stat.icon}
+            </div>
 
-                      <div className="h-[320px] pt-4">
-                        {salesLoading ? (
-                          <div className="h-full flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin text-gold" /></div>
-                        ) : !salesData || (salesPeriod === "daily" ? !salesData.daily?.length : !salesData.monthly?.length) ? (
-                          <div className="h-full flex items-center justify-center text-royal-purple/30 text-sm italic">No sales activity tracked for this period</div>
-                        ) : (
-                          <div className="flex items-end justify-between h-56 px-4 gap-3 bg-ivory/20 rounded-2xl p-6 border border-gold/5">
-                            {(salesPeriod === "daily" ? salesData.daily : salesData.monthly).slice(-12).map((d: any, i) => {
-                              const maxRevenue = Math.max(...(salesPeriod === "daily" ? salesData.daily : salesData.monthly).map(x => x.revenue), 1000);
-                              const height = Math.max((d.revenue / maxRevenue) * 100, 4); // Min 4% height to see something
-                              return (
-                                <div key={i} className="flex-1 flex flex-col items-center group relative h-full justify-end">
-                                  {/* Tooltip */}
-                                  <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-royal-purple text-white text-[10px] px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-xl z-20 pointer-events-none scale-90 group-hover:scale-100">
-                                    <p className="font-bold whitespace-nowrap">{salesPeriod === "daily" ? d.date : d.month}</p>
-                                    <p className="text-gold whitespace-nowrap">₹{d.revenue.toLocaleString()}</p>
-                                    <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-royal-purple rotate-45" />
-                                  </div>
+            {stat.alert && (
+              <div className="flex items-center gap-1.5 px-2.5 py-1 bg-red-100 text-red-600 rounded-full animate-pulse">
+                <span className="h-2 w-2 rounded-full bg-red-500" />
+                <span className="text-[10px] font-bold uppercase tracking-wider">Action Needed</span>
+              </div>
+            )}
+          </div>
 
-                                  {/* Bar */}
-                                  <div
-                                    className="w-full bg-gradient-to-t from-gold/40 to-gold/80 rounded-t-lg group-hover:from-gold group-hover:to-gold-light transition-all duration-500 shadow-sm"
-                                    style={{ height: `${height}%` }}
-                                  />
+          <p className="text-[10px] font-bold tracking-[0.15em] uppercase text-royal-purple/40">
+            {stat.label}
+          </p>
 
-                                  {/* Label */}
-                                  <span className="text-[9px] font-bold text-royal-purple/40 mt-3 rotate-45 origin-left whitespace-nowrap group-hover:text-royal-purple transition-colors">
-                                    {salesPeriod === "daily" ? d.date.split('-').slice(2).join('/') : d.month.split('-').slice(1).join('/')}
-                                  </span>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        )}
-                      </div>
-                    </div>
+          <h3 className="text-xl font-light text-royal-purple mt-1">
+            {statsLoading ? "..." : stat.value}
+          </h3>
+        </motion.div>
+      ))}
+    </motion.div>
 
-                    {/* Low Stock List */}
-                    <div className="bg-white border border-gold/15 rounded-2xl p-8 shadow-sm">
-                      <div className="flex items-center gap-3 mb-8">
-                        <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center">
-                          <AlertTriangle className="w-5 h-5 text-red-500" />
-                        </div>
-                        <h2 className="font-serif text-lg tracking-[0.1em] uppercase text-royal-purple">Low Stock</h2>
-                      </div>
 
-                      <div className="space-y-4 max-h-[300px] overflow-y-auto pr-2">
-                        {statsLoading ? (
-                          <div className="py-10 flex justify-center"><Loader2 className="w-6 h-6 animate-spin text-gold" /></div>
-                        ) : !stats?.lowStockProducts?.length ? (
-                          <div className="py-10 text-center text-royal-purple/30 text-xs">All products well stocked</div>
-                        ) : (
-                          (stats?.lowStockProducts || []).map((p: any) => (
-                            <div key={p.id} className="flex items-center gap-4 p-4 rounded-xl border border-red-100/50 bg-red-50/30 hover:bg-red-50/50 transition-colors group">
+    {/* Sales + Low Stock Section */}
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6 }}
+      className="grid grid-cols-1 lg:grid-cols-3 gap-8"
+    >
 
-                              <div className="flex-1 min-w-0">
-                                <p className="text-sm font-semibold text-royal-purple truncate mb-0.5">{p.name}</p>
-                                <div className="flex items-center gap-2">
-                                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-100 text-red-600 uppercase tracking-tighter">
-                                    Low Stock: {p.stock}
-                                  </span>
-                                </div>
-                              </div>
-                              <Button
-                                size="icon"
-                                variant="ghost"
-                                onClick={() => { setTab("stock"); }}
-                                className="h-8 w-8 rounded-full text-royal-purple/40 hover:text-royal-purple hover:bg-gold/10 transition-all opacity-0 group-hover:opacity-100"
-                              >
-                                <Pencil className="w-3.5 h-3.5" />
-                              </Button>
-                            </div>
-                          ))
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
+      {/* Sales Report */}
+      <div className="lg:col-span-2 bg-white border border-gold/15 rounded-2xl p-8 shadow-sm">
+
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center">
+              <TrendingUp className="w-5 h-5 text-gold" />
+            </div>
+            <h2 className="font-serif text-lg tracking-[0.1em] uppercase text-royal-purple">
+              Sales Performance
+            </h2>
+          </div>
+
+          <div className="flex bg-ivory p-1 rounded-lg">
+            <button
+              onClick={() => setSalesPeriod("daily")}
+              className={`px-4 py-1.5 text-[10px] uppercase rounded-md transition ${
+                salesPeriod === "daily"
+                  ? "bg-white text-gold shadow-sm font-bold"
+                  : "text-royal-purple/40"
+              }`}
+            >
+              Daily
+            </button>
+
+            <button
+              onClick={() => setSalesPeriod("monthly")}
+              className={`px-4 py-1.5 text-[10px] uppercase rounded-md transition ${
+                salesPeriod === "monthly"
+                  ? "bg-white text-gold shadow-sm font-bold"
+                  : "text-royal-purple/40"
+              }`}
+            >
+              Monthly
+            </button>
+          </div>
+        </div>
+
+
+        {/* Sales Chart */}
+        <div className="h-[320px] pt-4">
+          {salesLoading ? (
+            <div className="h-full flex items-center justify-center">
+              <Loader2 className="w-8 h-8 animate-spin text-gold" />
+            </div>
+          ) : (
+            <div className="flex items-end justify-between h-56 px-4 gap-3 bg-ivory/20 rounded-2xl p-6 border border-gold/5">
+
+              {(salesPeriod === "daily" ? salesData?.daily : salesData?.monthly)
+                ?.slice(-12)
+                .map((d: any, i) => {
+
+                  const maxRevenue = Math.max(
+                    ...(salesPeriod === "daily"
+                      ? salesData?.daily ?? []
+                      : salesData?.monthly ?? []
+                    ).map((x) => x.revenue),
+                    1000
+                  );
+
+                  const height = Math.max((d.revenue / maxRevenue) * 100, 4);
+
+                  return (
+                    <motion.div
+                      key={i}
+                      initial={{ height: 0 }}
+                      animate={{ height: `${height}%` }}
+                      transition={{ duration: 0.6 }}
+                      className="flex-1 flex flex-col items-center justify-end"
+                    >
+                      <div className="w-full bg-gradient-to-t from-gold/40 to-gold/80 rounded-t-lg shadow-sm" />
+
+                      <span className="text-[9px] text-royal-purple/40 mt-3 rotate-45 origin-left whitespace-nowrap">
+                        {salesPeriod === "daily"
+                          ? d.date.split("-").slice(2).join("/")
+                          : d.month.split("-").slice(1).join("/")}
+                      </span>
+                    </motion.div>
+                  );
+                })}
+            </div>
+          )}
+        </div>
+      </div>
+
+
+      {/* Low Stock */}
+      <motion.div
+        whileHover={{ y: -4 }}
+        className="bg-white border border-gold/15 rounded-2xl p-8 shadow-sm"
+      >
+        <div className="flex items-center gap-3 mb-8">
+          <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center">
+            <AlertTriangle className="w-5 h-5 text-red-500" />
+          </div>
+          <h2 className="font-serif text-lg tracking-[0.1em] uppercase text-royal-purple">
+            Low Stock
+          </h2>
+        </div>
+
+        <div className="space-y-4 max-h-[300px] overflow-y-auto pr-2">
+
+          {stats?.lowStockProducts?.map((p: any) => (
+            <motion.div
+              key={p.id}
+              whileHover={{ scale: 1.02 }}
+              className="flex items-center gap-4 p-4 rounded-xl border border-red-100/50 bg-red-50/30"
+            >
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-royal-purple truncate">
+                  {p.name}
+                </p>
+
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-100 text-red-600 uppercase">
+                  Low Stock: {p.stock}
+                </span>
+              </div>
+            </motion.div>
+          ))}
+
+        </div>
+      </motion.div>
+    </motion.div>
+
+  </div>
+)}
 
               {/* ── ADD PRODUCT ────────────────────────────────────────── */}
               {tab === "add" && (

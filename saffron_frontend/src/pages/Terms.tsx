@@ -87,9 +87,9 @@ const Terms = () => {
                   whileHover={{ y: -3 }}
                   className="bg-cream rounded-2xl p-8 mt-8 shadow-sm hover:shadow-lg transition-all duration-500"
                 >
-                  <p className="font-rr text-center text-sm text-charcoal/70">
-                    <strong>Company Details:</strong><br />
-                    Z Princess Saffron – A project of HeyRam Infrastructure<br />
+                  <p className="font-rr font-medium text-center text-sm text-royal-purple/80">
+                    <strong>Company Details:</strong><br /><br/>
+                    Z Princess Saffron – A project of HeyRam Infrastructure<br /><br/>
                     FSSAI: 12423008002367 | GSTIN: 33ABFA6551N1ZZ
                   </p>
                 </motion.div>
@@ -189,13 +189,13 @@ const Terms = () => {
               {/* Contact */}
               <motion.div
                 variants={fadeUp}
-                className="text-center py-12 border-t border-charcoal/10"
+                className="text-center py-12 border-t border-royal-purple/10"
               >
-                <h2 className="font-serif text-2xl text-charcoal mb-4">
+                <h2 className="font-sans text-2xl text-royal-purple mb-4">
                   Questions?
                 </h2>
 
-                <p className="text-charcoal/70 mb-6">
+                <p className="text-royal-purple/70 mb-6">
                   For any clarification regarding these terms:
                 </p>
 
@@ -240,7 +240,7 @@ const TermsSection = ({
       <div className="w-12 h-12 bg-royal-purple/10 rounded-xl flex items-center justify-center text-royal-purple">
         {icon}
       </div>
-      <h2 className="font-serif text-2xl text-charcoal">{title}</h2>
+      <h2 className="font-sans text-2xl font-light text-royal-purple">{title}</h2>
     </div>
 
     <div className="space-y-8 max-w-3xl mx-auto">
@@ -250,10 +250,10 @@ const TermsSection = ({
           whileHover={{ y: -4 }}
           className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-500"
         >
-          <h3 className="font-medium text-charcoal mb-2">
+          <h3 className="font-medium font-sans text-royal-purple mb-2">
             {item.subtitle}
           </h3>
-          <p className="text-charcoal/70">
+          <p className=" font-rr text-royal-purple/70">
             {item.content}
           </p>
         </motion.div>

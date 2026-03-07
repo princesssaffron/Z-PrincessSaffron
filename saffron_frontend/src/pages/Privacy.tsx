@@ -80,7 +80,7 @@ const Privacy = () => {
 
               {/* Introduction */}
               <motion.div variants={fadeUp}>
-                <p className="text-charcoal/80 leading-relaxed text-lg text-center">
+                <p className="text-charcoal/60 font-medium leading-relaxed text-lg text-center">
                   At Z Princess Saffron, we are committed to protecting your
                   privacy and ensuring the security of your personal
                   information. This policy explains how we collect, use,
@@ -165,11 +165,11 @@ const Privacy = () => {
                 />
 
                 <div className="relative z-10">
-                  <h2 className="font-serif text-2xl text-charcoal mb-6 text-center">
+                  <h2 className="font-sans text-2xl text-royal-purple mb-6 text-center">
                     Your Rights
                   </h2>
 
-                  <ul className="space-y-4 text-charcoal/80 max-w-2xl mx-auto">
+                  <ul className="space-y-4 text-royal-purple/80 max-w-2xl mx-auto">
                     {[
                       "Access your personal data.",
                       "Correct inaccurate information.",
@@ -195,13 +195,13 @@ const Privacy = () => {
               {/* Contact Section */}
               <motion.div
                 variants={fadeUp}
-                className="text-center py-12 border-t border-charcoal/10"
+                className="text-center py-12 border-t border-royal-purple/10"
               >
-                <h2 className="font-serif text-2xl text-charcoal mb-4">
+                <h2 className="font-serif text-2xl text-royal-purple mb-4">
                   Questions About Privacy?
                 </h2>
 
-                <p className="text-charcoal/70 mb-6">
+                <p className="text-royal-purple/70 mb-6">
                   Contact our Data Protection Officer:
                 </p>
 
@@ -244,12 +244,12 @@ const PolicySection = ({
       <div className="w-14 h-14 bg-royal-purple/10 rounded-xl flex items-center justify-center text-royal-purple">
         {icon}
       </div>
-      <h2 className="font-serif text-2xl text-charcoal tracking-wide">
+      <h2 className="font-sans text-2xl text-charcoal tracking-wide">
         {title}
       </h2>
     </div>
 
-    <ul className="space-y-4 text-charcoal/80">
+    <ul className="space-y-4 font-rr text-charcoal/50">
       {content.map((item, index) => (
         <motion.li
           key={index}

@@ -52,10 +52,10 @@ const Blogs = () => {
   const [submitting, setSubmitting] = useState(false);
   const [uploading] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [imageFile, setImageFile] = useState<File | null>(null);
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [isSubscribing, setIsSubscribing] = useState(false);
   const { toast } = useToast();
+  const [expandedBlog, setExpandedBlog] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({ title: '', content: '', author_name: '', author_email: '' });
 
@@ -89,21 +89,19 @@ const Blogs = () => {
     const file = e.target.files?.[0];
     if (file) {
       if (file.size > 5 * 1024 * 1024) { toast({ title: 'Error', description: 'Image must be < 5MB', variant: 'destructive' }); return; }
-      setImageFile(file);
       const reader = new FileReader();
       reader.onloadend = () => setImagePreview(reader.result as string);
       reader.readAsDataURL(file);
     }
   };
 
-  const removeImage = () => { setImageFile(null); setImagePreview(null); };
-  const uploadImage = async (): Promise<string | null> => null;
+  const removeImage = () => { setImagePreview(null); };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    let imageUrl: string | null = null;
-    if (imageFile) imageUrl = await uploadImage();
+   let imageUrl: string | null = null;
+if (imagePreview) imageUrl = imagePreview;
     try {
       const res = await fetch(`${API_URL}/blogs`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -197,7 +195,7 @@ const Blogs = () => {
         {/* ── Divider ── */}
         <div className="flex items-center justify-center gap-4 py-12 bg-ivory">
           <div className="h-px w-20 bg-gold/30" />
-          <h2 className="font-serif text-2xl text-charcoal">Community Articles</h2>
+          <h2 className="font-serif text-2xl text-royal-purple">Community Articles</h2>
           <div className="h-px w-20 bg-gold/30" />
         </div>
 
@@ -280,35 +278,95 @@ const Blogs = () => {
             </AnimatePresence>
 
             {loading ? (
-              <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 text-royal-purple animate-spin" /></div>
-            ) : blogs.length === 0 ? (
-              <div className="text-center py-20"><p className="text-charcoal/60 text-lg">No articles yet. Be the first to share your knowledge!</p></div>
-            ) : (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 pb-16">
-                {blogs.map((blog, index) => (
-                  <motion.article key={blog.id}
-                    initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group"
-                  >
-                    <div className="h-48 bg-gradient-to-br from-gold/20 to-royal-purple/20 flex items-center justify-center overflow-hidden">
-                      {blog.image_url
-                        ? <img src={blog.image_url} alt={blog.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                        : <span className="font-serif text-6xl text-gold/30">{blog.title.charAt(0)}</span>
-                      }
-                    </div>
-                    <div className="p-6">
-                      <h3 className="font-serif text-xl text-charcoal mb-3 group-hover:text-royal-purple transition-colors line-clamp-2">{blog.title}</h3>
-                      <p className="text-charcoal/60 text-sm mb-4 line-clamp-3">{blog.content}</p>
-                      <div className="flex items-center justify-between text-xs text-charcoal/50">
-                        <div className="flex items-center gap-1"><User className="w-3 h-3" /><span>{blog.author_name}</span></div>
-                        <div className="flex items-center gap-1"><Calendar className="w-3 h-3" /><span>{new Date(blog.created_at).toLocaleDateString()}</span></div>
-                      </div>
-                    </div>
-                  </motion.article>
-                ))}
-              </div>
-            )}
+  <div className="flex justify-center py-20">
+    <Loader2 className="w-8 h-8 text-royal-purple animate-spin" />
+  </div>
+) : blogs.length === 0 ? (
+  <div className="text-center py-20">
+    <p className="text-charcoal/60 text-lg">
+      No articles yet. Be the first to share your knowledge!
+    </p>
+  </div>
+) : (
+  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 pb-16">
+    {blogs.map((blog, index) => (
+      <motion.article
+        key={blog.id}
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        whileHover={{ y: -10 }}
+        transition={{ duration: 0.4, delay: index * 0.1 }}
+        className="bg-white rounded-3xl overflow-hidden border border-gold/20
+shadow-md hover:shadow-2xl hover:-translate-y-2
+transition-all duration-500 group cursor-pointer"
+      >
+        {/* Image */}
+        <div className="relative h-48 overflow-hidden">
+
+          {blog.image_url ? (
+            <img
+              src={blog.image_url}
+              alt={blog.title}
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gold/20 to-royal-purple/30">
+              <span className="font-cinzel text-6xl text-gold/60 tracking-widest">
+                {blog.title.charAt(0)}
+              </span>
+            </div>
+          )}
+
+          {/* Hover Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
+        </div>
+
+        {/* Content */}
+        <div className="p-6">
+
+          {/* Title */}
+          <h3 className="font-sans  font-medium text-lg tracking-wider capitalize text-royal-purple mb-3
+          group-hover:text-[#C6A85A] transition-colors duration-300 line-clamp-2">
+            {blog.title}
+          </h3>
+
+          {/* Content preview */}
+         <p className="font-rr font-light text-charcoal/70 text-xs mb-4 leading-relaxed">
+  {expandedBlog === blog.id
+    ? blog.content
+    : `${blog.content.slice(0, 150)}...`}
+</p>
+<button
+  onClick={() =>
+    setExpandedBlog(expandedBlog === blog.id ? null : blog.id)
+  }
+  className="text-royal-purple text-sm font-medium hover:text-gold transition"
+>
+  {expandedBlog === blog.id ? "Read Less ↑" : "Read More →"}
+</button>
+          {/* Author + Date */}
+          <div className="flex items-center justify-between text-xs text-charcoal/60 border-t border-[#C6A85A]/10 pt-3">
+
+            <div className="flex items-center gap-1">
+              <User className="w-3 h-3 text-royal-purple" />
+              <span>{blog.author_name}</span>
+            </div>
+
+            <div className="flex items-center gap-1">
+              <Calendar className="w-3 h-3 text-royal-purple" />
+              <span>
+                {blog.created_at
+                  ? new Date(blog.created_at).toLocaleDateString()
+                  : "Just now"}
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </motion.article>
+    ))}
+  </div>
+)}
           </div>
         </section>
 
@@ -316,8 +374,8 @@ const Blogs = () => {
         <section className="py-16 bg-cream">
           <div className="container mx-auto px-6">
             <div className="max-w-2xl mx-auto text-center">
-              <h2 className="font-serif text-3xl text-charcoal mb-4">Subscribe to Our Newsletter</h2>
-              <p className="text-charcoal/70 mb-8">Get the latest articles, recipes, and exclusive offers delivered to your inbox</p>
+              <h2 className="font-serif text-3xl text-royal-purple mb-4">Subscribe to Our Newsletter</h2>
+              <p className="font-rr text-charcoal/70 mb-8">Get the latest articles, recipes, and exclusive offers delivered to your inbox</p>
               <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
                 <input type="email" required value={newsletterEmail} onChange={(e) => setNewsletterEmail(e.target.value)}
                   placeholder="Enter your email" className="flex-1 px-5 py-3 rounded-full border border-charcoal/20 focus:outline-none focus:border-royal-purple" />

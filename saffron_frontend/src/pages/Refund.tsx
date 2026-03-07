@@ -2,7 +2,7 @@ import Layout from "@/components/layout/Layout";
 import {
   RotateCcw,
   Package,
-  Clock,
+
   CheckCircle,
   XCircle,
   HelpCircle,
@@ -87,10 +87,10 @@ const Refund = () => {
                   className="absolute inset-0 bg-gold blur-3xl"
                 />
                 <div className="relative z-10">
-                  <h2 className="font-serif text-2xl text-charcoal mb-4 text-center">
+                  <h2 className="font-sans text-2xl  text-royal-purple mb-4 text-center">
                     Our Commitment
                   </h2>
-                  <p className="text-charcoal/80 leading-relaxed text-center max-w-3xl mx-auto">
+                  <p className="text-royal-purple/80 font-rr leading-relaxed text-center max-w-3xl mx-auto">
                     We take immense pride in our premium saffron quality.
                     If you’re not satisfied for any valid reason,
                     we are here to make it right.
@@ -100,7 +100,7 @@ const Refund = () => {
 
               {/* Timeline */}
               <motion.div variants={fadeUp}>
-                <h2 className="font-serif text-2xl text-charcoal mb-10 text-center">
+                <h2 className="font-sans text-2xl text-royal-purple mb-10 text-center">
                   Refund Process Timeline
                 </h2>
 
@@ -119,7 +119,7 @@ const Refund = () => {
                       <div className="text-gold font-medium text-sm mb-2">
                         {step.day}
                       </div>
-                      <h3 className="font-serif text-lg text-charcoal">
+                      <h3 className="font-rr text-lg text-royal-purple tracking-tight capitalize">
                         {step.title}
                       </h3>
                     </motion.div>
@@ -130,10 +130,10 @@ const Refund = () => {
               {/* Eligible / Not Eligible */}
               <motion.div
                 variants={fadeUp}
-                className="grid md:grid-cols-2 gap-10"
+                className="grid md:grid-cols-2 gap-10 font-rr text-royal-purple/30 font-light"
               >
                 <PolicyCard
-                  title="Eligible for Refund"
+                  title="Eligible for Refund" 
                   icon={<CheckCircle className="w-7 h-7 text-green-600" />}
                   items={[
                     "Damaged product on delivery",
@@ -144,7 +144,7 @@ const Refund = () => {
                 />
 
                 <PolicyCard
-                  title="Not Eligible"
+                  title="Not Eligible" 
                   icon={<XCircle className="w-7 h-7 text-red-500" />}
                   items={[
                     "Opened or used products",
@@ -159,12 +159,12 @@ const Refund = () => {
               <motion.div variants={fadeUp}>
                 <div className="flex items-center gap-3 mb-8 justify-center">
                   <Package className="w-8 h-8 text-royal-purple" />
-                  <h2 className="font-serif text-2xl text-charcoal">
+                  <h2 className="font-sans text-2xl text-royal-purple">
                     How to Request a Return
                   </h2>
                 </div>
 
-                <div className="space-y-8 max-w-3xl mx-auto">
+                <div className="space-y-8 max-w-3xl mx-auto font-rr">
                   {[
                     "Contact us within 7 days with order details.",
                     "Provide clear photo/video proof.",
@@ -181,7 +181,7 @@ const Refund = () => {
                       <div className="w-10 h-10 bg-royal-purple text-white rounded-full flex items-center justify-center font-bold">
                         {index + 1}
                       </div>
-                      <p className="text-charcoal/80">{item}</p>
+                      <p className="text-royal-purple/80">{item}</p>
                     </motion.div>
                   ))}
                 </div>
@@ -193,13 +193,13 @@ const Refund = () => {
                 className="bg-cream rounded-3xl p-10"
               >
                 <div className="flex items-center gap-3 mb-6 justify-center">
-                  <Clock className="w-7 h-7 text-gold" />
-                  <h2 className="font-serif text-xl text-charcoal">
+                  
+                  <h2 className="font-sans text-2xl text-royal-purple   mb-10 text-center">
                     Refund Timelines
                   </h2>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-6 text-charcoal/80">
+                <div className="grid md:grid-cols-2 gap-6 text-royal-purple/80 font-rr font-light">
                   <div>Credit/Debit Card — 5-7 business days</div>
                   <div>UPI — 3-5 business days</div>
                   <div>Net Banking — 5-7 business days</div>
@@ -211,12 +211,12 @@ const Refund = () => {
               <motion.div variants={fadeUp}>
                 <div className="flex items-center gap-3 mb-6 justify-center">
                   <HelpCircle className="w-8 h-8 text-royal-purple" />
-                  <h2 className="font-serif text-2xl text-charcoal">
+                  <h2 className="font-sans text-2xl text-royal-purple">
                     Common Questions
                   </h2>
                 </div>
 
-                <div className="space-y-6 max-w-3xl mx-auto">
+                <div className="space-y-6 max-w-3xl text-royal-purple mx-auto font-rr">
                   {[
                     "Yes, exchanges are available based on stock.",
                     "Return shipping covered if product error is ours.",
@@ -227,7 +227,7 @@ const Refund = () => {
                       whileHover={{ y: -4 }}
                       className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-500"
                     >
-                      <p className="text-charcoal/80">{answer}</p>
+                      <p className="text-royal-purple/80">{answer}</p>
                     </motion.div>
                   ))}
                 </div>
@@ -238,11 +238,11 @@ const Refund = () => {
                 variants={fadeUp}
                 className="text-center py-12 border-t border-charcoal/10"
               >
-                <h2 className="font-serif text-2xl text-charcoal mb-4">
+                <h2 className="font-sans text-2xl text-royal-purple mb-4">
                   Need Help with a Refund?
                 </h2>
 
-                <p className="text-charcoal/70 mb-6">
+                <p className="text-royal-purple/70 mb-6">
                   Our support team is ready to assist you.
                 </p>
 
@@ -288,10 +288,10 @@ const PolicyCard = ({
   >
     <div className="flex items-center gap-3 mb-6">
       {icon}
-      <h2 className="font-serif text-xl text-charcoal">{title}</h2>
+      <h2 className="font-sans text-xl text-royal-purple">{title}</h2>
     </div>
 
-    <ul className="space-y-3 text-charcoal/80">
+    <ul className="space-y-3 text-royal-purple/80">
       {items.map((item, index) => (
         <motion.li
           key={index}

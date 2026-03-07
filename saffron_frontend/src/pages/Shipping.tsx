@@ -83,10 +83,10 @@ const Shipping = () => {
                 className="bg-gradient-to-r from-gold/20 to-gold/5 rounded-3xl p-10 text-center shadow-sm hover:shadow-xl transition-all duration-500"
               >
                 <IndianRupee className="w-12 h-12 text-gold mx-auto mb-4" />
-                <h2 className="font-serif text-2xl text-charcoal mb-3">
+                <h2 className="font-sans text-2xl text-royal-purple mb-3">
                   Free Shipping on Orders Above ₹999
                 </h2>
-                <p className="text-charcoal/70">
+                <p className="text-royal-purple/70 font-rr">
                   Enjoy complimentary shipping on all orders above ₹999 within India
                 </p>
               </motion.div>
@@ -95,7 +95,7 @@ const Shipping = () => {
               <motion.div variants={fadeUp}>
                 <div className="flex items-center gap-3 mb-8 justify-center">
                   <Package className="w-7 h-7 text-royal-purple" />
-                  <h2 className="font-serif text-2xl text-charcoal">
+                  <h2 className="font-sans text-2xl text-royal-purple">
                     Shipping Rates
                   </h2>
                 </div>
@@ -105,25 +105,25 @@ const Shipping = () => {
                   className="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500"
                 >
                   <table className="w-full text-sm">
-                    <thead className="bg-royal-purple/5 text-charcoal">
+                    <thead className="bg-royal-purple/5 text-charcoal font-rr">
                       <tr>
                         <th className="text-left py-4 px-6">Order Value</th>
                         <th className="text-left py-4 px-6">Standard</th>
                         <th className="text-left py-4 px-6">Express</th>
                       </tr>
                     </thead>
-                    <tbody className="text-charcoal/70">
+                    <tbody className="text-royal-purple/70">
                       <tr className="border-t border-charcoal/5">
                         <td className="py-4 px-6">Below ₹499</td>
                         <td className="py-4 px-6">₹79</td>
                         <td className="py-4 px-6">₹149</td>
                       </tr>
-                      <tr className="border-t border-charcoal/5">
+                      <tr className="border-t border-royal-purple/5">
                         <td className="py-4 px-6">₹499 - ₹999</td>
                         <td className="py-4 px-6">₹49</td>
                         <td className="py-4 px-6">₹99</td>
                       </tr>
-                      <tr className="border-t border-charcoal/5 font-medium text-charcoal">
+                      <tr className="border-t border-royal-purple/5 font-medium text-royal-purple">
                         <td className="py-4 px-6">Above ₹999</td>
                         <td className="py-4 px-6 text-green-600">FREE</td>
                         <td className="py-4 px-6">₹49</td>
@@ -137,12 +137,12 @@ const Shipping = () => {
               <motion.div variants={fadeUp}>
                 <div className="flex items-center gap-3 mb-8 justify-center">
                   <Clock className="w-7 h-7 text-royal-purple" />
-                  <h2 className="font-serif text-2xl text-charcoal">
+                  <h2 className="font-sans text-2xl text-royal-purple">
                     Delivery Timeline
                   </h2>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-8">
+                <div className="font-rr font-light grid md:grid-cols-2 gap-8">
                   {[
                     {
                       title: "Standard Delivery",
@@ -166,11 +166,11 @@ const Shipping = () => {
                       whileHover={{ y: -5 }}
                       className="bg-white rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-500"
                     >
-                      <h3 className="font-serif text-lg text-charcoal mb-6">
+                      <h3 className="font-sans text-lg text-royal-purple mb-6">
                         {card.title}
                       </h3>
 
-                      <ul className="space-y-4 text-charcoal/70">
+                      <ul className="space-y-4 text-royal-purple/70">
                         {card.points.map((point, i) => (
                           <motion.li
                             key={i}
@@ -193,7 +193,7 @@ const Shipping = () => {
               <motion.div variants={fadeUp}>
                 <div className="flex items-center gap-3 mb-8 justify-center">
                   <MapPin className="w-7 h-7 text-royal-purple" />
-                  <h2 className="font-serif text-2xl text-charcoal">
+                  <h2 className="font-sans text-2xl text-royal-purple">
                     Delivery Locations
                   </h2>
                 </div>
@@ -202,7 +202,7 @@ const Shipping = () => {
                   whileHover={{ y: -4 }}
                   className="bg-cream rounded-3xl p-10 shadow-sm hover:shadow-xl transition-all duration-500"
                 >
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-charcoal/70">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 font-rr text-royal-purple/70">
                     {[
                       "Tamil Nadu",
                       "Karnataka",
@@ -233,11 +233,11 @@ const Shipping = () => {
                 variants={fadeUp}
                 className="text-center py-12 border-t border-charcoal/10"
               >
-                <h2 className="font-serif text-2xl text-charcoal mb-4">
+                <h2 className="font-sans text-2xl text-royal-purple mb-4">
                   Questions About Shipping?
                 </h2>
 
-                <p className="text-charcoal/70 mb-6">
+                <p className="text-royal-purple/70 mb-6">
                   Contact our support team for any shipping-related queries.
                 </p>
 

@@ -141,7 +141,7 @@ const Contact = () => {
                 <div className="inline-flex p-4 bg-gold/10 text-gold mb-4">
                   <info.icon className="w-6 h-6" />
                 </div>
-                <p className="text-sm uppercase tracking-wider mb-2">{info.label}</p>
+                <p className="text-sm uppercase font-medium tracking-wider mb-2">{info.label}</p>
                 <p className="font-cinzel text-[14px] text-royal-purple break-words">{info.value}</p>
                 {info.subtext && <p className="text-sm mt-1">{info.subtext}</p>}
               </div>

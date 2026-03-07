@@ -188,7 +188,7 @@ const FAQ = () => {
                     <div className="w-14 h-14 bg-royal-purple/10 rounded-xl flex items-center justify-center text-royal-purple group-hover:scale-110 transition duration-500">
                       {category.icon}
                     </div>
-                    <h2 className="font-serif text-2xl text-charcoal tracking-wide">
+                    <h2 className="font-sans text-2xl text-royal-purple tracking-wide">
                       {category.title}
                     </h2>
                   </div>
@@ -206,11 +206,11 @@ const FAQ = () => {
                           value={`${categoryIndex}-${faqIndex}`}
                           className="bg-white rounded-2xl px-6 border border-royal-purple/5 shadow-sm hover:shadow-lg transition-all duration-500"
                         >
-                          <AccordionTrigger className=" font--rr text-left text-charcoal hover:text-royal-purple hover:no-underline py-6 text-base  tracking-wide transition">
+                          <AccordionTrigger className=" font-rr text-left text-royal-purple hover:text-royal-purple hover:no-underline py-6 text-base  tracking-wide transition">
                             {faq.question}
                           </AccordionTrigger>
 
-                          <AccordionContent className="text-charcoal/70 pb-6 leading-relaxed">
+                          <AccordionContent className="font-rr text-royal-purple/70 pb-6 leading-relaxed">
                             {faq.answer}
                           </AccordionContent>
                         </AccordionItem>
@@ -240,7 +240,7 @@ const FAQ = () => {
                 />
 
                 <div className="relative z-10">
-                  <h2 className="font-serif text-2xl mb-4 tracking-wide">
+                  <h2 className="font-sans text-2xl mb-4 tracking-wide">
                     Still Have Questions?
                   </h2>
 
@@ -253,7 +253,7 @@ const FAQ = () => {
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.97 }}
                       href="mailto:zprincessaffron07@gmail.com"
-                      className="bg-gold text-charcoal px-8 py-3 rounded-full font-medium tracking-wide transition-all duration-300"
+                      className="bg-gold text-royal-purple px-8 py-3 rounded-full font-medium tracking-wide transition-all duration-300"
                     >
                       Email Us
                     </motion.a>

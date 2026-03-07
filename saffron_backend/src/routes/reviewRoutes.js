@@ -1,6 +1,6 @@
 import express from "express";
 import { createReview, getReviews } from "../controllers/reviewController.js";
-import { protect } from "../middleware/authMiddleware.js";
+import { protect, optionalProtect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
@@ -42,7 +42,7 @@ const router = express.Router();
  *       200:
  *         description: List of reviews
  */
-router.post("/", protect, createReview);
+router.post("/", optionalProtect, createReview);
 router.get("/", getReviews);
 
 export default router;

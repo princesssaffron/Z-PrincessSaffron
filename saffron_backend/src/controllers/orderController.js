@@ -50,7 +50,7 @@ export const createOrder = async (req, res) => {
             discount: checkoutData.discount,
             shipping: checkoutData.shipping,
             total: checkoutData.total,
-            status: checkoutData.paymentMethod === "cod" ? "pending" : "confirmed",
+            status: "pending",
             items: checkoutData.items,
             shippingDetails: checkoutData.shippingDetails,
             paymentMethod: checkoutData.paymentMethod,

@@ -7,6 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { getProductById } from "@/data/products";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { resolveProductImage } from "@/utils/imageUtils";
 import emptyWishlistVideo from "@/assets/empty-wishlist.mp4";
 
 const Wishlist = () => {
@@ -17,7 +18,7 @@ const Wishlist = () => {
 
   const likedProductsWithDetails = likedProducts.map((item) => ({
     ...item,
-    product: getProductById(item.product_id),
+    product: item.product || getProductById(item.product_id),
   })).filter((item) => item.product);
 
   if (!user) {
@@ -97,7 +98,7 @@ const Wishlist = () => {
                 {/* Image */}
                 <div className="relative aspect-square overflow-hidden">
                   <img
-                    src={product!.image}
+                    src={resolveProductImage(product!.image)}
                     alt={product!.name}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />

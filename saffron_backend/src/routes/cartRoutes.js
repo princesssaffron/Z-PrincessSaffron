@@ -7,6 +7,7 @@ import {
     clearCart,
 } from "../controllers/cartController.js";
 import { protect } from "../middleware/authMiddleware.js";
+import { validateRequest, schemas } from "../middleware/validationMiddleware.js";
 
 const router = express.Router();
 
@@ -56,7 +57,7 @@ const router = express.Router();
  *       200:
  *         description: Cart cleared
  */
-router.route("/").get(protect, getCart).post(protect, addToCart).delete(protect, clearCart);
+router.route("/").get(protect, getCart).post(protect, validateRequest(schemas.cart.addItem), addToCart).delete(protect, clearCart);
 
 /**
  * @swagger

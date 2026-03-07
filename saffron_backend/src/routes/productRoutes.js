@@ -7,6 +7,7 @@ import {
     deleteProduct,
 } from "../controllers/productController.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
+import { validateRequest, schemas } from "../middleware/validationMiddleware.js";
 
 const router = express.Router();
 
@@ -52,7 +53,7 @@ const router = express.Router();
  *       201:
  *         description: Product created
  */
-router.route("/").get(getProducts).post(protect, admin, createProduct);
+router.route("/").get(getProducts).post(protect, admin, validateRequest(schemas.product.create), createProduct);
 
 /**
  * @swagger

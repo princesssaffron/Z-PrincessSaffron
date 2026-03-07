@@ -20,3 +20,5 @@ const options = {
 const swaggerSpec = swaggerJsDoc(options);
 
 export default swaggerSpec;
+
+//swagger API url:"http://localhost:5000/api-docs"

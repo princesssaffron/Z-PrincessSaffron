@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Star } from "lucide-react";
 import { z } from "zod";
 import {
@@ -13,6 +13,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button"; // ✅ Using your global button
+
+import { useAuth } from "@/contexts/AuthContext";
 
 const reviewSchema = z.object({
   rating: z.number().min(1, "Please select a rating").max(5),
@@ -32,6 +34,7 @@ const WriteReviewModal = ({
   onOpenChange,
   onReviewSubmitted,
 }: WriteReviewModalProps) => {
+  const { user } = useAuth();
   const [rating, setRating] = useState(0);
   const [hoveredRating, setHoveredRating] = useState(0);
   const [reviewText, setReviewText] = useState("");
@@ -45,10 +48,17 @@ const WriteReviewModal = ({
     setRating(0);
     setHoveredRating(0);
     setReviewText("");
-    setReviewerName("");
+    setReviewerName(user?.fullName || "");
     setLocation("");
     setErrors({});
   };
+
+  // Pre-fill name ONLY once when modal opens and we have a user
+  useEffect(() => {
+    if (open && user?.fullName && !reviewerName) {
+      setReviewerName(user.fullName);
+    }
+  }, [open, user]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,9 +85,17 @@ const WriteReviewModal = ({
     const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
     try {
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+      };
+
+      if (user?.token) {
+        headers["Authorization"] = `Bearer ${user.token}`;
+      }
+
       const response = await fetch(`${API_URL}/reviews`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify({
           reviewer_name: result.data.reviewerName,
           rating: result.data.rating,

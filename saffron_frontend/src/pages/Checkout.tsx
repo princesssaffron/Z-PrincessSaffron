@@ -12,11 +12,12 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { resolveProductImage } from "@/utils/imageUtils";
 
 const Checkout = () => {
   const { user } = useAuth();
   const { cartItems, clearCart } = useCart();
-  const { createOrder } = useOrders();
+  const { createOrder, cancelOrder } = useOrders();
   const { profile, isLoading: profileLoading } = useProfile();
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ const Checkout = () => {
   const cartProducts = cartItems
     .map((item) => ({
       ...item,
-      product: getProductById(item.product_id),
+      product: item.product || getProductById(item.product_id),
     }))
     .filter((item) => item.product);
 
@@ -180,16 +181,42 @@ const Checkout = () => {
         order_id: rzpOrder.id, // THE SECURE ORDER ID FROM BACKEND
         handler: async function (response: any) {
           // Payment Success
-          await clearCart();
-          sessionStorage.removeItem("appliedCoupon");
-          sessionStorage.removeItem("discountPercent");
+          try {
+            const verifyRes = await fetch(`${import.meta.env.VITE_API_URL}/payments/verify`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${user?.token}`,
+              },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+              }),
+            });
 
-          toast({
-            title: "Payment Successful",
-            description: `Payment ID: ${response.razorpay_payment_id}`,
-          });
+            if (!verifyRes.ok) {
+              throw new Error("Payment verification failed");
+            }
 
-          navigate(`/order/${orderId}`);
+            await clearCart();
+            sessionStorage.removeItem("appliedCoupon");
+            sessionStorage.removeItem("discountPercent");
+
+            toast({
+              title: "Payment Successful",
+              description: `Payment ID: ${response.razorpay_payment_id}`,
+            });
+
+            navigate(`/order/${orderId}`);
+          } catch (error) {
+            console.error("Verification Error:", error);
+            toast({
+              title: "Verification Failed",
+              description: "We couldn't verify your payment. Please contact support.",
+              variant: "destructive",
+            });
+          }
         },
         prefill: {
           name: shippingDetails.name,
@@ -200,13 +227,11 @@ const Checkout = () => {
           color: "#2E0F3A"
         },
         modal: {
-          ondismiss: function () {
+          ondismiss: async function () {
             setIsSubmitting(false);
-            toast({
-              title: "Payment Cancelled",
-              description: "You cancelled the payment process.",
-              variant: "destructive"
-            });
+            if (orderId) {
+              await cancelOrder(orderId);
+            }
           }
         }
       };
@@ -398,7 +423,7 @@ const Checkout = () => {
                     {cartProducts.map(({ product_id, quantity, product }) => (
                       <div key={product_id} className="flex gap-3">
                         <img
-                          src={product!.image}
+                          src={resolveProductImage(product!.image)}
                           alt={product!.name}
                           className="w-16 h-16 object-cover rounded-lg"
                         />

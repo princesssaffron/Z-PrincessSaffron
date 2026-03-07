@@ -58,15 +58,21 @@ interface Review {
   location?: string;
   rating: number;
   review_text: string;
+  user?: {
+    fullName: string;
+    avatar_url?: string;
+  };
 }
 
-const getInitials = (name: string) =>
-  name
+const getInitials = (name: string) => {
+  if (!name || typeof name !== "string") return "G";
+  const initials = name
     .split(" ")
+    .filter(Boolean)
     .map((n) => n[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
+    .join("");
+  return initials.toUpperCase().slice(0, 2) || "G";
+};
 
 const TestimonialsSection = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -96,13 +102,17 @@ const TestimonialsSection = () => {
   const allTestimonials =
     dbReviews.length > 0
       ? [
-        ...dbReviews.map((r) => ({
-          name: r.reviewer_name,
-          location: r.location || "",
-          rating: r.rating,
-          comment: r.review_text,
-          avatar: getInitials(r.reviewer_name),
-        })),
+        ...dbReviews.map((r) => {
+          if (!r) return null;
+          const name = r.reviewer_name || r.user?.fullName || "Guest";
+          return {
+            name,
+            location: r.location || "",
+            rating: r.rating || 5,
+            comment: r.review_text || "",
+            avatar: getInitials(name),
+          };
+        }).filter(Boolean),
         ...staticTestimonials,
       ]
       : staticTestimonials;

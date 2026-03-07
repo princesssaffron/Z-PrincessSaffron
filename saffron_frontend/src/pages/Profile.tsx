@@ -1,6 +1,6 @@
 import ProfileLayout from "./profile/ProfileLayout";
 import { useAuth } from "@/contexts/AuthContext";
-import { useOrders } from "@/hooks/useOrders";
+import { useOrders, OrderStatus } from "@/hooks/useOrders";
 import {
   Card,
   CardHeader,
@@ -41,10 +41,13 @@ const Profile = () => {
   const { orders } = useOrders();
   const { profile, isLoading: profileLoading } = useProfile();
 
-  const totalOrders = orders?.length || 0;
+  const activeStatuses: OrderStatus[] = ["pending", "confirmed", "processing", "shipped", "out_for_delivery", "paid"];
+  
+  const totalOrders = orders?.filter((o) => o.status !== "cancelled").length || 0;
   const completedOrders =
     orders?.filter((o) => o.status === "delivered").length || 0;
-  const pendingOrders = totalOrders - completedOrders;
+  const pendingOrders = 
+    orders?.filter((o) => activeStatuses.includes(o.status) && o.status !== "cancelled").length || 0;
 
   const hasAddress = profile?.shipping_address;
   const formattedAddress = hasAddress ? (

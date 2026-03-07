@@ -15,31 +15,33 @@ export const getCart = async (req, res) => {
 
         // Logic Rule: If stock reduced -> auto adjust cart
         let itemsChanged = false;
-        const validatedItems = [];
+        const enrichedItems = [];
 
         for (const item of cart.items) {
             const product = await Product.findOne({ id: item.product_id });
 
             if (!product || product.stock === 0) {
-                // Remove item if product is gone or out of stock
                 itemsChanged = true;
                 continue;
             }
 
             if (item.quantity > product.stock) {
-                // Reduce quantity to match available stock
                 item.quantity = product.stock;
                 itemsChanged = true;
             }
-            validatedItems.push(item);
+            
+            // Convert to object and add product details
+            const itemObj = item.toObject();
+            itemObj.product = product;
+            enrichedItems.push(itemObj);
         }
 
         if (itemsChanged) {
-            cart.items = validatedItems;
+            cart.items = enrichedItems.map(i => ({ product_id: i.product_id, quantity: i.quantity }));
             await cart.save();
         }
 
-        res.json(cart.items);
+        res.json(enrichedItems);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -94,7 +96,16 @@ export const addToCart = async (req, res) => {
             await cart.save();
         }
 
-        res.status(201).json(cart.items);
+        // Return enriched items
+        const enrichedItems = [];
+        for (const item of cart.items) {
+            const p = await Product.findOne({ id: item.product_id });
+            const itemObj = item.toObject();
+            itemObj.product = p;
+            enrichedItems.push(itemObj);
+        }
+
+        res.status(201).json(enrichedItems);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -131,7 +142,16 @@ export const updateCartItem = async (req, res) => {
                     cart.items[itemIndex].quantity = quantity;
                 }
                 await cart.save();
-                res.json(cart.items);
+                
+                // Return enriched items
+                const enrichedItems = [];
+                for (const item of cart.items) {
+                    const p = await Product.findOne({ id: item.product_id });
+                    const itemObj = item.toObject();
+                    itemObj.product = p;
+                    enrichedItems.push(itemObj);
+                }
+                res.json(enrichedItems);
             } else {
                 res.status(404).json({ message: "Item not found in cart" });
             }

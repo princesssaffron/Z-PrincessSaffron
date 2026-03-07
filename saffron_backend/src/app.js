@@ -40,7 +40,7 @@ app.get("/api/health", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-    res.send('<h1>Backend is running 🚀</h1><p>Please visit the frontend at <a href="http://localhost:5173">http://localhost:5173</a></p>');
+    res.send('<h1>Backend is running 🚀</h1><p>API Documentation: <a href="/api-docs">/api-docs</a></p><p>Please visit the frontend at <a href="http://localhost:5173">http://localhost:5173</a></p>');
 });
 
 // Global Error Handler

@@ -103,7 +103,7 @@ const OrderDetails = () => {
 
   const currentStepIndex = getStatusIndex(order.status);
   const isCancelled = order.status === "cancelled";
-  const canCancel = ["pending", "confirmed"].includes(order.status);
+  const canCancel = ["pending", "confirmed", "paid", "processing"].includes(order.status);
 
   return (
     <Layout>

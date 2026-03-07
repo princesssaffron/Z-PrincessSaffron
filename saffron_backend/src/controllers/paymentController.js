@@ -1,4 +1,6 @@
 import Razorpay from "razorpay";
+import crypto from "crypto";
+import Order from "../models/orderModel.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -28,11 +30,32 @@ export const createRazorpayOrder = async (req, res) => {
     }
 };
 
-// @desc    Verify Razorpay Payment Signature (Optional but recommended)
+// @desc    Verify Razorpay Payment Signature
 // @route   POST /api/payments/verify
 // @access  Private
 export const verifyPayment = async (req, res) => {
-    // This is a placeholder for real signature verification if needed
-    // In many simple client-side flows, the handler is sufficient for demo modes
-    res.status(200).json({ status: "success", message: "Payment verification received" });
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+
+    try {
+        const secret = process.env.RAZORPAY_KEY_SECRET;
+        const generated_signature = crypto
+            .createHmac("sha256", secret)
+            .update(razorpay_order_id + "|" + razorpay_payment_id)
+            .digest("hex");
+
+        if (generated_signature === razorpay_signature) {
+            // Payment is verified
+            const order = await Order.findOne({ razorpayOrderId: razorpay_order_id });
+            if (order) {
+                order.status = "paid";
+                await order.save();
+            }
+            res.status(200).json({ status: "success", message: "Payment verified successfully" });
+        } else {
+            res.status(400).json({ status: "failure", message: "Invalid payment signature" });
+        }
+    } catch (error) {
+        console.error("Payment Verification Error:", error);
+        res.status(500).json({ message: "Internal server error during verification" });
+    }
 };

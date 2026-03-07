@@ -34,6 +34,7 @@ const saffronTypes = [
   { key: "all", label: "All Types" },
   { key: "threads", label: "Strands" },
   { key: "powder", label: "Powder" },
+  { key: "gift", label: "Gift Collection" },
 ];
 
 const Products = () => {
@@ -72,9 +73,12 @@ const Products = () => {
   };
 
   const filteredProducts = useMemo(() => {
-    // Merge static products with API products, avoiding duplicates by ID if necessary
-    // For now, let's prioritize API products if they exist, or just use them
-    let result = apiProducts.length > 0 ? [...apiProducts] : [...products];
+    // Merge static products with API products
+    // We keep static products as the "showcase" and append API products, 
+    // ensuring we don't show duplicates if the same ID exists in both.
+    const apiIds = new Set(apiProducts.map((p: any) => (p.id || p._id)?.toString()));
+    const staticProducts = products.filter((p: any) => !apiIds.has(p.id.toString()));
+    let result = [...staticProducts, ...apiProducts];
 
     // Filter by price range
     const priceRange = priceRanges.find((p) => p.key === priceFilter);
@@ -90,12 +94,9 @@ const Products = () => {
       result = result.filter((p) => p.rating >= ratingOption.min);
     }
 
-    // Filter by type (strands/powder only, exclude gift)
+    // Filter by type
     if (typeFilter !== "all") {
       result = result.filter((p) => p.category === typeFilter);
-    } else {
-      // Show only strands and powder by default (exclude gift boxes from main filters)
-      result = result.filter((p) => p.category === "threads" || p.category === "powder");
     }
 
     // Sort

@@ -7,6 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { getProductById } from "@/data/products";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
+import { resolveProductImage } from "@/utils/imageUtils";
 import emptyWishlistVideo from "@/assets/empty-wishlist.mp4";
 
 const Cart = () => {
@@ -67,7 +68,7 @@ const Cart = () => {
   const cartProducts = cartItems
     .map((item) => ({
       ...item,
-      product: getProductById(item.product_id),
+      product: item.product || getProductById(item.product_id),
     }))
     .filter((item) => item.product);
 
@@ -191,7 +192,7 @@ const Cart = () => {
                   className="flex gap-6 bg-card p-6 rounded-2xl shadow-card"
                 >
                   <img
-                    src={product!.image}
+                    src={resolveProductImage(product!.image)}
                     alt={product!.name}
                     className="w-28 h-28 object-cover rounded-2xl"
                   />

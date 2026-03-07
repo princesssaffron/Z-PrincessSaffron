@@ -177,7 +177,7 @@ const Contact = () => {
                     placeholder=" "
                     className="peer w-full bg-transparent border-b border-black/50 py-3 focus:outline-none focus:border-gold transition-all"
                   />
-                  <label className="absolute left-0 top-3 text-charcoal/60 text-sm transition-all peer-placeholder-shown:top-3 peer-focus:-top-3 peer-focus:text-xs peer-focus:text-gold">
+                  <label className="absolute left-0 top-3 text-charcoal/60 text-sm transition-all peer-placeholder-shown:top-3 peer-focus:-top-3 peer-focus:text-xs peer-focus:text-gold peer-[:not(:placeholder-shown)]:-top-3 peer-[:not(:placeholder-shown)]:text-xs">
                     {field === "name" ? "Your Name *" : field === "email" ? "Email *" : "Phone"}
                   </label>
                 </div>

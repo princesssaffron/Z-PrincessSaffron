@@ -1,5 +1,6 @@
 import express from "express";
 import { registerUser, loginUser, googleLogin, forgotPassword, resetPassword } from "../controllers/authController.js";
+import { validateRequest, schemas } from "../middleware/validationMiddleware.js";
 
 const router = express.Router();
 
@@ -32,7 +33,7 @@ const router = express.Router();
  *       400:
  *         description: User already exists
  */
-router.post("/register", registerUser);
+router.post("/register", validateRequest(schemas.auth.register), registerUser);
 
 /**
  * @swagger
@@ -60,7 +61,7 @@ router.post("/register", registerUser);
  *       401:
  *         description: Invalid credentials
  */
-router.post("/login", loginUser);
+router.post("/login", validateRequest(schemas.auth.login), loginUser);
 
 /**
  * @swagger

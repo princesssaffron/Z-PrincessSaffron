@@ -27,6 +27,28 @@ export const protect = async (req, res, next) => {
     }
 };
 
+// Optional protection - populates req.user if token is present, but doesn't block if not
+export const optionalProtect = async (req, res, next) => {
+    let token;
+
+    if (
+        req.headers.authorization &&
+        req.headers.authorization.startsWith("Bearer")
+    ) {
+        try {
+            token = req.headers.authorization.split(" ")[1];
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            req.user = await User.findById(decoded.id).select("-password");
+            return next();
+        } catch (error) {
+            console.error("Optional Auth Error:", error);
+            // Even if token fails, we allow guests to proceed in optional mode
+            return next();
+        }
+    }
+    next();
+};
+
 export const admin = (req, res, next) => {
     if (req.user && req.user.isAdmin) {
         return next();

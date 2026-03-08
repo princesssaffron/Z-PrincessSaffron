@@ -25,7 +25,7 @@ export const getDashboardStats = async (req, res) => {
         const totalRevenue = orderStats.length > 0 ? orderStats[0].totalRevenue : 0;
 
         // Low stock products (stock < 5)
-        const lowStockProducts = await Product.find({ stock: { $lt: 5 } }).select("name stock id image");
+        const lowStockProducts = await Product.find({ stock: { $lt: 5 } });
 
         res.json({
             totalUsers,

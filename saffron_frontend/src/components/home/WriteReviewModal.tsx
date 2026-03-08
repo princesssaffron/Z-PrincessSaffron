@@ -201,6 +201,7 @@ const WriteReviewModal = ({
               onChange={(e) => setReviewerName(e.target.value)}
               placeholder="Enter your name"
               className="mt-2 bg-ivory border border-gold/20 focus:border-gold"
+              required
             />
             {errors.reviewerName && (
               <p className="text-destructive text-sm mt-1">{errors.reviewerName}</p>

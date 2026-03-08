@@ -8,7 +8,7 @@ import { getProductById } from "@/data/products";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { resolveProductImage } from "@/utils/imageUtils";
-import emptyWishlistVideo from "@/assets/empty-wishlist.mp4";
+import emptyWishlistVideo from "@/assets/empty-wishlist-white.mp4";
 
 const Cart = () => {
   const { user } = useAuth();
@@ -89,14 +89,14 @@ const Cart = () => {
           <div className="container mx-auto px-6 text-center">
 
             <div className="flex justify-center mb-10">
-              <div className="relative w-56">
+              <div className="relative w-56 bg-ivory rounded-xl overflow-hidden flex justify-center">
                 <video
                   src={emptyWishlistVideo}
                   autoPlay
                   loop
                   muted
                   playsInline
-                  className="relative w-full h-auto object-contain rounded-xl"
+                  className="w-full h-auto object-contain mix-blend-multiply"
                 />
               </div>
             </div>
@@ -130,14 +130,14 @@ const Cart = () => {
           <div className="container mx-auto px-6 text-center">
 
             <div className="flex justify-center mb-10">
-              <div className="relative w-56">
+              <div className="relative w-56 bg-ivory rounded-xl overflow-hidden flex justify-center">
                 <video
                   src={emptyWishlistVideo}
                   autoPlay
                   loop
                   muted
                   playsInline
-                  className="relative w-full h-auto object-contain rounded-xl"
+                  className="w-full h-auto object-contain mix-blend-multiply"
                 />
               </div>
             </div>

@@ -42,11 +42,11 @@ const Profile = () => {
   const { profile, isLoading: profileLoading } = useProfile();
 
   const activeStatuses: OrderStatus[] = ["pending", "confirmed", "processing", "shipped", "out_for_delivery", "paid"];
-  
+
   const totalOrders = orders?.filter((o) => o.status !== "cancelled").length || 0;
   const completedOrders =
     orders?.filter((o) => o.status === "delivered").length || 0;
-  const pendingOrders = 
+  const pendingOrders =
     orders?.filter((o) => activeStatuses.includes(o.status) && o.status !== "cancelled").length || 0;
 
   const hasAddress = profile?.shipping_address;
@@ -110,7 +110,7 @@ const Profile = () => {
                     initial={{ scale: 0.8 }}
                     animate={{ scale: 1 }}
                     transition={{ duration: 0.4 }}
-                    className={`text-4xl font-bold ${stat.color}`}
+                    className={`text-2xl font-bold ${stat.color}`}
                   >
                     {stat.value}
                   </motion.div>
@@ -168,9 +168,9 @@ const Profile = () => {
             </h3>
 
             {profileLoading ? (
-              <p className="text-sm text-muted-foreground italic">Loading address...</p>
+              <p className="text-sm font-rr text-muted-foreground italic">Loading address...</p>
             ) : (
-              <div className="mb-6">
+              <div className="mb-6 font-rr">
                 {formattedAddress}
               </div>
             )}
@@ -180,7 +180,7 @@ const Profile = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6 }}
-            ><br/>
+            ><br />
               <Link to="/profile/address">
                 <Button variant="section">
                   Manage Addresses

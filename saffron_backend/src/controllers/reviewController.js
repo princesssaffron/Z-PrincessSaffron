@@ -44,14 +44,10 @@ export const createReview = async (req, res) => {
 
         if (userId) {
             reviewData.user = userId;
-            // Only set reviewer_name if a custom one was provided
-            if (reviewer_name) {
-                reviewData.reviewer_name = reviewer_name;
-            }
-        } else {
-            // For guests, use provided name or default to Guest
-            reviewData.reviewer_name = reviewer_name || "Guest";
         }
+
+        // Always prioritize the name provided in the review form
+        reviewData.reviewer_name = reviewer_name || (req.user ? req.user.fullName : "Guest");
 
         const review = await Review.create(reviewData);
 

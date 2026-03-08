@@ -8,7 +8,7 @@ import { getProductById } from "@/data/products";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { resolveProductImage } from "@/utils/imageUtils";
-import emptyWishlistVideo from "@/assets/empty-wishlist.mp4";
+import emptyWishlistVideo from "@/assets/empty-wishlist-white.mp4";
 
 const Wishlist = () => {
   const { user } = useAuth();
@@ -48,16 +48,16 @@ const Wishlist = () => {
         <section className="pt-32 pb-20 bg-ivory min-h-screen">
           <div className="container mx-auto px-6 text-center">
             <div className="flex justify-center mb-10">
-  <div className="relative w-56">
-    <video
-      src={emptyWishlistVideo}
-      autoPlay
-      loop
-      muted
-      playsInline
-      className="relative w-full h-auto object-contain rounded-xl"
-    />
-  </div>
+  <div className="relative w-56 bg-ivory rounded-xl overflow-hidden flex justify-center">
+  <video
+    src={emptyWishlistVideo}
+    autoPlay
+    loop
+    muted
+    playsInline
+    className="w-full h-auto object-contain mix-blend-multiply"
+  />
+</div>
 </div>
             <h1 className="font-serif text-3xl text-royal-purple mb-4">Your Wishlist is Empty</h1>
             <p className="text-muted-foreground mb-8">Save products you love for later</p>

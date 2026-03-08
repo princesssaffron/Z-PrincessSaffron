@@ -34,7 +34,6 @@ const saffronTypes = [
   { key: "all", label: "All Types" },
   { key: "threads", label: "Strands" },
   { key: "powder", label: "Powder" },
-  { key: "gift", label: "Gift Collection" },
 ];
 
 const Products = () => {
@@ -73,12 +72,9 @@ const Products = () => {
   };
 
   const filteredProducts = useMemo(() => {
-    // Merge static products with API products
-    // We keep static products as the "showcase" and append API products, 
-    // ensuring we don't show duplicates if the same ID exists in both.
-    const apiIds = new Set(apiProducts.map((p: any) => (p.id || p._id)?.toString()));
-    const staticProducts = products.filter((p: any) => !apiIds.has(p.id.toString()));
-    let result = [...staticProducts, ...apiProducts];
+    // Merge static products with API products, avoiding duplicates by ID if necessary
+    // For now, let's prioritize API products if they exist, or just use them
+    let result = apiProducts.length > 0 ? [...apiProducts] : [...products];
 
     // Filter by price range
     const priceRange = priceRanges.find((p) => p.key === priceFilter);
@@ -94,9 +90,12 @@ const Products = () => {
       result = result.filter((p) => p.rating >= ratingOption.min);
     }
 
-    // Filter by type
+    // Filter by type (strands/powder only, exclude gift)
     if (typeFilter !== "all") {
       result = result.filter((p) => p.category === typeFilter);
+    } else {
+      // Show only strands and powder by default (exclude gift boxes from main filters)
+      result = result.filter((p) => p.category === "threads" || p.category === "powder");
     }
 
     // Sort
@@ -233,8 +232,8 @@ const Products = () => {
       </section>
 
       {/* Animated Offers Banner */}
-      <div id="products-section" className="bg-royal-purple-dark scroll-mt-0">
-        <div className="relative overflow-hidden py-3 bg-gradient-to-r from-gold/20 via-gold/10 to-gold/20">
+      <div id="products-section" className="bg-royal-purple scroll-mt-0">
+        <div className="relative overflow-hidden py-3 ">
 
           <div className="flex whitespace-nowrap animate-marquee gap-16">
             {[...offers, ...offers, ...offers].map((offer, index) => (
@@ -510,13 +509,13 @@ const Products = () => {
                     </div>
 
                     {/* Name */}
-                    <h3 className="font-sans capitalize text-[20px] tracking-[0.06em] font-light text-royal-purple mb-3 group-hover:text-gold transition-colors duration-300">
+                    <h3 className="font-cinzel capitalize text-[20px] tracking-[0.06em] font-medium text-royal-purple mb-3 group-hover:text-gold transition-colors duration-300">
                       {product.name}
                     </h3>
 
 
 
-                    <p className="font-sans  text-[15px] text-royal-purple/70 leading-[1.6] tracking-[0.02em] line-clamp-2 mb-4 max-h-0 group-hover:opacity-100 group-hover:max-h-20 transition-all duration-500">
+                    <p className="font-rr  text-[15px] text-royal-purple/70 leading-[1.6] tracking-[0.02em] line-clamp-2 mb-4 max-h-0 group-hover:opacity-100 group-hover:max-h-20 transition-all duration-500">
                       {product.description}
                     </p>
 

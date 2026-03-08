@@ -99,12 +99,13 @@ const TestimonialsSection = () => {
   }, []);
 
   // Merge DB reviews (shown first) with static fallback
-  const allTestimonials =
+  const allTestimonials = (
     dbReviews.length > 0
       ? [
         ...dbReviews.map((r) => {
           if (!r) return null;
-          const name = r.reviewer_name || r.user?.fullName || "Guest";
+          // Prioritize reviewer_name if available, otherwise use associated user's fullName
+          const name = r.reviewer_name || r.user?.fullName || "Verified Customer";
           return {
             name,
             location: r.location || "",
@@ -112,10 +113,11 @@ const TestimonialsSection = () => {
             comment: r.review_text || "",
             avatar: getInitials(name),
           };
-        }).filter(Boolean),
+        }).filter((t): t is NonNullable<typeof t> => !!t),
         ...staticTestimonials,
       ]
-      : staticTestimonials;
+      : staticTestimonials
+  );
 
   const loopTestimonials = [...allTestimonials, ...allTestimonials];
 

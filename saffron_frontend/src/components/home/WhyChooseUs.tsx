@@ -65,8 +65,8 @@ const WhyChooseUs = () => {
             The Z Princess Difference
           </span>
 
-          <h2 className="font-serif text-4xl md:text-5xl lg:text-5xl text-royal-purple mt-4 mb-6">
-            Why Choose Our Saffron
+          <h2 className="font-serif text-4xl  tracking-[0.1em] md:text-5xl lg:text-5xl text-royal-purple mt-2 mb-4">
+            Why Choose Our <br/>Saffron
           </h2>
 
           <div className="w-28 h-px bg-gradient-to-r from-transparent via-gold to-transparent mx-auto" />

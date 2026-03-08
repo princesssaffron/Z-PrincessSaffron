@@ -590,6 +590,18 @@ const fetchSales = useCallback(async () => {
                   Low Stock: {p.stock}
                 </span>
               </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => {
+                  setEditProduct(p);
+                  setEditImagePreview(p.image?.startsWith("data:") ? p.image : null);
+                  setTab("update");
+                }}
+                className="h-8 w-8 text-royal-purple/40 hover:text-gold hover:bg-gold/5"
+              >
+                <Pencil className="w-4 h-4" />
+              </Button>
             </motion.div>
           ))}
 
